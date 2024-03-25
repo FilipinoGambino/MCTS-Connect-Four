@@ -1,0 +1,20 @@
+#defaults:
+#- override hydra/job_logging: colorlog
+#- override hydra/hydra_logging: colorlog
+
+hydra:
+  run:
+    dir: ./outputs/${now:%m-%d}/${now:%H-%M-%S}
+
+name: conv_debug
+## WANDB params
+# The wandb project name
+project: MCTS_Connect4
+# The wandb user to log to
+entity: filipinogambino
+# The wandb group for the run
+group: debug
+
+c: .1
+disable_wandb: true
+leaf_iteration: 1000
