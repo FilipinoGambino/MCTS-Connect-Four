@@ -15,28 +15,40 @@ class Node:
         self.q = 0 # The mean value of the next state
         self.n = 0 # The number of times action a has been taken
         self.p = 0 # The prior probability of selecting action a
+        self.v = 0
 
-        self.n_visits = 0
-        self.total_value = 0
         self.game_state = game_state
         self.action = action
         self.is_expanded = False
 
-        self.children = {action: None for action in range(BOARD_SIZE[-1])}
-        self.children_values = np.zeros(BOARD_SIZE[-1], dtype=np.float32)
-        self.children_probs = np.zeros(BOARD_SIZE[-1], dtype=np.float32)
-        self.children_n_visits = np.zeros(BOARD_SIZE[-1], dtype=np.int64)
+        self._children = {}
+        # self.children_values = np.zeros(BOARD_SIZE[-1], dtype=np.float32)
+        # self.children_probs = np.zeros(BOARD_SIZE[-1], dtype=np.float32)
+        # self.children_n_visits = np.zeros(BOARD_SIZE[-1], dtype=np.int64)
+
+    @property
+    def children(self):
+        
+        return
+
+    @children.setter
+    def children(self, child):
+        self._children.update({child.action: child})
+
+    @property
+    def u(self):
+        return math.sqrt(self.n) * abs()
 
 
-    def expand(self, child_probs):
-        self.is_expanded = True
-
+    def update(self, value):
+        self.n += 1
+        self.w += value
+        self.q = self.w / self.n
 
     def backward(self, value: float):
         current = self
         while current.parent:
-            current.n_visits += 1
-            current.total_value += current.game_state.value_modifier * value
+            current.update(current.game_state.value_modifier * value)
             current = current.parent
 
     @property
