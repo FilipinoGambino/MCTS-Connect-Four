@@ -19,31 +19,24 @@ class Node:
 
         self.game_state = game_state
         self.action = action
-        self.is_expanded = False
+        self.has_children = False
 
-        self._children = {}
-        # self.children_values = np.zeros(BOARD_SIZE[-1], dtype=np.float32)
-        # self.children_probs = np.zeros(BOARD_SIZE[-1], dtype=np.float32)
-        # self.children_n_visits = np.zeros(BOARD_SIZE[-1], dtype=np.int64)
-
-    @property
-    def children(self):
-        
-        return
-
-    @children.setter
-    def children(self, child):
-        self._children.update({child.action: child})
+    def build_children(self):
+        if not self.has_children:
+            for action in range(BOARD_SIZE[-1]):
+                setattr(self, f"child_{action}", Node(self.flags, self.game_state, self.action, parent=self))
+            self.has_children = True
 
     @property
     def u(self):
         return math.sqrt(self.n) * abs()
 
-
     def update(self, value):
         self.n += 1
         self.w += value
         self.q = self.w / self.n
+
+        self.build_children()
 
     def backward(self, value: float):
         current = self
@@ -62,4 +55,14 @@ class Node:
         '''
         return self.q + self.flags.c * self.p * math.sqrt(self.n_b) / (1 + self.n)
 
-    def best_child(self):
+    # def best_child(self):
+
+if __name__=="__main__":
+    class DummyNode(object):
+        def __init__(self):
+            self.parent = None
+    flags = None
+
+    root = Node(flags, Game(), action=None, parent=DummyNode())
+    root.update(0.1)
+    print(vars(root))
