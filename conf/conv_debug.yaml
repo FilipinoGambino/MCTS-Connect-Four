@@ -15,6 +15,7 @@ entity: filipinogambino
 # The wandb group for the run
 group: debug
 
-c: .1
+c: .9
+unexplored_action: 1e-5
 disable_wandb: true
 leaf_iteration: 1000

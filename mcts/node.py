@@ -1,3 +1,4 @@
+import copy
 from collections import defaultdict
 import math
 import numpy as np
@@ -5,64 +6,94 @@ import numpy as np
 from c4_game.game import Game
 from utility_constants import BOARD_SIZE
 
+N_ACTIONS = BOARD_SIZE[-1]
 
-class Node:
-    def __init__(self, flags, game_state: Game, action: int, parent: object=None):
+
+class RootNode:
+    def __init__(self):
+        self.parent = None
+
+        self.w = 0 # The total value of the next state
+        self.v = 0
+
+        self.is_leaf = True
+
+        self.children = {}
+        self.next_action_probs = np.zeros(N_ACTIONS, dtype=np.float32)
+        self.next_action_visits = np.zeros(N_ACTIONS, dtype=np.int64)
+
+class ChildNode(RootNode):
+    def __init__(
+            self,
+            flags,
+            game_state: Game,
+            action: int,
+            parent: RootNode=RootNode()
+    ):
+        super().__init__()
         self.flags = flags
         self.parent = parent
 
-        self.w = 0 # The total value of the next state
-        self.q = 0 # The mean value of the next state
-        self.n = 0 # The number of times action a has been taken
-        self.p = 0 # The prior probability of selecting action a
-        self.v = 0
-
         self.game_state = game_state
         self.action = action
-        self.has_children = False
 
-    def build_children(self):
-        if not self.has_children:
-            for action in range(BOARD_SIZE[-1]):
-                setattr(self, f"child_{action}", Node(self.flags, self.game_state, self.action, parent=self))
-            self.has_children = True
+    def self_visits(self):
+        return self.parent.next_action_visits[self.action]
+
+    def increment_self_visits(self):
+        self.parent.next_action_visits[self.action] += 1
 
     @property
     def u(self):
-        return math.sqrt(self.n) * abs()
+        return self.next_action_probs * math.sqrt(self.self_visits) / (1 + self.next_action_visits)
 
-    def update(self, value):
-        self.n += 1
+    @property
+    def q(self):
+        '''
+        :return: The mean value of the next state
+        '''
+        next_action_visits = self.next_action_visits + np.where(self.next_action_visits == 0,
+                                                                self.flags.unexplored_action,
+                                                                0)
+        return self.w / next_action_visits
+
+    def update_params(self, value):
+        self.increment_self_visits()
         self.w += value
-        self.q = self.w / self.n
 
-        self.build_children()
 
     def backward(self, value: float):
         current = self
         while current.parent:
-            current.update(current.game_state.value_modifier * value)
+            current.update_params(current.game_state.value_modifier * value)
             current = current.parent
 
     @property
-    def n_b(self):
-        return sum([child.n for child in self.children])
-
-    @property
-    def u(self):
+    def best_action(self):
         '''
-        :return: Q[s,a] + c * P[s,a] * sqrt(sum(N[s,b])) / (1 + N[s,a])
+        :return: max action index from Q[s,a] + c * P[s,a] * sqrt(sum(N[s,b])) / (1 + N[s,a])
         '''
-        return self.q + self.flags.c * self.p * math.sqrt(self.n_b) / (1 + self.n)
+        return np.argmax(self.q + self.flags.c * self.u)
 
-    # def best_child(self):
+    def get_next_action(self):
+        action = self.best_action
+        self.is_leaf = False
+        if not self.children.get(action, None):
+            self.children[action] = ChildNode(self.flags,
+                                              copy.deepcopy(self.game_state),
+                                              action,
+                                              parent=self)
+        return self.children[action]
+
+    def get_leaf(self):
+        current = self
+        while not current.is_leaf:
+            current = current.get_next_action()
+
+        return current
+
 
 if __name__=="__main__":
-    class DummyNode(object):
-        def __init__(self):
-            self.parent = None
     flags = None
 
-    root = Node(flags, Game(), action=None, parent=DummyNode())
-    root.update(0.1)
-    print(vars(root))
+    root = ChildNode(flags, Game(), action=None)

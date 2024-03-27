@@ -26,16 +26,16 @@ class Game:
     @property
     def current_player(self):
         '''
-        :return: Either 0 or 1 depending on which player
+        :return: Either 1 or 2 depending on which player
         '''
-        return self.turn % 2
+        return self.turn % 2 + 1
 
     @property
     def value_modifier(self):
         '''
         :return: Either -1 or 1 depending on which player
         '''
-        return self.current_player * 2 - 1
+        return (self.current_player - 1) * 2 - 1
 
     @property
     def max_turns(self):

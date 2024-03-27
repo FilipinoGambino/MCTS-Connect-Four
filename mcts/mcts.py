@@ -1,14 +1,12 @@
 import numpy as np
 
 from c4_game.game import Game
-from node import Node
+from nns import create_model
+from node import ChildNode
 
 def train(flags):
-    class DummyNode(object):
-        def __init__(self):
-            self.parent = None
-
-    root = Node(flags, Game(), action=None, parent=DummyNode())
+    net = create_model(flags)
+    root = ChildNode(flags, Game(), action=None)
     for _ in flags.leaf_iterations:
         leaf = root.select_leaf()
         probs, value = net(leaf.game_state)

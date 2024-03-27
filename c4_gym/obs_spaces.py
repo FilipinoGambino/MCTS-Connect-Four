@@ -164,8 +164,8 @@ class _HistoricalObsWrapper(gym.Wrapper):
 
     def observation(self, observation: Game) -> Dict[str, np.ndarray]:
         board = observation.board
-        active_p = observation.active_player
-        inactive_p = observation.inactive_player
+        active_mark = observation.current_player
+        inactive_mark = observation.inactive_player
 
         turn = observation.turn
         norm_turn = turn / observation.board.size
@@ -174,25 +174,19 @@ class _HistoricalObsWrapper(gym.Wrapper):
         # Checks if the previous observation called this wrapper
         if turn >= 2 and not self.historical_obs[turn-1].any():
             diff = np.subtract(self.historical_obs[turn], self.historical_obs[turn-2])
-            last_move = np.where(diff==inactive_p.mark, inactive_p.mark, 0)
+            last_move = np.where(diff==inactive_mark, inactive_mark, 0)
             self.historical_obs[turn-1] = np.add(self.historical_obs[turn-2], last_move)
 
         obs = {
-            "active_player_t-0": np.where(self.historical_obs[max(0,turn-1)]==active_p.mark, 1, 0),
-            "active_player_t-1": np.where(self.historical_obs[max(0,turn-3)]==active_p.mark, 1, 0),
-            "active_player_t-2": np.where(self.historical_obs[max(0,turn-5)]==active_p.mark, 1, 0),
-            "active_player_t-3": np.where(self.historical_obs[max(0,turn-7)]==active_p.mark, 1, 0),
-            # "active_player_t-4": np.where(self.historical_obs[max(0,turn-9)]==active_p.mark, 1, 0),
-            # "active_player_t-5": np.where(self.historical_obs[max(0,turn-11)]==active_p.mark, 1, 0),
-            # "active_player_t-6": np.where(self.historical_obs[max(0,turn-12)]==active_p.mark, 1, 0),
-            "inactive_player_t-0": np.where(self.historical_obs[max(0,turn)]==inactive_p.mark, 1, 0),
-            "inactive_player_t-1": np.where(self.historical_obs[max(0,turn-2)]==inactive_p.mark, 1, 0),
-            "inactive_player_t-2": np.where(self.historical_obs[max(0,turn-4)]==inactive_p.mark, 1, 0),
-            "inactive_player_t-3": np.where(self.historical_obs[max(0,turn-6)]==inactive_p.mark, 1, 0),
-            # "inactive_player_t-4": np.where(self.historical_obs[max(0,turn-8)]==inactive_p.mark, 1, 0),
-            # "inactive_player_t-5": np.where(self.historical_obs[max(0,turn-10)]==inactive_p.mark, 1, 0),
-            # "inactive_player_t-6": np.where(self.historical_obs[max(0,turn-12)]==inactive_p.mark, 1, 0),
-            "p1_active": np.full_like(board, fill_value=active_p.mark-1, dtype=np.int64), # Normalized
+            "active_player_t-0": np.where(self.historical_obs[max(0,turn-1)]==active_mark, 1, 0),
+            "active_player_t-1": np.where(self.historical_obs[max(0,turn-3)]==active_mark, 1, 0),
+            "active_player_t-2": np.where(self.historical_obs[max(0,turn-5)]==active_mark, 1, 0),
+            "active_player_t-3": np.where(self.historical_obs[max(0,turn-7)]==active_mark, 1, 0),
+            "inactive_player_t-0": np.where(self.historical_obs[max(0,turn)]==inactive_mark, 1, 0),
+            "inactive_player_t-1": np.where(self.historical_obs[max(0,turn-2)]==inactive_mark, 1, 0),
+            "inactive_player_t-2": np.where(self.historical_obs[max(0,turn-4)]==inactive_mark, 1, 0),
+            "inactive_player_t-3": np.where(self.historical_obs[max(0,turn-6)]==inactive_mark, 1, 0),
+            "p1_active": np.full_like(board, fill_value=active_mark-1, dtype=np.int64), # Normalized
             "turn": np.full(shape=(1,1), fill_value=norm_turn, dtype=np.float32),
         }
 
