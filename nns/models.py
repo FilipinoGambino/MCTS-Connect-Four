@@ -44,18 +44,18 @@ class DictActor(nn.Module):
         logits = logits.view(-1,self.n_actions)
 
         aam = available_actions_mask
-
+        #
         assert logits.shape == aam.shape, f"logits: {logits.shape} | mask: {aam.shape}"
         logits = logits + torch.where(
             aam,
             torch.full_like(logits, fill_value=float("-inf")),
             torch.zeros_like(logits)
         )
-        if logits.isnan().any():
-            logging.warning(f"-------------------FIN-------------------")
-        actions = DictActor.logits_to_actions(logits, sample)
+        # if logits.isnan().any():
+        #     logging.warning(f"-------------------FIN-------------------")
+        # actions = DictActor.logits_to_actions(logits, sample)
 
-        return logits, actions
+        return logits#, actions
 
     @staticmethod
     @torch.no_grad()
@@ -190,7 +190,13 @@ class BasicActorCriticNetwork(nn.Module):
         if subtask_embeddings is not None:
             subtask_embeddings = torch.repeat_interleave(subtask_embeddings, 2, dim=0)
 
-        policy_logits, actions = self.actor(
+        # policy_logits, actions = self.actor(
+        #     self.actor_base(base_out),
+        #     available_actions_mask=available_actions_mask,
+        #     sample=sample,
+        #     **actor_kwargs
+        # )
+        policy_logits = self.actor(
             self.actor_base(base_out),
             available_actions_mask=available_actions_mask,
             sample=sample,
@@ -200,7 +206,7 @@ class BasicActorCriticNetwork(nn.Module):
         baseline = self.baseline(self.baseline_base(base_out))
 
         return dict(
-            actions=actions,
+            #actions=actions,
             policy_logits=policy_logits,
             baseline=baseline
         )

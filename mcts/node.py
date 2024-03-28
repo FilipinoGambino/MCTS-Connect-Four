@@ -13,14 +13,24 @@ class RootNode:
     def __init__(self):
         self.parent = None
 
-        self.w = 0 # The total value of the next state
-        self.v = 0
-
         self.is_leaf = True
 
         self.children = {}
+        self.n = 0 # Number of visits
+        self.w = 0. # Total value of the next state
+        self.p = 0. # Move probabilities
         self.next_action_probs = np.zeros(N_ACTIONS, dtype=np.float32)
         self.next_action_visits = np.zeros(N_ACTIONS, dtype=np.int64)
+
+    @property
+    def q(self):
+        '''
+        W / N
+        :return: Mean value of the next state
+        '''
+        assert self.n > 0, "Need to increment n visits before getting q"
+        return self.w / self.n
+
 
 class ChildNode(RootNode):
     def __init__(
@@ -32,16 +42,19 @@ class ChildNode(RootNode):
     ):
         super().__init__()
         self.flags = flags
-        self.parent = parent
-
         self.game_state = game_state
         self.action = action
+        self.parent = parent
 
     def self_visits(self):
         return self.parent.next_action_visits[self.action]
 
     def increment_self_visits(self):
         self.parent.next_action_visits[self.action] += 1
+
+
+    def update_probs(self, probs):
+        self.next_action_probs = probs
 
     @property
     def u(self):
@@ -62,7 +75,9 @@ class ChildNode(RootNode):
         self.w += value
 
 
-    def backward(self, value: float):
+    def backward(self, probs: np.ndarry, value: float):
+        self.update_probs(probs)
+
         current = self
         while current.parent:
             current.update_params(current.game_state.value_modifier * value)
