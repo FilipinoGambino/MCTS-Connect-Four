@@ -1,15 +1,21 @@
 import scipy
 
+from c4_gym import create_env
 from c4_game.game import Game
 from nns import create_model
-from node import ChildNode
+from node import Node
 
-def train(flags):
+def run_mcts(flags):
+    env = create_env(flags)
+    output = env.reset()
+
     net = create_model(flags)
-    root = ChildNode(flags, Game(), action=None)
+    leaf = Node(flags, output, action=None)
+
+    env.step(leaf.action)
+
     for _ in flags.max_steps:
-        leaf = root.get_next_action()
-        logits, value = net(leaf.game_state)
-        probs = scipy.special.softmax(logits, axis=-1)
-        if leaf.game_state.check_winner() or leaf.game_state.actions():
-            leaf.backward(probs, value)
+        leaf = leaf.get_next_action()
+        env.step(leaf.action)
+        probs, value = net(output['obs'])
+        leaf.backward(probs, value)
