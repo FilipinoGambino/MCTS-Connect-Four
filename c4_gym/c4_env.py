@@ -6,7 +6,7 @@ import numpy as np
 from .act_spaces import BaseActSpace
 from .obs_spaces import BaseObsSpace
 from .reward_spaces import GameResultReward
-from ..connectx_game.game import Game
+from ..c4_game.game import Game
 
 
 class ConnectFour(gym.Env):

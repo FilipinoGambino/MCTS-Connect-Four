@@ -1,30 +1,3 @@
-import collections
-import timeit
-
-import torch
-from typing import Dict, List
-from types import SimpleNamespace
-
-from c4_gym import ACT_SPACES_DICT, OBS_SPACES_DICT, REWARD_SPACES_DICT
-
-def flags_to_namespace(flags: Dict) -> SimpleNamespace:
-    flags = SimpleNamespace(**flags)
-
-    # Env params
-    flags.seed = flags.seed
-    flags.act_space = ACT_SPACES_DICT[flags.act_space]
-    flags.obs_space = OBS_SPACES_DICT[flags.obs_space]
-    flags.reward_space = REWARD_SPACES_DICT[flags.reward_space]
-
-    # Optimizer params
-    flags.optimizer_class = torch.optim.__dict__[flags.optimizer_class]
-
-    # Miscellaneous params
-    flags.actor_device = torch.device(flags.actor_device)
-    flags.learner_device = torch.device(flags.learner_device)
-
-    return flags
-
 # Copyright (c) Facebook, Inc. and its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,6 +12,9 @@ def flags_to_namespace(flags: Dict) -> SimpleNamespace:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Naive profiling using timeit. (Used in MonoBeast.)"""
+
+import collections
+import timeit
 
 
 class Timings:

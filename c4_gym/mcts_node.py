@@ -18,12 +18,11 @@ class Node:
     def __init__(
             self,
             flags,
-            game_state: Game,
             action: int,
             parent=DummyNode()
     ):
         self.flags = flags
-        self.game_state = game_state
+        self.game_state = None
         self.action = action
         self.parent = parent
 
@@ -40,7 +39,7 @@ class Node:
         W / N
         :return: Mean value of the next state
         '''
-        assert self.n > 0, "Need to increment n visits before getting q"
+        assert self.n > 0, "Division by zero; increment n"
         return self.w / self.n
 
     @property
@@ -89,20 +88,13 @@ class Node:
 
     def get_next_action(self):
         action = self.best_action
-        self.is_leaf = False
         if not self.children[action]:
             self.children[action] = Node(self.flags,
-                                         copy.deepcopy(self.game_state),
                                          action,
                                          parent=self)
+            self.is_leaf = False
         return self.children[action]
 
-    def get_leaf(self):
-        current = self
-        while not current.is_leaf:
-            current = current.get_next_action()
-
-        return current
 
 def collect_tree_probs(root: Node):
     # TODO tree traversal
@@ -112,4 +104,4 @@ def collect_tree_probs(root: Node):
 if __name__=="__main__":
     flags = None
 
-    root = Node(flags, Game(), action=None)
+    root = Node(flags, action=None)
