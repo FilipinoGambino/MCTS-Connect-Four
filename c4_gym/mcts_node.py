@@ -31,7 +31,7 @@ class Node:
         self.children = {x: None for x in range(N_ACTIONS)}
         self.n = 0 # Number of visits
         self.w = 0. # Total value of the next state
-        self.next_action_probs = np.zeros(shape=(N_ACTIONS, 1), dtype=np.float32)
+        self.children_p = np.zeros(shape=(N_ACTIONS, 1), dtype=np.float32)
 
     @property
     def q(self):
@@ -53,21 +53,15 @@ class Node:
                 child_visits[action] = child.n
         return child_visits
 
-    def children_p(self):
-        child_probs = np.zeros(shape=(N_ACTIONS, 1), dtype=np.float32)
-        for action, child in self.children.items():
-            if child:
-                child_probs[action] = child.p
-        return child_probs
-
     def update_params(self, value):
         self.n += 1
         self.w += value
 
     def update_probs(self, probs):
-        assert probs.shape == self.next_action_probs.shape
-        probs.to(dtype=self.next_action_probs.dtype)
-        self.next_action_probs = probs
+        self.is_leaf = False
+        assert probs.shape == self.children_p.shape
+        probs.astype(dtype=self.children_p.dtype)
+        self.children_p = probs
 
     def backward(self, probs: np.ndarry, value: float):
         self.update_probs(probs)
@@ -86,14 +80,15 @@ class Node:
         '''
         return np.argmax(self.q + self.flags.c * self.u)
 
-    def get_next_action(self):
-        action = self.best_action
-        if not self.children[action]:
-            self.children[action] = Node(self.flags,
-                                         action,
-                                         parent=self)
-            self.is_leaf = False
-        return self.children[action]
+    def get_leaf(self):
+        current = self
+        while not current.is_leaf:
+            best_action = current.best_action
+            if not current.children[best_action]:
+                current.children[best_action] = Node(current.flags, action=best_action, parent=current)
+            current = current.children[best_action]
+
+        return current
 
 
 def collect_tree_probs(root: Node):

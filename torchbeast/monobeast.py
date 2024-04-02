@@ -16,9 +16,10 @@ from typing import Dict, Optional, Union
 import multiprocessing as mp
 import wandb
 
+from c4_game.mcts_game import MCTSGame
 from c4_gym import create_env
-from nns import create_model
 from c4_gym.mcts_node import Node
+from nns import create_model
 from utils import flags_to_namespace
 from core.buffer_utils import Buffers, buffers_apply, create_buffers, fill_buffers_inplace, stack_buffers, split_buffers
 from core import prof
@@ -47,8 +48,21 @@ class ClassThread(threading.Thread):
             print(f'An exception occured in thread "{self.name}":\n{e}')
             return
 
+def mcts_self_play(flags, mcts_tree, actor_model):
+    game_state = MCTSGame
 
-def mcts_self_play(
+    # Establish initial move probabilities
+    _, probs, val = actor_model(game_state)
+    mcts_tree.update_probs(probs)
+
+    leaves = [mcts_tree.get_leaf() for _ in range(flags.n_actor_envs)]
+    actions = torch.tensor([leaf.action for leaf in leaves]).unsqueeze(-1)
+    env_output = env.step(actions)
+    _, probs, vals = actor_model(env_output)
+    for prob, val, leaf in zip(probs, val, leaves):
+        leaf.backward(prob, val)
+
+def act(
         flags,
         teacher_flags: Optional[SimpleNamespace],
         actor_index,

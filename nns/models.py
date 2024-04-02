@@ -7,7 +7,7 @@ from torch import nn
 from typing import Any, Callable, Dict, NoReturn, Optional, Tuple, Union
 
 from .in_blocks import DictInputLayer
-from ..connectx_gym.reward_spaces import RewardSpec
+from ..c4_gym.reward_spaces import RewardSpec
 from ..utility_constants import BOARD_SIZE
 import logging
 
@@ -51,11 +51,11 @@ class DictActor(nn.Module):
             torch.full_like(logits, fill_value=float("-inf")),
             torch.zeros_like(logits)
         )
-        # if logits.isnan().any():
-        #     logging.warning(f"-------------------FIN-------------------")
-        # actions = DictActor.logits_to_actions(logits, sample)
+        if logits.isnan().any():
+            logging.warning(f"-------------------FIN-------------------")
+        actions = DictActor.logits_to_actions(logits, sample)
 
-        return logits#, actions
+        return logits, actions
 
     @staticmethod
     @torch.no_grad()
@@ -190,13 +190,7 @@ class BasicActorCriticNetwork(nn.Module):
         if subtask_embeddings is not None:
             subtask_embeddings = torch.repeat_interleave(subtask_embeddings, 2, dim=0)
 
-        # policy_logits, actions = self.actor(
-        #     self.actor_base(base_out),
-        #     available_actions_mask=available_actions_mask,
-        #     sample=sample,
-        #     **actor_kwargs
-        # )
-        policy_logits = self.actor(
+        policy_logits, actions = self.actor(
             self.actor_base(base_out),
             available_actions_mask=available_actions_mask,
             sample=sample,
@@ -206,7 +200,7 @@ class BasicActorCriticNetwork(nn.Module):
         baseline = self.baseline(self.baseline_base(base_out))
 
         return dict(
-            #actions=actions,
+            actions=actions,
             policy_logits=policy_logits,
             baseline=baseline
         )

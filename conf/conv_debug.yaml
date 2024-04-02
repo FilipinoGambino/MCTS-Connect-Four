@@ -19,3 +19,4 @@ c: .9
 unexplored_action: 1e-5
 disable_wandb: true
 max_steps: 1000
+n_rollouts: 1000
