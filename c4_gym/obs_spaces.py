@@ -164,7 +164,7 @@ class _HistoricalObsWrapper(gym.Wrapper):
 
     def observation(self, observation: Game) -> Dict[str, np.ndarray]:
         board = observation.board
-        active_mark = observation.current_player
+        active_mark = observation.current_player_mark
         inactive_mark = observation.inactive_player
 
         turn = observation.turn

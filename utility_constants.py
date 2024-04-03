@@ -2,6 +2,7 @@ import numpy as np
 
 BOARD_SIZE = (6,7)
 IN_A_ROW = 4
+PLAYER_MARKS = [1,2]
 
 horizontal_kernel = np.ones([1, IN_A_ROW], dtype=np.uint8)
 vertical_kernel = np.transpose(horizontal_kernel)

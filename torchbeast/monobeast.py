@@ -18,7 +18,7 @@ import wandb
 
 from c4_game.mcts_game import MCTSGame
 from c4_gym import create_env
-from c4_gym.mcts_node import Node
+from nodes.mcts_node import Node
 from nns import create_model
 from utils import flags_to_namespace
 from core.buffer_utils import Buffers, buffers_apply, create_buffers, fill_buffers_inplace, stack_buffers, split_buffers

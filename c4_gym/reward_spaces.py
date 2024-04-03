@@ -127,13 +127,13 @@ class DiagonalEmphasisReward(BaseRewardSpace):
         p2 = game_state.active_player
 
         reward, done = self.compute_player_reward(game_state, p1.mark, p2.mark)
-        p1.reward += reward
+        p1.rewards += reward
 
         # This is double dipping
         # reward, done = self.compute_player_reward(game_state, p2.mark, p1.mark)
         # p2.reward += reward
 
-        return p1.reward, done
+        return p1.rewards, done
 
     def compute_player_reward(self, game_state: Game, mark1: int, mark2: int):
         cells_to_check = dict(horizontal=[(1,0),(2,0),(3,0)],
