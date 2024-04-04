@@ -3,7 +3,10 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 from threading import Lock
 
-from c4_gym.c4_env import C4Env, Winner
+from c4_gym.c4_env import C4Env
+from utility_constants import BOARD_SIZE
+
+_, N_ACTIONS = BOARD_SIZE
 
 
 # these are from AGZ nature paper
@@ -48,6 +51,7 @@ class C4Player:
     def __init__(self, flags, pipes=None):
         self.tree = defaultdict(VisitStats)
         self.flags = flags
+        self.moves = []
         self.pipe_pool = pipes
         self.node_lock = defaultdict(Lock)
 
@@ -56,6 +60,32 @@ class C4Player:
         reset the tree to begin a new exploration of states
         """
         self.tree = defaultdict(VisitStats)
+
+    def action(self, env, can_stop = True) -> str:
+        """
+        Figures out the next best move
+        within the specified environment and returns a string describing the action to take.
+
+        :param ChessEnv env: environment in which to figure out the action
+        :param boolean can_stop: whether we are allowed to take no action (return None)
+        :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
+            indicating the action to take in uci format
+        """
+        self.reset()
+
+        # for tl in range(self.play_config.thinking_loop):
+        root_value, naked_value = self.search_moves(env)
+        policy = self.calc_policy(env)
+        my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.num_halfmoves)))
+
+        if can_stop and self.flags.resign_threshold is not None and \
+                        root_value <= self.flags.resign_threshold \
+                        and env.num_halfmoves > self.flags.min_resign_turn:
+            # noinspection PyTypeChecker
+            return None
+        else:
+            self.moves.append([env.observation, list(policy)])
+            return my_action
 
     def search_moves(self, env) -> (float, float):
         """
@@ -176,10 +206,11 @@ class C4Player:
 
         if my_visitstats.p is not None:  # push p to edges
             tot_p = 1e-8
-            for mov in env.board.legal_moves:
-                mov_p = my_visitstats.p[self.move_lookup[mov]]
-                my_visitstats.a[mov].p = mov_p
-                tot_p += mov_p
+            for mov,invalid in enumerate(env.available_actions_mask):
+                if not invalid:
+                    mov_p = my_visitstats.p[mov]
+                    my_visitstats.a[mov].p = mov_p
+                    tot_p += mov_p
             for a_s in my_visitstats.a.values():
                 a_s.p /= tot_p
             my_visitstats.p = None
@@ -221,7 +252,7 @@ class C4Player:
             tau = 0
         if tau == 0:
             action = np.argmax(policy)
-            ret = np.zeros(self.labels_n)
+            ret = np.zeros(N_ACTIONS)
             ret[action] = 1.0
             return ret
         else:
@@ -235,9 +266,9 @@ class C4Player:
         """
         state = env.string_board
         my_visitstats = self.tree[state]
-        policy = np.zeros(self.labels_n)
+        policy = np.zeros(N_ACTIONS)
         for action, a_s in my_visitstats.a.items():
-            policy[self.move_lookup[action]] = a_s.n
+            policy[action] = a_s.n
 
         policy /= np.sum(policy)
         return policy
@@ -251,10 +282,9 @@ class C4Player:
         :param float weight: weight to assign to the taken action when logging it in self.moves
         :return str: the action, unmodified.
         """
-        policy = np.zeros(self.labels_n)
+        policy = np.zeros(N_ACTIONS)
 
-        k = self.move_lookup[chess.Move.from_uci(my_action)]
-        policy[k] = weight
+        policy[my_action] = weight
 
         self.moves.append([observation, list(policy)])
         return my_action
@@ -272,13 +302,21 @@ class C4Player:
 
 def historical_planes(env):
     history = env.game_state.history
-    p1 = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 0])
-    p2 = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 1])
+    p1_obs = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 0], dtype=np.int64)
+    p2_obs = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 1], dtype=np.int64)
 
-    p1 = np.where(p1 == 1, p1, 0)
-    p2 = np.where(p1 == 2, p2, 0)
+    p1_obs = np.where(p1_obs == env.p1_mark, p1_obs, 0)
+    p2_obs = np.where(p2_obs == env.p2_mark, p2_obs, 0)
 
-    p1_turn = np.zeros_like(env.game_state) + env.current_player_mark == 1
-    norm_turn = np.full_like(env.game_state, fill_value=env.game_state.turn / env.game_state.max_turns)
+    p1_turn = np.full_like(
+        env.game_state,
+        fill_value=env.p1_turn,
+        dtype=bool
+    )
+    norm_turn = np.full_like(
+        env.game_state,
+        fill_value=env.game_state.turn / env.game_state.max_turns,
+        dtype=np.float32
+    )
 
-    return np.stack([p1, p2, p1_turn, norm_turn])
+    return np.vstack([p1_obs, p2_obs, p1_turn, norm_turn])

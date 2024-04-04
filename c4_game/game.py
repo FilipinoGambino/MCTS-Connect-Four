@@ -31,15 +31,24 @@ class Game:
         raise StopIteration(f"Column {column} is full. {self.board}")
 
     @property
+    def current_player_mark(self):
+        return self.p1_mark if self.p1_turn else self.p2_mark
+
+    @property
     def turn(self):
         return np.count_nonzero(self.board)
 
     @property
-    def current_player_mark(self):
-        '''
-        :return: Either 1 or 2 depending on which player
-        '''
-        return self.turn % 2 + 1
+    def p1_turn(self):
+        return self.turn % 2 == 0
+
+    @property
+    def p1_mark(self):
+        return 1
+
+    @property
+    def p2_mark(self):
+        return 2
 
     @property
     def max_turns(self):

@@ -1,24 +1,21 @@
 import torch
 from torch import nn
-from typing import Optional
 
 from .models import BasicActorCriticNetwork
 from .conv_blocks import ResidualBlock
 from .in_blocks import ConvEmbeddingInputLayer
 from .attn_blocks import MHABlock, ViTBlock
-from c4_gym.obs_spaces import create_flexible_obs_space, obs_spaces
-from ..utility_constants import BOARD_SIZE
+from c4_gym import obs_spaces
+from utility_constants import BOARD_SIZE
 
 def create_model(
         flags,
         device: torch.device,
-        teacher_model_flags: Optional = None,
-        is_teacher_model: bool = False
 ) -> nn.Module:
-    obs_space = create_flexible_obs_space(flags, teacher_model_flags)
+    obs_space = flags.obs_space(**flags.obs_space_kwargs)
 
     return _create_model(
-        teacher_model_flags if is_teacher_model else flags,
+        flags,
         device,
         obs_space,
     )

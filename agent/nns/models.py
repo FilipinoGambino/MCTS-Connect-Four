@@ -7,8 +7,8 @@ from torch import nn
 from typing import Any, Callable, Dict, NoReturn, Optional, Tuple, Union
 
 from .in_blocks import DictInputLayer
-from ..c4_gym.reward_spaces import RewardSpec
-from ..utility_constants import BOARD_SIZE
+from c4_gym.reward_spaces import RewardSpec
+from utility_constants import BOARD_SIZE
 import logging
 
 

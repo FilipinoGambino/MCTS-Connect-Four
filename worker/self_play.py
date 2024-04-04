@@ -1,9 +1,18 @@
+from datetime import datetime
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from logging import getLogger
+from multiprocessing import Manager
 import os
 from threading import Thread
+from time import time
 from types import SimpleNamespace
+
+from c4_gym.c4_env import C4Env
+from agent.c4_model import C4Model
+from agent.c4_player import C4Player
+from lib.data_helper import get_game_data_filenames, write_game_data_to_file, pretty_print
+from lib.model_helper import load_best_model_weight, save_as_best_model, reload_best_model_weight_if_changed
 
 logger = getLogger(__name__)
 
@@ -49,11 +58,11 @@ class SelfPlayWorker:
                 game_idx += 1
                 start_time = time()
                 env, data = futures.popleft().result()
-                # print(f"game {game_idx:3} time={time() - start_time:5.1f}s "
-                #     f"halfmoves={env.num_halfmoves:3} {env.winner:12} "
-                #     f"{'by resign ' if env.resigned else '          '}")
-                #
-                # pretty_print(env, ("current_model", "current_model"))
+                print(f"game {game_idx:3} time={time() - start_time:5.1f}s "
+                    f"halfmoves={env.num_halfmoves:3} {env.winner:12} "
+                    f"{'by resign ' if env.resigned else '          '}")
+
+                pretty_print(env, ("current_model", "current_model"))
                 self.buffer += data
                 if (game_idx % self.config.play_data.nb_game_in_file) == 0:
                     self.flush_buffer()
@@ -65,7 +74,7 @@ class SelfPlayWorker:
         Load the current best model
         :return ChessModel: current best model
         """
-        model = ChessModel(self.config)
+        model = C4Model(self.config)
         if self.config.opts.new or not load_best_model_weight(model):
             model.build()
             save_as_best_model(model)
@@ -94,43 +103,39 @@ class SelfPlayWorker:
             os.remove(files[i])
 
 
-def self_play_buffer(config, cur) -> (ChessEnv, list):
+def self_play_buffer(flags, cur) -> (C4Env, list):
     """
     Play one game and add the play data to the buffer
-    :param Config config: config for how to play
+    :param Config flags: config for how to play
     :param list(Connection) cur: list of pipes to use to get a pipe to send observations to for getting
         predictions. One will be removed from this list during the game, then added back
     :return (ChessEnv,list((str,list(float)): a tuple containing the final ChessEnv state and then a list
         of data to be appended to the SelfPlayWorker.buffer
     """
     pipes = cur.pop() # borrow
-    env = C4Env().reset()
+    env = C4Env(flags)
+    env.reset()
 
-    white = C4Player(config, pipes=pipes)
-    black = C4Player(config, pipes=pipes)
+    p1 = C4Player(flags, pipes=pipes)
+    p2 = C4Player(flags, pipes=pipes)
 
-    while not env.done:
-        if env.white_to_move:
-            action = white.action(env)
+    while not env.game_state.done:
+        if env.game_state.p1_turn:
+            action = p1.action(env)
         else:
-            action = black.action(env)
-        env.step(action)
+            action = p2.action(env)
+        obs, rewards, done, info = env.step(action) # noqa
 
-    if env.winner == Winner.white:
-        black_win = -1
-    elif env.winner == Winner.black:
-        black_win = 1
-    else:
-        black_win = 0
+    p1_reward, p2_reward = rewards
 
-    black.finish_game(black_win)
-    white.finish_game(-black_win)
+    p1.finish_game(p1_reward)
+    p2.finish_game(p2_reward)
 
     data = []
-    for i in range(len(white.moves)):
-        data.append(white.moves[i])
-        if i < len(black.moves):
-            data.append(black.moves[i])
+    for i in range(len(p1.moves)):
+        data.append(p1.moves[i])
+        if i < len(p2.moves):
+            data.append(p2.moves[i])
 
     cur.append(pipes)
     return env, data

@@ -20,7 +20,6 @@ REWARD_SPACES_DICT = {
     if isinstance(val, type) and issubclass(val, reward_spaces.BaseRewardSpace)
 }
 
-
 def create_env(flags, device: torch.device, seed: Optional[int] = None) -> PytorchEnv:
     if seed is None:
         seed = flags.seed

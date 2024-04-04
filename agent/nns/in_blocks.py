@@ -5,7 +5,7 @@ import torch
 from torch import nn
 import numpy as np
 
-from ..utility_constants import BOARD_SIZE
+from utility_constants import BOARD_SIZE
 import itertools
 import logging
 class DictInputLayer(nn.Module):
