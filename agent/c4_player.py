@@ -73,19 +73,12 @@ class C4Player:
         """
         self.reset()
 
-        # for tl in range(self.play_config.thinking_loop):
         root_value, naked_value = self.search_moves(env)
         policy = self.calc_policy(env)
-        my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.num_halfmoves)))
+        my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
 
-        if can_stop and self.flags.resign_threshold is not None and \
-                        root_value <= self.flags.resign_threshold \
-                        and env.num_halfmoves > self.flags.min_resign_turn:
-            # noinspection PyTypeChecker
-            return None
-        else:
-            self.moves.append([env.observation, list(policy)])
-            return my_action
+        self.moves.append([env.observation, list(policy)])
+        return my_action
 
     def search_moves(self, env) -> (float, float):
         """
@@ -100,7 +93,13 @@ class C4Player:
         futures = []
         with ThreadPoolExecutor(max_workers=self.flags.search_threads) as executor:
             for _ in range(self.flags.simulation_num_per_move):
-                futures.append(executor.submit(self.search_my_move,env=env.copy(),is_root_node=True))
+                futures.append(
+                    executor.submit(
+                        self.search_my_move,
+                        env=env.copy(),
+                        is_root_node=True
+                    )
+                )
 
         vals = [f.result() for f in futures]
 
@@ -305,16 +304,16 @@ def historical_planes(env):
     p1_obs = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 0], dtype=np.int64)
     p2_obs = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 1], dtype=np.int64)
 
-    p1_obs = np.where(p1_obs == env.p1_mark, p1_obs, 0)
-    p2_obs = np.where(p2_obs == env.p2_mark, p2_obs, 0)
+    p1_obs = np.where(p1_obs == env.game_state.p1_mark, p1_obs, 0)
+    p2_obs = np.where(p2_obs == env.game_state.p2_mark, p2_obs, 0)
 
-    p1_turn = np.full_like(
-        env.game_state,
-        fill_value=env.p1_turn,
+    p1_turn = np.full(
+        shape=(1, *env.game_state.board_dims),
+        fill_value=env.game_state.is_p1_turn,
         dtype=bool
     )
-    norm_turn = np.full_like(
-        env.game_state,
+    norm_turn = np.full(
+        shape=(1, *env.game_state.board_dims),
         fill_value=env.game_state.turn / env.game_state.max_turns,
         dtype=np.float32
     )

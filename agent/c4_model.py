@@ -7,7 +7,7 @@ import torch
 from logging import getLogger
 from types import SimpleNamespace
 
-from nns import create_model
+from .nns import create_model
 from agent.c4_api import C4API
 
 
@@ -35,6 +35,8 @@ class C4Model:
         self.model = None
         self.optimizer = None
         self.scheduler = None
+
+        self.build()
 
     def get_pipes(self, num=1):
         """

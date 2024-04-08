@@ -2,74 +2,120 @@
 Manages starting off each of the separate processes involved in ChessZero -
 self play, training, and evaluation.
 """
-import argparse
 
-from logging import getLogger,disable
+import hydra
+from logging import getLogger, disable
+from omegaconf import DictConfig, OmegaConf
+from pathlib import Path
+import wandb
 
-from lib.logger import setup_logger
+from api_key import WANDB_KEY
+from worker.utils import flags_to_namespace
 
 logger = getLogger(__name__)
 
 CMD_LIST = ['self', 'opt', 'eval', 'sl', 'uci']
 
 
-def create_parser():
-    """
-    Parses each of the arguments from the command line
-    :return ArgumentParser representing the command line arguments that were supplied to the command line:
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--cmd", help="what to do", choices=CMD_LIST)
-    parser.add_argument("--new", help="run from new best model", action="store_true")
-    parser.add_argument("--type", help="use normal setting", default="mini")
-    parser.add_argument("--total-step", help="set TrainerConfig.start_total_steps", type=int)
-    return parser
+def get_default_flags(flags: DictConfig) -> DictConfig:
+    flags = OmegaConf.to_container(flags)
+    # Env params
+    flags.setdefault("seed", None)
+    # flags.setdefault("num_buffers", max(2 * flags["num_actors"], flags["batch_size"] // flags["n_actor_envs"]))
+    # flags.setdefault("obs_space_kwargs", {})
+    # flags.setdefault("reward_space_kwargs", {})
+
+    # Training params
+    flags.setdefault("use_mixed_precision", True)
+    flags.setdefault("discounting", 0.999)
+    flags.setdefault("reduction", "mean")
+    flags.setdefault("clip_grads", 10.)
+    flags.setdefault("checkpoint_freq", 10.)
+    flags.setdefault("num_learner_threads", 1)
+    # flags.setdefault("use_teacher", False)
+    # flags.setdefault("teacher_baseline_cost", flags.get("teacher_kl_cost", 0.) / 2.)
+
+    # Model params
 
 
-def setup(config: Config, args):
-    """
-    Sets up a new config by creating the required directories and setting up logging.
+    # Reloading previous run params
+    flags.setdefault("load_dir", None)
+    flags.setdefault("checkpoint_file", None)
+    flags.setdefault("weights_only", False)
+    flags.setdefault("n_value_warmup_batches", 0)
 
-    :param Config config: config to create directories for and to set config from based on the args
-    :param ArgumentParser args: args to use to control config.
-    """
-    config.opts.new = args.new
-    if args.total_step is not None:
-        config.trainer.start_total_steps = args.total_step
-    config.resource.create_directories()
-    setup_logger(config.resource.main_log_path)
+    # Miscellaneous params
+    flags.setdefault("disable_wandb", False)
+    flags.setdefault("debug", False)
+
+    return OmegaConf.create(flags)
 
 
-def start():
+@hydra.main(config_path="conf", config_name="conv_debug", version_base=None)
+def main(flags: DictConfig):
+    cli_conf = OmegaConf.from_cli()
+
+    #TODO add this back?
+    # if Path("config.yaml").exists():
+    #     new_flags = OmegaConf.load("config.yaml")
+    #     flags = OmegaConf.merge(new_flags, cli_conf)
+
+    if flags.get("load_dir", None) and not flags.get("weights_only", False):
+        # this ignores the local config.yaml and replaces it completely with saved one
+        # however, you can override parameters from the cli still
+        # this is useful e.g. if you did total_steps=N before and want to increase it
+        logger.info("Loading existing configuration, we're continuing a previous run")
+        new_flags = OmegaConf.load(Path(flags.load_dir) / "config.yaml")
+        # Overwrite some parameters
+        new_flags = OmegaConf.merge(new_flags, flags)
+        flags = OmegaConf.merge(new_flags, cli_conf)
+
+    flags = get_default_flags(flags)
+    logger.info(OmegaConf.to_yaml(flags, resolve=True))
+    OmegaConf.save(flags, "outputs/config.yaml")
+    flags = flags_to_namespace(OmegaConf.to_container(flags))
+    if not flags.disable_wandb:
+        wandb.init(
+            config=flags,
+            project=flags.project,
+            entity=flags.entity,
+            group=flags.group,
+            name=flags.name,
+        )
+
+    # mp.set_sharing_strategy(flags.sharing_strategy)
+    start(flags)
+
+def start(flags):
     """
     Starts one of the processes based on command line arguments.
 
     :return : the worker class that was started
     """
-    parser = create_parser()
-    args = parser.parse_args()
-    config_type = args.type
 
-    if args.cmd == 'uci':
-        disable(999999) # plz don't interfere with uci
+    logger.info(f"Running: {flags.worker_type}")
 
-    config = Config(config_type=config_type)
-    setup(config, args)
-
-    logger.info(f"config type: {config_type}")
-
-    if args.cmd == 'self':
+    if flags.worker_type == 'self_play':
         from worker import self_play
-        return self_play.start(config)
-    elif args.cmd == 'opt':
+        return self_play.start(flags)
+    elif flags.worker_type == 'optimize':
         from worker import optimize
-        return optimize.start(config)
-    elif args.cmd == 'eval':
+        return optimize.start(flags)
+    elif flags.worker_type == 'evaluate':
         from worker import evaluate
-        return evaluate.start(config)
-    # elif args.cmd == 'sl':
+        return evaluate.start(flags)
+    # elif args.worker_type == 'sl':
     #     from worker import sl
     #     return sl.start(config)
-    # elif args.cmd == 'uci':
+    # elif args.worker_type == 'uci':
     #     from .play_game import uci
     #     return uci.start(config)
+
+
+if __name__ == "__main__":
+    # mp.set_start_method("spawn")
+    try:
+        wandb.login(key=WANDB_KEY)
+    except NameError:
+        pass
+    main()

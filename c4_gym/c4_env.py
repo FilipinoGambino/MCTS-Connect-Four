@@ -1,10 +1,13 @@
+from copy import deepcopy
 import enum
 from typing import Any, Dict, Optional
 import gym
 import numpy as np
 from scipy.signal import convolve2d
 
-from ..c4_game.game import Game
+from .act_spaces import BaseActSpace
+from .obs_spaces import BaseObsSpace
+from c4_game.game import Game
 from utility_constants import BOARD_SIZE, IN_A_ROW, PLAYER_MARKS, VICTORY_KERNELS
 
 ROWS, COLUMNS = BOARD_SIZE
@@ -18,12 +21,16 @@ class C4Env(gym.Env):
     def __init__(
             self,
             flags,
+            act_space: BaseActSpace,
+            obs_space: BaseObsSpace,
             configuration: Optional[Dict[str, Any]] = None,
             autoplay: bool = True
     ):
         super(C4Env, self).__init__()
 
         self.flags = flags
+        self.act_space = act_space
+        self.obs_space = obs_space
 
         if configuration is not None:
             self.configuration = configuration
@@ -36,6 +43,9 @@ class C4Env(gym.Env):
 
         self.rewards = [0, 0]
         self.done = False
+
+    def copy(self):
+        return deepcopy(self)
 
     def reset(self, **kwargs):
         self.game_state = Game(self.configuration)
@@ -53,7 +63,7 @@ class C4Env(gym.Env):
 
     def check_game_over(self):
         for player_mark in PLAYER_MARKS:
-            for kernel in VICTORY_KERNELS:
+            for kernel_name, kernel in VICTORY_KERNELS.items():
                 conv = convolve2d(self.board == player_mark, kernel, mode="valid")
                 if np.any(conv == IN_A_ROW):
                     self.rewards = [-1, -1]
@@ -69,6 +79,7 @@ class C4Env(gym.Env):
         )
 
     def get_obs_reward_done_info(self):
+        self.check_game_over()
         return self.game_state, self.rewards, self.done, self.info()
 
     def render(self, **kwargs):
@@ -85,3 +96,10 @@ class C4Env(gym.Env):
     @property
     def available_actions_mask(self):
         return np.array(self.game_state.board.all(axis=0), dtype=bool)
+
+    @property
+    def winner(self):
+        if max(self.rewards) == 0:
+            return None
+        else:
+            return np.argmax(self.rewards) + 1

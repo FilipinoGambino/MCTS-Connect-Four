@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections import deque
 import gym
 import math
 import numpy as np
@@ -122,14 +123,14 @@ class HistoricalObs(BaseObsSpace, ABC):
         x = board_dims[0]
         y = board_dims[1]
         return gym.spaces.Dict({
-            "active_player_t-0": gym.spaces.MultiBinary((x, y)),
-            "active_player_t-1": gym.spaces.MultiBinary((x, y)),
-            "active_player_t-2": gym.spaces.MultiBinary((x, y)),
-            "active_player_t-3": gym.spaces.MultiBinary((x, y)),
-            "inactive_player_t-0": gym.spaces.MultiBinary((x, y)),
-            "inactive_player_t-1": gym.spaces.MultiBinary((x, y)),
-            "inactive_player_t-2": gym.spaces.MultiBinary((x, y)),
-            "inactive_player_t-3": gym.spaces.MultiBinary((x, y)),
+            "p1_turn-0": gym.spaces.MultiBinary((x, y)),
+            "p1_turn-1": gym.spaces.MultiBinary((x, y)),
+            "p1_turn-2": gym.spaces.MultiBinary((x, y)),
+            "p1_turn-3": gym.spaces.MultiBinary((x, y)),
+            "p2_turn-0": gym.spaces.MultiBinary((x, y)),
+            "p2_turn-1": gym.spaces.MultiBinary((x, y)),
+            "p2_turn-2": gym.spaces.MultiBinary((x, y)),
+            "p2_turn-3": gym.spaces.MultiBinary((x, y)),
             "p1_active": gym.spaces.MultiBinary((x,y)),
             "turn": gym.spaces.Box(low=0, high=1, shape=[1, 1]),
         })
@@ -142,8 +143,8 @@ class _HistoricalObsWrapper(gym.Wrapper):
     def __init__(self, env: gym.Env):
         super(_HistoricalObsWrapper, self).__init__(env)
         self._empty_obs = {}
-        turns = math.prod(BOARD_SIZE)
-        self.historical_obs = np.zeros(shape=(turns,*BOARD_SIZE), dtype=np.int64)
+        self.historical_obs = deque(maxlen=8)
+        self.reset_obs()
 
         for key, spec in HistoricalObs().get_obs_spec().spaces.items():
             if isinstance(spec, gym.spaces.MultiBinary):
@@ -153,41 +154,54 @@ class _HistoricalObsWrapper(gym.Wrapper):
             else:
                 raise NotImplementedError(f"{type(spec)} is not an accepted observation space.")
 
+    def reset_obs(self):
+        for _ in range(self.historical_obs.maxlen):
+            self.historical_obs.appendleft(np.zeros(shape=(1,*BOARD_SIZE), dtype=np.int64))
+
     def reset(self, **kwargs):
-        observation, reward, done, info = self.env.reset(**kwargs)
-        self.historical_obs = np.zeros_like(self.historical_obs)
+        observation, reward, done, info = self.env.reset(**kwargs) # noqa
+        self.reset_obs()
         return self.observation(observation), reward, done, info
 
     def step(self, action):
-        observation, reward, done, info = self.env.step(action)
+        observation, reward, done, info = self.env.step(action) # noqa
         return self.observation(observation), reward, done, info
 
     def observation(self, observation: Game) -> Dict[str, np.ndarray]:
-        board = observation.board
-        active_mark = observation.current_player_mark
-        inactive_mark = observation.inactive_player
+        self.historical_obs.appendleft(observation.board)
+        # TODO: fix the dimensional issue with stacking
+        p1_obs = np.vstack(
+            [state for idx, state in enumerate(self.historical_obs, start=observation.turn) if idx % 2 == 0],
+            dtype=np.int64
+        )
+        p2_obs = np.vstack(
+            [state for idx, state in enumerate(self.historical_obs, start=observation.turn) if idx % 2 == 1],
+            dtype=np.int64
+        )
 
-        turn = observation.turn
-        norm_turn = turn / observation.board.size
-        self.historical_obs[turn] = board
+        p1_obs = np.where(p1_obs == observation.p1_mark, p1_obs, 0)
+        p2_obs = np.where(p2_obs == observation.p2_mark, p2_obs, 0)
 
-        # Checks if the previous observation called this wrapper
-        if turn >= 2 and not self.historical_obs[turn-1].any():
-            diff = np.subtract(self.historical_obs[turn], self.historical_obs[turn-2])
-            last_move = np.where(diff==inactive_mark, inactive_mark, 0)
-            self.historical_obs[turn-1] = np.add(self.historical_obs[turn-2], last_move)
+        p1_turn = np.full(
+            shape=(1, *observation.board_dims),
+            fill_value=observation.is_p1_turn,
+            dtype=bool
+        )
+        norm_turn = np.full(
+            shape=(1, *observation.board_dims),
+            fill_value=observation.turn / observation.max_turns,
+            dtype=np.float32
+        )
 
-        obs = {
-            "active_player_t-0": np.where(self.historical_obs[max(0,turn-1)]==active_mark, 1, 0),
-            "active_player_t-1": np.where(self.historical_obs[max(0,turn-3)]==active_mark, 1, 0),
-            "active_player_t-2": np.where(self.historical_obs[max(0,turn-5)]==active_mark, 1, 0),
-            "active_player_t-3": np.where(self.historical_obs[max(0,turn-7)]==active_mark, 1, 0),
-            "inactive_player_t-0": np.where(self.historical_obs[max(0,turn)]==inactive_mark, 1, 0),
-            "inactive_player_t-1": np.where(self.historical_obs[max(0,turn-2)]==inactive_mark, 1, 0),
-            "inactive_player_t-2": np.where(self.historical_obs[max(0,turn-4)]==inactive_mark, 1, 0),
-            "inactive_player_t-3": np.where(self.historical_obs[max(0,turn-6)]==inactive_mark, 1, 0),
-            "p1_active": np.full_like(board, fill_value=active_mark-1, dtype=np.int64), # Normalized
-            "turn": np.full(shape=(1,1), fill_value=norm_turn, dtype=np.float32),
+        return {
+            "p1_turn-0": p1_obs[0],
+            "p1_turn-1": p1_obs[1],
+            "p1_turn-2": p1_obs[2],
+            "p1_turn-3": p1_obs[3],
+            "p2_turn-0": p2_obs[0],
+            "p2_turn-1": p2_obs[1],
+            "p2_turn-2": p2_obs[2],
+            "p2_turn-3": p2_obs[3],
+            "p1_active": p1_turn,
+            "turn": norm_turn,
         }
-
-        return obs

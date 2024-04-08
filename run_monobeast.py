@@ -9,7 +9,7 @@ try:
     from api_key import WANDB_KEY
 except ImportError:
     pass
-from utils import flags_to_namespace
+from worker.utils import flags_to_namespace
 from mcts.mcts import train
 
 os.environ["OMP_NUM_THREADS"] = "1"

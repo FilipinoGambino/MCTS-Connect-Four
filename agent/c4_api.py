@@ -5,6 +5,7 @@ value network.
 """
 from multiprocessing import connection, Pipe
 from threading import Thread
+import torch
 
 import numpy as np
 
@@ -15,11 +16,11 @@ class C4API:
     an observation of the game state and return the predictions from the policy and
     value networks.
     Attributes:
-        :ivar ChessModel agent_model: ChessModel to use to make predictions.
+        :ivar C4Model agent_model: C4Model to use to make predictions.
         :ivar list(Connection): list of pipe connections to listen for states on and return predictions on.
     """
     # noinspection PyUnusedLocal
-    def __init__(self, agent_model):  # ChessModel
+    def __init__(self, agent_model):  # C4Model
         """
 
         :param ChessModel agent_model: trained model to use to make predictions
@@ -46,6 +47,7 @@ class C4API:
         self.pipes.append(me)
         return you
 
+    @torch.no_grad()
     def _predict_batch_worker(self):
         """
         Thread worker which listens on each pipe in self.pipes for an observation, and then outputs
@@ -62,6 +64,9 @@ class C4API:
                     result_pipes.append(pipe)
 
             data = np.asarray(data, dtype=np.float32)
-            policy_ary, value_ary = self.agent_model.model.predict_on_batch(data)
+            output = self.agent_model.model.select_best_actions(data)
+
+            policy_ary = output['policy_logits']
+            value_ary = output['baseline']
             for pipe, p, v in zip(result_pipes, policy_ary, value_ary):
                 pipe.send((p, float(v)))

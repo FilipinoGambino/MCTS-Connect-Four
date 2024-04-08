@@ -5,8 +5,8 @@ import numpy as np
 from scipy.signal import convolve2d
 from typing import NamedTuple, Tuple, Dict
 
-from ..connectx_game.game import Game
-from ..utility_constants import BOARD_SIZE, IN_A_ROW, VICTORY_KERNELS
+from c4_game.game import Game
+from utility_constants import BOARD_SIZE, IN_A_ROW, VICTORY_KERNELS
 
 
 logging.basicConfig(
