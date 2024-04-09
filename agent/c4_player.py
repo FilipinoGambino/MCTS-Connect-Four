@@ -61,7 +61,7 @@ class C4Player:
         """
         self.tree = defaultdict(VisitStats)
 
-    def action(self, env, can_stop = True) -> str:
+    def action(self, env, obs, can_stop = True) -> str:
         """
         Figures out the next best move
         within the specified environment and returns a string describing the action to take.
@@ -73,14 +73,14 @@ class C4Player:
         """
         self.reset()
 
-        root_value, naked_value = self.search_moves(env)
+        root_value, naked_value = self.search_moves(env, obs)
         policy = self.calc_policy(env)
         my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
 
         self.moves.append([env.observation, list(policy)])
         return my_action
 
-    def search_moves(self, env) -> (float, float):
+    def search_moves(self, env, obs) -> (float, float):
         """
         Looks at all the possible moves using the AGZ MCTS algorithm
          and finds the highest value possible move. Does so using multiple threads to get multiple
@@ -97,6 +97,7 @@ class C4Player:
                     executor.submit(
                         self.search_my_move,
                         env=env.copy(),
+                        obs=obs,
                         is_root_node=True
                     )
                 )
@@ -105,7 +106,7 @@ class C4Player:
 
         return np.max(vals), vals[0]
 
-    def search_my_move(self, env: C4Env, is_root_node=False) -> float:
+    def search_my_move(self, env: C4Env, obs, is_root_node=False) -> float:
         """
         Q, V is value for this Player(always white).
         P is value for the player of next_player (black or white)
@@ -127,7 +128,7 @@ class C4Player:
 
         with self.node_lock[state]:
             if state not in self.tree:
-                leaf_p, leaf_v = self.expand_and_evaluate(env)
+                leaf_p, leaf_v = self.expand_and_evaluate(obs)
                 self.tree[state].p = leaf_p
                 return leaf_v # I'm returning everything from the POV of side to move
 
@@ -159,7 +160,7 @@ class C4Player:
 
         return leaf_v
 
-    def expand_and_evaluate(self, env) -> (np.ndarray, float):
+    def expand_and_evaluate(self, obs) -> (np.ndarray, float):
         """ expand new leaf, this is called only once per state
         this is called with state locked
         insert P(a|s), return leaf_v
@@ -167,9 +168,7 @@ class C4Player:
         This gets a prediction for the policy and value of the state within the given env
         :return (float, float): the policy and value predictions for this state
         """
-        state_planes = historical_planes(env)
-
-        leaf_p, leaf_v = self.predict(state_planes)
+        leaf_p, leaf_v = self.predict(obs)
 
         return leaf_p, leaf_v
 

@@ -18,7 +18,7 @@ class LoggingEnv(gym.Wrapper):
 
     def info(self, info: Dict[str, np.ndarray], reward: int) -> Dict[str, np.ndarray]:
         info = copy.copy(info)
-        step = self.env.unwrapped.turn
+        step = self.env.unwrapped.game_state.turn
         logs = dict(step=step)
 
         self.sum_reward[0] += reward

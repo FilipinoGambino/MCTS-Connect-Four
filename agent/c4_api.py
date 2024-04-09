@@ -63,7 +63,7 @@ class C4API:
                     data.append(pipe.recv())
                     result_pipes.append(pipe)
 
-            data = np.asarray(data, dtype=np.float32)
+            # data = np.asarray(data, dtype=np.float32)
             output = self.agent_model.model.select_best_actions(data)
 
             policy_ary = output['policy_logits']

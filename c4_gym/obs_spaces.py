@@ -168,8 +168,10 @@ class _HistoricalObsWrapper(gym.Wrapper):
         return self.observation(observation), reward, done, info
 
     def observation(self, observation: Game) -> Dict[str, np.ndarray]:
-        self.historical_obs.appendleft(observation.board)
+        board = np.expand_dims(observation.board, axis=0)
+        self.historical_obs.appendleft(board)
         # TODO: fix the dimensional issue with stacking
+
         p1_obs = np.vstack(
             [state for idx, state in enumerate(self.historical_obs, start=observation.turn) if idx % 2 == 0],
             dtype=np.int64

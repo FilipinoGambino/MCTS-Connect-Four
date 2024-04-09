@@ -128,16 +128,16 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
     env = DictEnv(env)
 
     # env = C4Env(flags)
-    env.reset()
+    obs, rewards, done, info = env.reset()
 
     p1 = C4Player(flags, pipes=pipes)
     p2 = C4Player(flags, pipes=pipes)
 
-    while not env.done.any():
+    while not env.done:
         if env.game_state.is_p1_turn:
-            action = p1.action(env)
+            action = p1.action(env, obs)
         else:
-            action = p2.action(env)
+            action = p2.action(env, obs)
         obs, rewards, done, info = env.step(action) # noqa
 
     p1_reward, p2_reward = rewards
