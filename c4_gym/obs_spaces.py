@@ -156,7 +156,7 @@ class _HistoricalObsWrapper(gym.Wrapper):
 
     def reset_obs(self):
         for _ in range(self.historical_obs.maxlen):
-            self.historical_obs.appendleft(np.zeros(shape=(1,*BOARD_SIZE), dtype=np.int64))
+            self.historical_obs.appendleft(np.zeros(shape=(1, 1, *BOARD_SIZE), dtype=np.int64))
 
     def reset(self, **kwargs):
         observation, reward, done, info = self.env.reset(**kwargs) # noqa
@@ -167,43 +167,40 @@ class _HistoricalObsWrapper(gym.Wrapper):
         observation, reward, done, info = self.env.step(action) # noqa
         return self.observation(observation), reward, done, info
 
-    def observation(self, observation: Game) -> Dict[str, np.ndarray]:
-        board = np.expand_dims(observation.board, axis=0)
+    def observation(self, game: Game) -> Dict[str, np.ndarray]:
+        board = np.reshape(game.board, newshape=(1, 1, *game.board_dims))
         self.historical_obs.appendleft(board)
-        # TODO: fix the dimensional issue with stacking
 
-        p1_obs = np.vstack(
-            [state for idx, state in enumerate(self.historical_obs, start=observation.turn) if idx % 2 == 0],
-            dtype=np.int64
+        p1_obs = np.stack(
+            [state for idx, state in enumerate(self.historical_obs, start=game.turn) if idx % 2 == 0],
+            dtype=np.int64,
+            axis=1
         )
-        p2_obs = np.vstack(
-            [state for idx, state in enumerate(self.historical_obs, start=observation.turn) if idx % 2 == 1],
-            dtype=np.int64
+        p2_obs = np.stack(
+            [state for idx, state in enumerate(self.historical_obs, start=game.turn) if idx % 2 == 1],
+            dtype=np.int64,
+            axis=1
         )
 
-        p1_obs = np.where(p1_obs == observation.p1_mark, p1_obs, 0)
-        p2_obs = np.where(p2_obs == observation.p2_mark, p2_obs, 0)
+        p1_obs = np.where(p1_obs == game.p1_mark, 1, 0)
+        p2_obs = np.where(p2_obs == game.p2_mark, 1, 0)
 
         p1_turn = np.full(
-            shape=(1, *observation.board_dims),
-            fill_value=observation.is_p1_turn,
-            dtype=bool
+            shape=(1, *game.board_dims),
+            fill_value=game.is_p1_turn,
+            dtype=np.int64
         )
-        norm_turn = np.full(
-            shape=(1, *observation.board_dims),
-            fill_value=observation.turn / observation.max_turns,
-            dtype=np.float32
-        )
+        norm_turn = np.array(game.turn / game.max_turns, dtype=np.float32).reshape([1,1])
 
         return {
-            "p1_turn-0": p1_obs[0],
-            "p1_turn-1": p1_obs[1],
-            "p1_turn-2": p1_obs[2],
-            "p1_turn-3": p1_obs[3],
-            "p2_turn-0": p2_obs[0],
-            "p2_turn-1": p2_obs[1],
-            "p2_turn-2": p2_obs[2],
-            "p2_turn-3": p2_obs[3],
+            "p1_turn-0": p1_obs[0,0],
+            "p1_turn-1": p1_obs[0,1],
+            "p1_turn-2": p1_obs[0,2],
+            "p1_turn-3": p1_obs[0,3],
+            "p2_turn-0": p2_obs[0,0],
+            "p2_turn-1": p2_obs[0,1],
+            "p2_turn-2": p2_obs[0,2],
+            "p2_turn-3": p2_obs[0,3],
             "p1_active": p1_turn,
             "turn": norm_turn,
         }

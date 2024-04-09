@@ -3,7 +3,7 @@ from typing import Optional
 
 from . import act_spaces, obs_spaces, reward_spaces
 # from .c4_env import C4Env
-from .wrappers import DictEnv, LoggingEnv, PytorchEnv, RewardSpaceWrapper, VecEnv
+from .wrappers import DictEnv, LoggingEnv, PytorchEnv, RewardSpaceWrapper, VecEnv, VecOneEnv
 
 from . import act_spaces, obs_spaces, reward_spaces
 

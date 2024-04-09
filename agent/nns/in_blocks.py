@@ -7,7 +7,11 @@ import numpy as np
 
 from utility_constants import BOARD_SIZE
 import itertools
-import logging
+from logging import getLogger
+
+logger = getLogger(__name__)
+
+
 class DictInputLayer(nn.Module):
     @staticmethod
     def forward(
@@ -66,8 +70,8 @@ class ConvEmbeddingInputLayer(nn.Module):
 
         for key,op in self.keys_to_op.items():
             in_tensor = x[key]
+
             if op == "embedding":
-                # logging.info(f"{key}: {self.embeddings[key]} {in_tensor}")
                 out = self.embeddings[key](in_tensor)
                 emb_outs[key] = out.permute([0,3,1,2])
             elif op == "continuous":

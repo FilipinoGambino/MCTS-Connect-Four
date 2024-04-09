@@ -1,11 +1,15 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+import copy
+from logging import getLogger
 import numpy as np
 from threading import Lock
+import torch
 
 from c4_gym.c4_env import C4Env
 from utility_constants import BOARD_SIZE
 
+logger = getLogger(__name__)
 _, N_ACTIONS = BOARD_SIZE
 
 
@@ -61,23 +65,24 @@ class C4Player:
         """
         self.tree = defaultdict(VisitStats)
 
-    def action(self, env, obs, can_stop = True) -> str:
+    def action(self, env, env_output, can_stop = True) -> str:
         """
         Figures out the next best move
         within the specified environment and returns a string describing the action to take.
 
         :param ChessEnv env: environment in which to figure out the action
+        :param np.array env_output: observation planes
         :param boolean can_stop: whether we are allowed to take no action (return None)
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
         self.reset()
 
-        root_value, naked_value = self.search_moves(env, obs)
+        root_value, naked_value = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
         my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
 
-        self.moves.append([env.observation, list(policy)])
+        self.moves.append([env.game_state.board, list(policy)])
         return my_action
 
     def search_moves(self, env, obs) -> (float, float):
@@ -87,6 +92,7 @@ class C4Player:
          estimates from the AGZ MCTS algorithm so we can pick the best.
 
         :param ChessEnv env: env to search for moves within
+        :param np.ndarry obs: observation planes derived from the game state
         :return (float,float): the maximum value of all values predicted by each thread,
             and the first value that was predicted.
         """
@@ -96,8 +102,8 @@ class C4Player:
                 futures.append(
                     executor.submit(
                         self.search_my_move,
-                        env=env.copy(),
-                        obs=obs,
+                        env=copy.deepcopy(env),
+                        env_output=obs,
                         is_root_node=True
                     )
                 )
@@ -106,7 +112,7 @@ class C4Player:
 
         return np.max(vals), vals[0]
 
-    def search_my_move(self, env: C4Env, obs, is_root_node=False) -> float:
+    def search_my_move(self, env: C4Env, env_output, is_root_node=False) -> float:
         """
         Q, V is value for this Player(always white).
         P is value for the player of next_player (black or white)
@@ -115,12 +121,12 @@ class C4Player:
         best move that was found during the search.
 
         :param ChessEnv env: environment in which to search for the move
+        :param np.ndarry env_output: observation planes derived from the game state
         :param boolean is_root_node: whether this is the root node of the search.
-        :return float: value of the move. This is calculated by getting a prediction
-            from the value network.
+        :return float: value of the move. This is calculated by getting a prediction from the value network.
         """
-        if env.done:
-            if max(env.rewards) == 0:
+        if env_output['done']:
+            if torch.max(env_output['reward']) == 0:
                 return 0
             return -1
 
@@ -128,7 +134,7 @@ class C4Player:
 
         with self.node_lock[state]:
             if state not in self.tree:
-                leaf_p, leaf_v = self.expand_and_evaluate(obs)
+                leaf_p, leaf_v = self.expand_and_evaluate(env_output)
                 self.tree[state].p = leaf_p
                 return leaf_v # I'm returning everything from the POV of side to move
 
@@ -145,8 +151,9 @@ class C4Player:
             my_stats.w += -virtual_loss
             my_stats.q = my_stats.w / my_stats.n
 
-        env.step(action_t)
-        leaf_v = self.search_my_move(env)  # next move from enemy POV
+        env_output = env.step(action_t) # noqa
+
+        leaf_v = self.search_my_move(env, env_output)  # next move from enemy POV
         leaf_v = -leaf_v
 
         # BACKUP STEP
@@ -204,7 +211,7 @@ class C4Player:
 
         if my_visitstats.p is not None:  # push p to edges
             tot_p = 1e-8
-            for mov,invalid in enumerate(env.available_actions_mask):
+            for mov,invalid in enumerate(env.available_actions_mask[0]):
                 if not invalid:
                     mov_p = my_visitstats.p[mov]
                     my_visitstats.a[mov].p = mov_p
@@ -297,24 +304,3 @@ class C4Player:
         """
         for move in self.moves:  # add this game winner result to all past moves.
             move += [z]
-
-def historical_planes(env):
-    history = env.game_state.history
-    p1_obs = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 0], dtype=np.int64)
-    p2_obs = np.vstack([game_state for idx,game_state in enumerate(history) if idx % 2 == 1], dtype=np.int64)
-
-    p1_obs = np.where(p1_obs == env.game_state.p1_mark, p1_obs, 0)
-    p2_obs = np.where(p2_obs == env.game_state.p2_mark, p2_obs, 0)
-
-    p1_turn = np.full(
-        shape=(1, *env.game_state.board_dims),
-        fill_value=env.game_state.is_p1_turn,
-        dtype=bool
-    )
-    norm_turn = np.full(
-        shape=(1, *env.game_state.board_dims),
-        fill_value=env.game_state.turn / env.game_state.max_turns,
-        dtype=np.float32
-    )
-
-    return np.vstack([p1_obs, p2_obs, p1_turn, norm_turn])

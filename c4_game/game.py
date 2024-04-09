@@ -19,7 +19,7 @@ class Game:
         self.board[row, action] = self.current_player_mark
 
     def get_lowest_available_row(self, column):
-        for row in range(self.rows[0]-1, -1, -1):
+        for row in range(self.rows-1, -1, -1):
             if self.board[row,column] == 0:
                 return row
         raise StopIteration(f"Column {column} is full. {self.board}")

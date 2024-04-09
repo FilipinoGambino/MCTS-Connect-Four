@@ -6,8 +6,9 @@ value network.
 from multiprocessing import connection, Pipe
 from threading import Thread
 import torch
+from logging import getLogger
 
-import numpy as np
+logger = getLogger(__name__)
 
 
 class C4API:
@@ -23,7 +24,7 @@ class C4API:
     def __init__(self, agent_model):  # C4Model
         """
 
-        :param ChessModel agent_model: trained model to use to make predictions
+        :param C4Model agent_model: trained model to use to make predictions
         """
         self.agent_model = agent_model
         self.pipes = []
@@ -63,8 +64,9 @@ class C4API:
                     data.append(pipe.recv())
                     result_pipes.append(pipe)
 
-            # data = np.asarray(data, dtype=np.float32)
-            output = self.agent_model.model.select_best_actions(data)
+            obs = data.pop(0)
+
+            output = self.agent_model.model.sample_actions(obs)
 
             policy_ary = output['policy_logits']
             value_ary = output['baseline']

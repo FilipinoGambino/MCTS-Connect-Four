@@ -1,5 +1,4 @@
 from copy import deepcopy
-import enum
 from typing import Any, Dict, Optional
 import gym
 import numpy as np
@@ -11,8 +10,6 @@ from c4_game.game import Game
 from utility_constants import BOARD_SIZE, IN_A_ROW, PLAYER_MARKS, VICTORY_KERNELS
 
 ROWS, COLUMNS = BOARD_SIZE
-
-Winner = enum.Enum("Winner", "black white draw")
 
 class C4Env(gym.Env):
     metadata = {'render_modes': ['human']}
@@ -44,9 +41,6 @@ class C4Env(gym.Env):
         self.rewards = [0, 0]
         self.done = False
 
-    def copy(self):
-        return deepcopy(self)
-
     def reset(self, **kwargs):
         self.game_state = Game(self.configuration)
         self.rewards = [0, 0]
@@ -75,7 +69,8 @@ class C4Env(gym.Env):
     def info(self):
         return dict(
             available_actions_mask=self.available_actions_mask,
-            rewards=self.rewards
+            rewards=self.rewards,
+            turn=self.game_state.turn
         )
 
     def get_obs_reward_done_info(self):
@@ -95,7 +90,7 @@ class C4Env(gym.Env):
 
     @property
     def available_actions_mask(self):
-        return np.array(self.game_state.board.all(axis=0), dtype=bool)
+        return np.array(self.game_state.board.all(axis=0), dtype=bool).reshape((1, -1))
 
     @property
     def winner(self):

@@ -4,6 +4,7 @@ import math
 import numpy as np
 import torch
 from typing import Dict, List, Union, Tuple
+from random import randint
 
 from .reward_spaces import BaseRewardSpace
 
@@ -14,19 +15,16 @@ class LoggingEnv(gym.Wrapper):
         self.reward_space = reward_space
         self.vals_peak = {}
         self.reward_sum = [0., 0.]
-        self.sum_reward = [0.]
 
-    def info(self, info: Dict[str, np.ndarray], reward: int) -> Dict[str, np.ndarray]:
+    def info(self, info: Dict[str, np.ndarray], rewards: int) -> Dict[str, np.ndarray]:
         info = copy.copy(info)
-        step = self.env.unwrapped.game_state.turn
+        step = info["turn"]
         logs = dict(step=step)
 
-        self.sum_reward[0] += reward
-        logs['all_rewards'] = self.sum_reward
-        self.reward_sum[(step-1) % 2] += reward
+        self.reward_sum = [sum_r+r for sum_r,r in zip(self.reward_sum, rewards)]
+        logs["sum_rewards"] = self.reward_sum
         logs["p1_rewards"] = [self.reward_sum[0]]
         logs["p2_rewards"] = [self.reward_sum[1]]
-
 
         info.update({f"LOGGING_{key}": np.array(val, dtype=np.float32) for key, val in logs.items()})
         # Add any additional info from the reward space
@@ -35,7 +33,6 @@ class LoggingEnv(gym.Wrapper):
 
     def reset(self, **kwargs):
         obs, reward, done, info = super(LoggingEnv, self).reset(**kwargs)
-        self.sum_reward = [0.]
         self.reward_sum = [0., 0.]
         return obs, [reward], done, self.info(info, reward)
 
@@ -50,7 +47,7 @@ class RewardSpaceWrapper(gym.Wrapper):
         self.reward_space = reward_space
 
     def _get_rewards_and_done(self) -> Tuple[Tuple[float, float], bool]:
-        rewards, done = self.reward_space.compute_rewards(self.unwrapped.game_state)
+        rewards, done = self.reward_space.compute_rewards(self.unwrapped)
         return rewards, done
 
     def reset(self, **kwargs):
@@ -60,6 +57,55 @@ class RewardSpaceWrapper(gym.Wrapper):
     def step(self, action):
         obs, _, _, info = super(RewardSpaceWrapper, self).step(action)
         return obs, *self._get_rewards_and_done(), info
+
+class VecOneEnv(gym.Env):
+    def __init__(self, env: gym.Env):
+        self.env = env
+        self.last_out = ()
+
+    @staticmethod
+    def _vectorize_env_outs(env_outs: Tuple) -> Tuple:
+        obs, reward, done, info = env_outs
+        obs = obs
+        reward = np.array(reward)
+        done = np.array(done)
+        info = info
+        return obs, reward, done, info
+
+    def reset(self, force: bool = True, **kwargs):
+        if force:
+            # noinspection PyArgumentList
+            self.last_out = self.env.reset(**kwargs)
+            return VecOneEnv._vectorize_env_outs(self.last_out)
+
+        if self.last_out['done']:
+            # noinspection PyArgumentList
+            self.last_out = self.env.reset()
+        return VecOneEnv._vectorize_env_outs(self.last_out)
+
+    def step(self, action: int):
+        self.last_out = self.env.step(action)
+        return VecOneEnv._vectorize_env_outs(self.last_out)
+
+    def render(self, mode: str = "human", **kwargs):
+        # noinspection PyArgumentList
+        return self.env.render(**kwargs)
+
+    @property
+    def game_state(self):
+        return self.env.game_state # noqa
+
+    @property
+    def string_board(self):
+        return self.env.string_board # noqa
+
+    @property
+    def available_actions_mask(self):
+        return self.env.available_actions_mask # noqa
+
+    @property
+    def winner(self):
+        return self.env.winner # noqa
 
 class VecEnv(gym.Env):
     def __init__(self, envs: List[gym.Env]):
@@ -111,13 +157,20 @@ class VecEnv(gym.Env):
         return [env.unwrapped for env in self.envs]
 
     @property
+    def copy(self) -> List[Dict]:
+        return [env.copy for env in self.envs]
+
+    @property
+    def string_board(self) -> List[Dict]:
+        return [env.string_board for env in self.envs]
+
+    @property
     def action_space(self) -> List[gym.spaces.Dict]:
         return [env.action_space for env in self.envs]
 
     @property
     def action_space_n(self):
-        action_spaces = self.action_space
-        return [act.n for act in action_spaces]
+        return [act.n for act in self.action_space]
 
     @property
     def observation_space(self) -> List[gym.spaces.Dict]:
@@ -136,8 +189,8 @@ class PytorchEnv(gym.Wrapper):
     def reset(self, **kwargs) -> Tuple[Dict, List, bool, List]:
         return tuple([self._to_tensor(out) for out in super(PytorchEnv, self).reset(**kwargs)])
 
-    def step(self, actions: List[torch.Tensor]):
-        action = [int(act) for act in actions]
+    def step(self, action: List[torch.Tensor]):
+        action = int(action)
         return tuple([self._to_tensor(out) for out in super(PytorchEnv, self).step(action)])
 
     def _to_tensor(self, x: Union[Dict, np.ndarray]) -> Dict[str, Union[Dict, torch.Tensor]]:

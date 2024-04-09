@@ -1,6 +1,7 @@
-from datetime import datetime
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
+import copy
+from datetime import datetime
 from logging import getLogger
 from multiprocessing import Manager
 import os
@@ -8,7 +9,7 @@ from threading import Thread
 from time import time
 from types import SimpleNamespace
 
-from c4_gym import create_flexible_obs_space, create_reward_space, DictEnv, LoggingEnv, PytorchEnv, RewardSpaceWrapper, VecEnv
+from c4_gym import create_flexible_obs_space, create_reward_space, DictEnv, LoggingEnv, PytorchEnv, RewardSpaceWrapper, VecOneEnv
 from c4_gym.c4_env import C4Env
 from agent.c4_model import C4Model
 from agent.c4_player import C4Player
@@ -59,10 +60,8 @@ class SelfPlayWorker:
                 game_idx += 1
                 start_time = time()
                 env, data = futures.popleft().result()
-                print(f"game {game_idx:3} time={time() - start_time:5.1f}s "
-                    f"winner={env.winner:3}")
+                print(f"game {game_idx:3} time={time() - start_time:5.1f}s winner={env.winner:3}")
 
-                # pretty_print(env, ("current_model", "current_model"))
                 self.buffer += data
                 if (game_idx % self.flags.nb_game_in_file) == 0:
                     self.flush_buffer()
@@ -123,24 +122,23 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
     env = RewardSpaceWrapper(env, reward_space)
     env = env.obs_space.wrap_env(env)
     env = LoggingEnv(env, reward_space)
-    # env = VecEnv([env])
+    env = VecOneEnv(env)
     env = PytorchEnv(env, flags.device)
     env = DictEnv(env)
 
-    # env = C4Env(flags)
-    obs, rewards, done, info = env.reset()
+    output = env.reset()
 
     p1 = C4Player(flags, pipes=pipes)
     p2 = C4Player(flags, pipes=pipes)
 
-    while not env.done:
+    while not output['done']:
         if env.game_state.is_p1_turn:
-            action = p1.action(env, obs)
+            action = p1.action(env, output)
         else:
-            action = p2.action(env, obs)
-        obs, rewards, done, info = env.step(action) # noqa
+            action = p2.action(env, output)
+        output = env.step(action)
 
-    p1_reward, p2_reward = rewards
+    p1_reward, p2_reward = output['reward'].tolist()[0]
 
     p1.finish_game(p1_reward)
     p2.finish_game(p2_reward)

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import gym
 import logging
 import math
 import numpy as np
@@ -69,38 +70,20 @@ class GameResultReward(FullGameRewardSpace):
     def __init__(self, **kwargs):
         super(GameResultReward, self).__init__(**kwargs)
 
-    def compute_rewards(self, game_state: Game) -> Tuple[float, bool]:
+    def compute_rewards(self, env: gym.Env) -> Tuple[float, bool]:
         '''
-        The inactive player (p1) is the one that just completed an action so we need their reward
-        :param game_state:
+        The
+        :param gym.Env env: An unwrapped C4Env instance
         :return: reward for the completed action, whether or not the game state is done
         '''
-        if game_state.turn > IN_A_ROW * 2:
-            p1 = game_state.inactive_player
-            p2 = game_state.active_player
-            for idx,kernel in enumerate(VICTORY_KERNELS.values()):
-                convolutions = convolve2d(game_state.board == p1.mark, kernel, mode="valid")
-                if np.max(convolutions) == IN_A_ROW:
-                    reward = 1.
-                    done = True
-                    return reward, done
-
-            # Check every next move to see if p2 can win
-            valid_columns = [col for col in range(BOARD_SIZE[1]) if not game_state.board[:, col].all()]
-            for col in valid_columns:
-                board = game_state.board.copy()
-                row = game_state.get_lowest_available_row(col)
-                board[row,col] = p2.mark
-                for kernel in VICTORY_KERNELS.values():
-                    convolutions = convolve2d(board == p2.mark, kernel, mode="valid")
-                    if np.max(convolutions) == IN_A_ROW:
-                        reward = -1.
-                        done = False
-                        return reward, done
-
-        reward = 0
+        rewards = [0,0]
         done = False
-        return reward, done
+        winner_mark = env.winner
+        if winner_mark:
+            rewards = [-1,-1]
+            rewards[winner_mark - 1] = 1
+            done = True
+        return rewards, done
 
 
 class DiagonalEmphasisReward(BaseRewardSpace):

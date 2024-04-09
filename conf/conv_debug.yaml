@@ -30,12 +30,17 @@ device: cpu
 unroll_length: 16
 batch_size: 16
 
+virtual_loss: 3
+noise_eps: .25
+c_puct: 1.5
+dirichlet_alpha: .3
+tau_decay_rate: .99
 n_blocks: 8
 hidden_dim: 128
 embedding_dim: 32
 kernel_size: 3
 normalize: false
-rescale_value_input: true
+rescale_value_input: false
 rescale_se_input: false
 
 obs_space_kwargs: {}
@@ -55,9 +60,9 @@ actor_device: cpu
 learner_device: cpu
 
 # Play
-search_threads: 4
-max_processes: 4
-simulation_num_per_move: 10
+search_threads: 1
+max_processes: 1
+simulation_num_per_move: 7
 
 # Play Data
 nb_game_in_file: 100
