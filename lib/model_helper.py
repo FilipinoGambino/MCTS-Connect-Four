@@ -1,8 +1,10 @@
 """
 Helper methods for working with trained models.
 """
-
 from logging import getLogger
+import os
+from pathlib import Path
+import torch
 
 logger = getLogger(__name__)
 
@@ -12,31 +14,18 @@ def load_best_model_weight(model):
     :param chess_zero.agent.model.ChessModel model:
     :return:
     """
-    return model.load(model.flags.resource.model_best_config_path, model.flags.resource.model_best_weight_path)
+    file_path = os.path.join(os.getcwd(), model.flags.model_dir, model.flags.checkpoint_file)
+    return torch.load(file_path, map_location=torch.device("cpu"))
 
 
-def save_as_best_model(model):
+def save_as_best_model(model, idx):
     """
-
     :param chess_zero.agent.model.ChessModel model:
+    :param int idx:
     :return:
     """
-    return model.save(model.flags.resource.model_best_config_path, model.flags.resource.model_best_weight_path)
-
-
-def reload_best_model_weight_if_changed(model):
-    """
-
-    :param chess_zero.agent.model.ChessModel model:
-    :return:
-    """
-    if model.flags.model.distributed:
-        return load_best_model_weight(model)
-    else:
-        logger.debug("start reload the best model if changed")
-        digest = model.fetch_digest(model.flags.resource.model_best_weight_path)
-        if digest != model.digest:
-            return load_best_model_weight(model)
-
-        logger.debug("the best model is not changed")
-        return False
+    file_path = os.path.join(os.getcwd(), model.flags.model_dir, model.flags.best_model_weight_fname % idx)
+    torch.save(
+        obj={"model_state_dict": model.model.state_dict()},
+        f=file_path
+    )

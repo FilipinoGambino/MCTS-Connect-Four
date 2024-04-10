@@ -14,7 +14,7 @@ from c4_gym.c4_env import C4Env
 from agent.c4_model import C4Model
 from agent.c4_player import C4Player
 from lib.data_helper import get_game_data_filenames, write_game_data_to_file
-from lib.model_helper import load_best_model_weight, save_as_best_model, reload_best_model_weight_if_changed
+from lib.model_helper import load_best_model_weight, save_as_best_model
 
 logger = getLogger(__name__)
 
@@ -42,7 +42,9 @@ class SelfPlayWorker:
         self.flags = config
         self.current_model = self.load_model()
         self.m = Manager()
-        self.cur_pipes = self.m.list([self.current_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)])
+        self.cur_pipes = self.m.list(
+            [self.current_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
+        )
         self.buffer = []
 
     def start(self):
@@ -60,12 +62,13 @@ class SelfPlayWorker:
                 game_idx += 1
                 start_time = time()
                 env, data = futures.popleft().result()
-                print(f"game {game_idx:3} time={time() - start_time:5.1f}s winner={env.winner:3}")
+                print(f"game {game_idx:3} duration={time() - start_time:4.1f}s "
+                      f"winner={env.winner:2}\n{env.game_state.board}\n")
 
                 self.buffer += data
                 if (game_idx % self.flags.nb_game_in_file) == 0:
                     self.flush_buffer()
-                    reload_best_model_weight_if_changed(self.current_model)
+                    save_as_best_model(self.current_model, idx=game_idx)
                 futures.append(executor.submit(self_play_buffer, self.flags, cur=self.cur_pipes)) # Keep it going
 
     def load_model(self):
@@ -83,9 +86,8 @@ class SelfPlayWorker:
         """
         Flush the play data buffer and write the data to the appropriate location
         """
-        rc = self.flags.resource
         game_id = datetime.now().strftime("%Y%m%d-%H%M%S.%f")
-        path = os.path.join(rc.play_data_dir, rc.play_data_filename_tmpl % game_id)
+        path = os.path.join(os.getcwd(), self.flags.play_data_dir, self.flags.play_data_filename_tmpl % game_id)
         logger.info(f"save play data to {path}")
         thread = Thread(target=write_game_data_to_file, args=(path, self.buffer))
         thread.start()

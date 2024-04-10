@@ -76,13 +76,13 @@ class C4Player:
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
-        self.reset()
+        # self.reset()
 
         root_value, naked_value = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
         my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
 
-        self.moves.append([env.game_state.board, list(policy)])
+        self.moves.append([env_output['obs'], list(policy)])
         return my_action
 
     def search_moves(self, env, obs) -> (float, float):
@@ -125,7 +125,7 @@ class C4Player:
         :param boolean is_root_node: whether this is the root node of the search.
         :return float: value of the move. This is calculated by getting a prediction from the value network.
         """
-        if env_output['done']:
+        if env.done:
             if torch.max(env_output['reward']) == 0:
                 return 0
             return -1
@@ -152,6 +152,11 @@ class C4Player:
             my_stats.q = my_stats.w / my_stats.n
 
         env_output = env.step(action_t) # noqa
+
+        if env.done:
+            if torch.max(env_output['reward']) == 0:
+                return 0
+            return -1
 
         leaf_v = self.search_my_move(env, env_output)  # next move from enemy POV
         leaf_v = -leaf_v

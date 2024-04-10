@@ -3,7 +3,7 @@ Various helper functions for working with the data used in this app
 """
 
 import os
-import json
+import pickle
 from glob import glob
 from logging import getLogger
 
@@ -37,14 +37,14 @@ def get_next_generation_model_dirs(flags):
 
 def write_game_data_to_file(path, data):
     try:
-        with open(path, "wt") as f:
-            json.dump(data, f)
+        with open(path, "wb") as f:
+            pickle.dump(obj=data, file=f)
     except Exception as e:
         print(e)
 
 def read_game_data_from_file(path):
     try:
-        with open(path, "rt") as f:
-            return json.load(f)
+        with open(path, "rb") as f:
+            return pickle.load(f)
     except Exception as e:
         print(e)
