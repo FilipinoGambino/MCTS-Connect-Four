@@ -92,6 +92,10 @@ class VecOneEnv(gym.Env):
         return self.env.render(**kwargs)
 
     @property
+    def done(self):
+        return self.env.done
+
+    @property
     def game_state(self):
         return self.env.game_state # noqa
 
