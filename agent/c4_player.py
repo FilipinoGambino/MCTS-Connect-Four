@@ -135,7 +135,8 @@ class C4Player:
         with self.node_lock[state]:
             if state not in self.tree:
                 leaf_p, leaf_v = self.expand_and_evaluate(env_output)
-                self.tree[state].p = leaf_p
+                for a in range(N_ACTIONS):
+                    self.tree[state].a[a].p = leaf_p[a]
                 return leaf_v # I'm returning everything from the POV of side to move
 
             # SELECT STEP
@@ -152,11 +153,6 @@ class C4Player:
             my_stats.q = my_stats.w / my_stats.n
 
         env_output = env.step(action_t) # noqa
-
-        if env.done:
-            if torch.max(env_output['reward']) == 0:
-                return 0
-            return -1
 
         leaf_v = self.search_my_move(env, env_output)  # next move from enemy POV
         leaf_v = -leaf_v
@@ -213,17 +209,6 @@ class C4Player:
         state = env.string_board
 
         my_visitstats = self.tree[state]
-
-        if my_visitstats.p is not None:  # push p to edges
-            tot_p = 1e-8
-            for mov,invalid in enumerate(env.available_actions_mask[0]):
-                if not invalid:
-                    mov_p = my_visitstats.p[mov]
-                    my_visitstats.a[mov].p = mov_p
-                    tot_p += mov_p
-            for a_s in my_visitstats.a.values():
-                a_s.p /= tot_p
-            my_visitstats.p = None
 
         xx_ = np.sqrt(my_visitstats.sum_n + 1)  # sqrt of sum(N(s, b); for all b)
 

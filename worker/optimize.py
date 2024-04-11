@@ -58,17 +58,17 @@ class OptimizeWorker:
         Does the actual training of the model, running it on game data endlessly.
         """
         self.compile_model()
-        self.filenames = deque(get_game_data_filenames(self.config.resource))
+        self.filenames = deque(get_game_data_filenames(self.flags.resource))
         shuffle(self.filenames)
-        total_steps = self.config.trainer.start_total_steps
+        total_steps = self.flags.trainer.start_total_steps
 
         while True:
             self.fill_queue()
-            steps = self.train_epoch(self.config.trainer.epoch_to_checkpoint)
+            steps = self.train_epoch(self.flags.trainer.epoch_to_checkpoint)
             total_steps += steps
             self.save_current_model()
             a, b, c = self.dataset
-            while len(a) > self.config.trainer.dataset_size/2:
+            while len(a) > self.flags.trainer.dataset_size/2:
                 a.popleft()
                 b.popleft()
                 c.popleft()
@@ -79,7 +79,7 @@ class OptimizeWorker:
         :param int epochs: number of epochs
         :return: number of datapoints that were trained on in total
         """
-        tc = self.config.trainer
+        tc = self.flags.trainer
         state_ary, policy_ary, value_ary = self.collect_all_loaded_data()
         tensorboard_cb = TensorBoard(log_dir="./logs", batch_size=tc.batch_size, histogram_freq=1)
         self.model.model.fit(state_ary, [policy_ary, value_ary],
@@ -97,18 +97,17 @@ class OptimizeWorker:
         """
         opt = Adam()
         losses = ['categorical_crossentropy', 'mean_squared_error'] # avoid overfit for supervised
-        self.model.model.compile(optimizer=opt, loss=losses, loss_weights=self.config.trainer.loss_weights)
+        self.model.model.compile(optimizer=opt, loss=losses, loss_weights=self.flags.trainer.loss_weights)
 
     def save_current_model(self):
         """
         Saves the current model as the next generation model to the appropriate directory
         """
-        rc = self.config.resource
         model_id = datetime.now().strftime("%Y%m%d-%H%M%S.%f")
-        model_dir = os.path.join(rc.next_generation_model_dir, rc.next_generation_model_dirname_tmpl % model_id)
+        model_dir = os.path.join(self.flags.next_gen_model_dir, self.flags.next_gen_model_dirname_tmpl % model_id)
         os.makedirs(model_dir, exist_ok=True)
-        config_path = os.path.join(model_dir, rc.next_generation_model_config_filename)
-        weight_path = os.path.join(model_dir, rc.next_generation_model_weight_filename)
+        config_path = os.path.join(model_dir, self.flags.next_gen_model_config_filename)
+        weight_path = os.path.join(model_dir, self.flags.next_gen_model_weight_filename)
         self.model.save(config_path, weight_path)
 
     def fill_queue(self):
@@ -116,14 +115,14 @@ class OptimizeWorker:
         Fills the self.dataset queues with data from the training dataset.
         """
         futures = deque()
-        with ProcessPoolExecutor(max_workers=self.config.trainer.cleaning_processes) as executor:
-            for _ in range(self.config.trainer.cleaning_processes):
+        with ProcessPoolExecutor(max_workers=self.flags.trainer.cleaning_processes) as executor:
+            for _ in range(self.flags.trainer.cleaning_processes):
                 if len(self.filenames) == 0:
                     break
                 filename = self.filenames.popleft()
                 logger.debug(f"loading data from {filename}")
                 futures.append(executor.submit(load_data_from_file,filename))
-            while futures and len(self.dataset[0]) < self.config.trainer.dataset_size:
+            while futures and len(self.dataset[0]) < self.flags.trainer.dataset_size:
                 for x,y in zip(self.dataset,futures.popleft().result()):
                     x.extend(y)
                 if len(self.filenames) > 0:
@@ -149,8 +148,8 @@ class OptimizeWorker:
         Loads the next generation model from the appropriate directory. If not found, loads
         the best known model.
         """
-        model = ChessModel(self.config)
-        rc = self.config.resource
+        model = C4Model(self.flags)
+        rc = self.flags.resource
 
         dirs = get_next_generation_model_dirs(rc)
         if not dirs:

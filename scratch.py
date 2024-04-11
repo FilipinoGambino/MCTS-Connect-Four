@@ -49,4 +49,9 @@ class ActionStats:
 f = defaultdict(VisitStats)
 f['a'].p = 1
 f['b'].p = 2
-for
+for x in range(7):
+    y = f['a'].p[x]
+    f['a'].a[x].p = y
+
+for action, a_s in f['a'].a.items():
+    print(action, a_s)
