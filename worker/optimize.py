@@ -6,16 +6,18 @@ from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime
 from logging import getLogger
+from pathlib import Path
 from random import shuffle
+import torch
+from torch.optim import Adam
 
 import numpy as np
 
 from agent.c4_model import C4Model
 from lib.data_helper import get_game_data_filenames, read_game_data_from_file, get_next_generation_model_dirs
 from lib.model_helper import load_best_model_weight
+from torch_units.trainer import Trainer
 
-from keras.optimizers import Adam
-from keras.callbacks import TensorBoard
 logger = getLogger(__name__)
 
 
@@ -42,24 +44,23 @@ class OptimizeWorker:
     """
     def __init__(self, flags):
         self.flags = flags
-        self.model = None  # type: C4Model
+        self.fit_unit = self.load_torch_training_unit()
         self.dataset = deque(),deque(),deque()
         self.executor = ProcessPoolExecutor(max_workers=flags.trainer.cleaning_processes)
+        self.fnames = deque()
 
     def start(self):
         """
         Load the next generation model from disk and start doing the training endlessly.
         """
-        self.model = self.load_model()
         self.training()
 
     def training(self):
         """
         Does the actual training of the model, running it on game data endlessly.
         """
-        self.compile_model()
-        self.filenames = deque(get_game_data_filenames(self.flags.resource))
-        shuffle(self.filenames)
+        self.fnames.extend(get_game_data_filenames(self.flags.resource))
+        shuffle(self.fnames)
         total_steps = self.flags.trainer.start_total_steps
 
         while True:
@@ -79,25 +80,22 @@ class OptimizeWorker:
         :param int epochs: number of epochs
         :return: number of datapoints that were trained on in total
         """
-        tc = self.flags.trainer
         state_ary, policy_ary, value_ary = self.collect_all_loaded_data()
-        tensorboard_cb = TensorBoard(log_dir="./logs", batch_size=tc.batch_size, histogram_freq=1)
         self.model.model.fit(state_ary, [policy_ary, value_ary],
-                             batch_size=tc.batch_size,
+                             batch_size=self.flags.batch_size,
                              epochs=epochs,
                              shuffle=True,
-                             validation_split=0.02,
-                             callbacks=[tensorboard_cb])
-        steps = (state_ary.shape[0] // tc.batch_size) * epochs
+                             validation_split=0.02)
+        steps = (state_ary.shape[0] // self.flags.batch_size) * epochs
         return steps
 
-    def compile_model(self):
-        """
-        Compiles the model to use optimizer and loss function tuned for supervised learning
-        """
-        opt = Adam()
-        losses = ['categorical_crossentropy', 'mean_squared_error'] # avoid overfit for supervised
-        self.model.model.compile(optimizer=opt, loss=losses, loss_weights=self.flags.trainer.loss_weights)
+    def load_best_model(self, model, optimizer):
+        checkpoint_state = torch.load(
+            Path(self.flags.load_dir) / self.flags.checkpoint_file, map_location=torch.device("cpu")
+        )
+
+        model.load_state_dict(checkpoint_state["model_state_dict"])
+        optimizer.load_state_dict(checkpoint_state["optimizer_state_dict"])
 
     def save_current_model(self):
         """
@@ -117,16 +115,16 @@ class OptimizeWorker:
         futures = deque()
         with ProcessPoolExecutor(max_workers=self.flags.trainer.cleaning_processes) as executor:
             for _ in range(self.flags.trainer.cleaning_processes):
-                if len(self.filenames) == 0:
+                if len(self.fnames) == 0:
                     break
-                filename = self.filenames.popleft()
+                filename = self.fnames.popleft()
                 logger.debug(f"loading data from {filename}")
                 futures.append(executor.submit(load_data_from_file,filename))
             while futures and len(self.dataset[0]) < self.flags.trainer.dataset_size:
                 for x,y in zip(self.dataset,futures.popleft().result()):
                     x.extend(y)
-                if len(self.filenames) > 0:
-                    filename = self.filenames.popleft()
+                if len(self.fnames) > 0:
+                    filename = self.fnames.popleft()
                     logger.debug(f"loading data from {filename}")
                     futures.append(executor.submit(load_data_from_file,filename))
 
@@ -136,33 +134,35 @@ class OptimizeWorker:
         :return: a tuple containing the data in self.dataset, split into
         (state, policy, and value).
         """
-        state_ary,policy_ary,value_ary=self.dataset
+        state_ary, policy_ary, value_ary = self.dataset
 
         state_ary1 = np.asarray(state_ary, dtype=np.float32)
         policy_ary1 = np.asarray(policy_ary, dtype=np.float32)
         value_ary1 = np.asarray(value_ary, dtype=np.float32)
         return state_ary1, policy_ary1, value_ary1
 
-    def load_model(self):
+    def load_torch_training_unit(self):
         """
         Loads the next generation model from the appropriate directory. If not found, loads
         the best known model.
         """
         model = C4Model(self.flags)
-        rc = self.flags.resource
+        optimizer = Adam(model.model.parameters())
 
-        dirs = get_next_generation_model_dirs(rc)
-        if not dirs:
-            logger.debug("loading best model")
-            if not load_best_model_weight(model):
-                raise RuntimeError("Best model failed to load.")
-        else:
-            latest_dir = dirs[-1]
-            logger.debug("loading latest model")
-            config_path = os.path.join(latest_dir, rc.next_generation_model_config_filename)
-            weight_path = os.path.join(latest_dir, rc.next_generation_model_weight_filename)
-            model.load(config_path, weight_path)
-        return model
+        t = self.flags.unroll_length
+        b = self.flags.batch_size
+
+        def lr_lambda(epoch):
+            min_pct = self.flags.min_lr_mod
+            pct_complete = min(epoch * t * b, self.flags.total_steps) / self.flags.total_steps
+            scaled_pct_complete = pct_complete * (1. - min_pct)
+            return 1. - scaled_pct_complete
+
+        lr_scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
+
+        self.load_best_model(model, optimizer)
+
+        return Trainer(model.model, optimizer, lr_scheduler)
 
 
 def load_data_from_file(filename):

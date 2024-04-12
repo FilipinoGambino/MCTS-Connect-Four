@@ -40,7 +40,7 @@ class SelfPlayWorker:
     """
     def __init__(self, config: SimpleNamespace):
         self.flags = config
-        self.current_model = self.load_model()
+        self.current_model = C4Model(self.flags)
         self.m = Manager()
         self.cur_pipes = self.m.list(
             [self.current_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
@@ -68,19 +68,7 @@ class SelfPlayWorker:
                 self.buffer += data
                 if (game_idx % self.flags.nb_game_in_file) == 0:
                     self.flush_buffer()
-                    save_as_best_model(self.current_model, idx=game_idx)
-                futures.append(executor.submit(self_play_buffer, self.flags, cur=self.cur_pipes)) # Keep it going
-
-    def load_model(self):
-        """
-        Load the current best model
-        :return ChessModel: current best model
-        """
-        model = C4Model(self.flags, is_actor=True)
-        # if self.flags.opts.new or not load_best_model_weight(model):
-        #     model.build()
-        #     save_as_best_model(model)
-        return model
+                futures.append(executor.submit(self_play_buffer, self.flags, cur=self.cur_pipes))
 
     def flush_buffer(self):
         """
@@ -92,16 +80,6 @@ class SelfPlayWorker:
         thread = Thread(target=write_game_data_to_file, args=(path, self.buffer))
         thread.start()
         self.buffer = []
-
-    def remove_play_data(self):
-        """
-        Delete the play data from disk
-        """
-        files = get_game_data_filenames(self.flags.resource)
-        if len(files) < self.flags.play_data.max_file_num:
-            return
-        for i in range(len(files) - self.flags.play_data.max_file_num):
-            os.remove(files[i])
 
 
 def self_play_buffer(flags, cur) -> (C4Env, list):

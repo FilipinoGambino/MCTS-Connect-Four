@@ -21,12 +21,14 @@ class C4API:
         :ivar list(Connection): list of pipe connections to listen for states on and return predictions on.
     """
     # noinspection PyUnusedLocal
-    def __init__(self, agent_model):  # C4Model
+    def __init__(self, agent_model, learner_model):  # C4Model
         """
 
-        :param C4Model agent_model: trained model to use to make predictions
+        :param C4Model agent_model: model used to make predictions
+        :param C4Model learner_model: model trained on replays once buffer is filled
         """
         self.agent_model = agent_model
+        self.learner_model = learner_model
         self.pipes = []
 
     def start(self):
