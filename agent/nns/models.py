@@ -43,8 +43,11 @@ class DictActor(nn.Module):
         logits = self.actor(x)
         logits = logits.view(-1,self.n_actions)
 
-        aam = available_actions_mask
-        #
+        if available_actions_mask.shape[1] == 1 and len(available_actions_mask.shape) == 3:
+            aam = available_actions_mask.squeeze(1)
+        else:
+            aam = available_actions_mask
+
         assert logits.shape == aam.shape, f"logits: {logits.shape} | mask: {aam.shape}"
         logits = logits + torch.where(
             aam,

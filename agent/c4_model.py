@@ -49,7 +49,7 @@ class C4Model:
         model = model.share_memory()
 
         checkpoint_state = torch.load(
-            Path(self.flags.load_dir) / self.flags.checkpoint_file, map_location=torch.device("cpu")
+            Path(self.flags.model_dir) / Path(self.flags.best_model_weight_fname), map_location=torch.device("cpu")
         )
 
         model.load_state_dict(checkpoint_state["model_state_dict"])

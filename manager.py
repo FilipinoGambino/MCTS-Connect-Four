@@ -92,6 +92,8 @@ def start(flags):
 
     :return : the worker class that was started
     """
+    # import os
+    # os.environ['HYDRA_FULL_ERROR'] = '1'
 
     logger.info(f"Running: {flags.worker_type}")
 

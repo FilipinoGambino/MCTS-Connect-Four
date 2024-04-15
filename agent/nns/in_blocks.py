@@ -70,7 +70,8 @@ class ConvEmbeddingInputLayer(nn.Module):
 
         for key,op in self.keys_to_op.items():
             in_tensor = x[key]
-
+            if in_tensor.shape[1] == 1 and len(in_tensor.shape) == 4:
+                in_tensor = in_tensor.squeeze(1)
             if op == "embedding":
                 out = self.embeddings[key](in_tensor)
                 emb_outs[key] = out.permute([0,3,1,2])

@@ -82,7 +82,9 @@ class C4Player:
         policy = self.calc_policy(env)
         my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
 
-        self.moves.append([env_output['obs'], list(policy)])
+        self.moves.append([{"obs":env_output["obs"],
+                            "info":{"available_actions_mask":env_output["info"]["available_actions_mask"]}},
+                           policy])
         return my_action
 
     def search_moves(self, env, obs) -> (float, float):
