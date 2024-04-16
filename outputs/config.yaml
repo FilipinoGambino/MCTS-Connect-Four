@@ -46,7 +46,7 @@ nb_game_in_file: 100
 data_dir: data
 model_dir: models
 best_model_fname: model_best_config.pt
-best_model_weight_fname: game_800__model_best_weight.pt
+best_model_weight_fname: best_weights.pt
 next_gen_model_dir: next_generation
 next_gen_model_dirname_tmpl: model_%s
 next_gen_model_config_filename: model_config.json

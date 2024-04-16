@@ -6,7 +6,7 @@ import torch
 
 data = []
 
-for root, dirs, files in os.walk(".\\play_data", topdown=False):
+for root, dirs, files in os.walk(".\\play_data\\run2", topdown=False):
     for name in files:
         with open(os.path.join(root, name), "rb") as file:
             output = pickle.load(file)

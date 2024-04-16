@@ -38,7 +38,7 @@ class OptimizeWorker:
     """
     def __init__(self, flags):
         self.flags = flags
-        self.data = pd.read_pickle(open(".\\play_data\\gamestates_df.pkl", "rb"))
+        self.data = pd.read_pickle(open(".\\play_data\\run2\\gamestates_df.pkl", "rb"))
 
     def start(self):
         """
@@ -70,13 +70,17 @@ class OptimizeWorker:
         train_dl = DataLoader(train_ds, batch_size=64, shuffle=True)
 
         for epoch in range(max_epochs):
+            print(f"Epoch {epoch:>2}")
             for game_states, probs, values in train_dl:
                 outputs = model(game_states)
 
-                policy_probs = softmax(outputs['policy_logits'], dim=-1)
-                for prob in probs:
-                    print(prob.shape)
-                print(values.shape)
+                policy_probs = softmax(outputs['policy_logits'], dim=-1).float()
+                values = values.unsqueeze(-1).float()
+
+                assert policy_probs.shape == probs.shape, f"policy probs: {policy_probs.shape} | probs: {probs.shape}"
+                assert outputs['baseline'].shape == values.shape, f"policy values: {outputs['baseline'].shape} | values: {values.shape}"
+
+                optimizer.zero_grad()
 
                 prob_loss = cross_entropy(policy_probs, probs)
                 val_loss = mse_loss(outputs['baseline'], values)
@@ -85,5 +89,9 @@ class OptimizeWorker:
                 total_loss.backward()
 
                 optimizer.step()
-                optimizer.zero_grad()
             lr_scheduler.step()
+        print(f"Saving model")
+        torch.save(
+            {"model_state_dict": model.state_dict(),},
+            ".\\models\\best_model.pt"
+        )
