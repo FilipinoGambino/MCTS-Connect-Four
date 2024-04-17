@@ -155,13 +155,12 @@ class C4Player:
             # SELECT STEP
             action_t = self.select_action_q_and_u(env, is_root_node)
 
-            virtual_loss = self.flags.virtual_loss
 
             my_visit_stats = self.tree[state]
             my_stats = my_visit_stats.a[action_t]
 
-            my_visit_stats.sum_n += virtual_loss
-            my_stats.n += virtual_loss
+            my_visit_stats.sum_n += 1
+            my_stats.n += 1
             my_stats.w += -virtual_loss
             my_stats.q = my_stats.w / my_stats.n
         self.deboog(env)
@@ -173,9 +172,9 @@ class C4Player:
         # on returning search path
         # update: N, W, Q
         with self.node_lock[state]:
-            my_visit_stats.sum_n += -virtual_loss + 1
-            my_stats.n += -virtual_loss + 1
-            my_stats.w += virtual_loss + leaf_v
+            my_visit_stats.sum_n += 1
+            my_stats.n += 1
+            my_stats.w += leaf_v
             my_stats.q = my_stats.w / my_stats.n
 
         return leaf_v

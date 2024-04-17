@@ -25,7 +25,6 @@ seed: 42
 device: cpu
 batch_size: 1024
 
-virtual_loss: 1
 noise_eps: .25
 c_puct: 1.5
 dirichlet_alpha: .3
