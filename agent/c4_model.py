@@ -40,12 +40,17 @@ class C4Model:
         """
         if self.api is None:
             self.api = C4API(self)
+            pipes = [self.api.create_pipe() for _ in range(n_pipes)]
             self.api.start()
+            return pipes
         return [self.api.create_pipe() for _ in range(n_pipes)]
 
     def build_and_load_model(self, fname):
         model = create_model(self.flags, device=self.flags.device)
-        model.eval()
+        if self.flags.worker_type == 'optimize':
+            model.train()
+        else:
+            model.eval()
         model = model.share_memory()
 
         if fname:

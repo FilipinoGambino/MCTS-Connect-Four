@@ -20,12 +20,12 @@ model_arch: conv_model
 
 unexplored_action: 1e-5
 disable_wandb: true
-worker_type: evaluate # self_play, optimize, evaluate
+worker_type: self_play # self_play, optimize, evaluate
 seed: 42
 device: cpu
 batch_size: 1024
 
-virtual_loss: 3
+virtual_loss: 1
 noise_eps: .25
 c_puct: 1.5
 dirichlet_alpha: .3
@@ -57,14 +57,15 @@ learner_device: cpu
 
 # Play
 search_threads: 2
-max_processes: 2
+max_processes: 1
 simulation_num_per_move: 10
 
 # Play Data
 max_games_per_file: 100
+self_play_games: 800
 
 model_dir: "models"
-current_model_weight_fname: none
+current_model_weight_fname: null
 nextgen_model_weight_fname: "mcts_phase1.pt"
 best_model_weight_fname: "_best_model.pt"
 replace_rate: .55

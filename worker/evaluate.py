@@ -11,7 +11,6 @@ from agent.c4_model import C4Model
 from agent.c4_player import C4Player
 from c4_gym.c4_env import C4Env
 
-
 logger = getLogger(__name__)
 
 
@@ -36,52 +35,29 @@ class EvaluateWorker:
         """
         self.flags = flags
         self.current_model = self.load_current_model()
+        self.nextgen_model = self.load_next_generation_model()
         self.m = Manager()
         self.cur_pipes = self.m.list([self.current_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)])
+        self.ng_pipes = self.m.list([self.nextgen_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)])
 
     def start(self):
-        nextgen_model = self.load_next_generation_model()
         logger.info(f"Starting evaluation of the nextgen model")
-        if self.evaluate_model(nextgen_model):
+        if self.evaluate_model():
             logger.info(f"The nextgen model is better")
-            nextgen_model.save_as_best_model()
+            self.nextgen_model.save_as_best_model()
 
-    def evaluate_model(self, nextgen_model):
+    def evaluate_model(self):
         """
         Given a model, evaluates it by playing a bunch of games against the current model.
 
-        :param ChessModel nextgen_model: model to evaluate
         :return: true iff this model is better than the current_model
         """
 
-        def attempt(ex, fn, *iterables):
-            """Attempt to ``map(fn, *iterables)`` and return the args that caused a failure"""
-            future_args = [(ex.submit(fn, *args), args) for args in zip(*iterables)]
-
-            def failure_iterator():
-                future_args.reverse()
-                while future_args:
-                    future, args = future_args.pop()
-                    try:
-                        future.result()
-                    except BaseException as e:
-                        del future
-                        yield args, e
-
-            return failure_iterator()
-
-        ng_pipes = self.m.list([nextgen_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)])
-
-        futures = []
         with ProcessPoolExecutor(max_workers=self.flags.max_processes) as executor:
-            iters = self.flags, cur=self.cur_pipes, ng=ng_pipes, switch_p1=(game_idx % 2 == 0)
-            b_failures = attempt(executor, play_game, iters)
-            for args in b_failures:
-                print(f"Failed to map {args} onto a")
-
-            # for game_idx in range(self.flags.eval_games):
-            #     game = executor.submit(play_game, self.flags, cur=self.cur_pipes, ng=ng_pipes, switch_p1=(game_idx % 2 == 0))
-            #     futures.append(game)
+            futures = [
+                executor.submit(play_game, self.flags, self.cur_pipes, self.ng_pipes, (game_idx % 2 == 0))
+                for game_idx in range(self.flags.eval_games)
+            ]
 
             results = []
             for game in as_completed(futures):
@@ -98,7 +74,7 @@ class EvaluateWorker:
     def load_current_model(self):
         """
         Loads the best model from the standard directory.
-        :return ChessModel: the model
+        :return C4Model: the last best model to evaluate against
         """
         model = C4Model(self.flags, self.flags.current_model_weight_fname)
         return model
@@ -106,9 +82,8 @@ class EvaluateWorker:
     def load_next_generation_model(self):
         """
         Loads the next generation model from the standard directory
-        :return (C4Model, file): the model and the directory that it was in
+        :return C4Model: the next gen model to evaluate
         """
-
         model = C4Model(self.flags, self.flags.nextgen_model_weight_fname)
         return model
 

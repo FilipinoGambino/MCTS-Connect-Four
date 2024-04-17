@@ -29,7 +29,7 @@ class SelfPlayWorker:
 
     Attributes:
         :ivar Config config: config to use to configure this worker
-        :ivar ChessModel current_model: model to use for self play
+        :ivar C4Model current_model: model to use for self play
         :ivar Manager m: the manager to use to coordinate between other workers
         :ivar list(Connection) cur_pipes: pipes to send observations to and get back mode predictions.
         :ivar list((str,list(float))): list of all the moves. Each tuple has the observation in FEN format and
@@ -51,17 +51,17 @@ class SelfPlayWorker:
         """
         self.buffer = []
 
-        futures = deque()
         with ProcessPoolExecutor(max_workers=self.flags.max_processes) as executor:
-            for game_idx in range(self.flags.max_processes * 2):
-                futures.append(executor.submit(self_play_buffer, self.flags, cur=self.cur_pipes))
-            game_idx = 0
-            while True:
-                game_idx += 1
+            futures = deque(
+                executor.submit(self_play_buffer, self.flags, cur=self.cur_pipes)
+                for _ in range(self.flags.max_processes * 2)
+            )
+            assert self.flags.self_play_games % self.flags.max_games_per_file == 0, "Excess info won't be saved"
+            for game_idx in range(1, self.flags.self_play_games + 1):
                 start_time = time()
                 env, data = futures.popleft().result()
-                print(f"game {game_idx:3} duration={time() - start_time:4.1f}s "
-                      f"winner={env.winner:2}\n{env.game_state.board}\n")
+                print(f"Game {game_idx:3} Duration= {time() - start_time:2.1f}s "
+                      f"Winner={env.winner:2}\n{env.game_state.board}\n")
 
                 self.buffer += data
                 if (game_idx % self.flags.max_games_per_file) == 0:
@@ -110,7 +110,7 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
     p1 = C4Player(flags, pipes=pipes)
     p2 = C4Player(flags, pipes=pipes)
 
-    while not output['done']:
+    while not env.done:
         if env.game_state.is_p1_turn:
             action = p1.action(env, output)
         else:

@@ -1,6 +1,7 @@
 """
 Encapsulates the worker which trains ChessModels using game data from recorded games from a file.
 """
+import os
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from logging import getLogger
@@ -38,7 +39,7 @@ class OptimizeWorker:
     """
     def __init__(self, flags):
         self.flags = flags
-        self.data = pd.read_pickle(open(".\\play_data\\gamestates_df.pkl", "rb"))
+        self.data = OptimizeWorker.collect_data()
 
     def start(self):
         """
@@ -91,3 +92,16 @@ class OptimizeWorker:
                 optimizer.step()
             lr_scheduler.step()
         model.save_model()
+
+    @staticmethod
+    def collect_data():
+        df_paths = Path(os.getcwd()) / Path("play_data")
+        df = None
+        for root, dirs, files in os.walk(df_paths, topdown=False):
+            for file in files:
+                fname = os.path.join(df_paths, file)
+                if isinstance(df, pd.DataFrame):
+                    df = pd.read_pickle(fname)
+                else:
+                    df = pd.concat([df, pd.read_pickle(fname)])
+        return df.reset_index(drop=True)

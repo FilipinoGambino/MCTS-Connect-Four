@@ -1,4 +1,4 @@
-name: mcts_phase2
+name: mcts_phase1
 project: MCTS_Connect4
 entity: filipinogambino
 group: initial_testing
@@ -6,7 +6,7 @@ weights_only: false
 model_arch: conv_model
 unexplored_action: 1.0e-05
 disable_wandb: true
-worker_type: evaluate
+worker_type: self_play
 seed: 42
 device: cpu
 batch_size: 1024
@@ -38,13 +38,14 @@ search_threads: 2
 max_processes: 1
 simulation_num_per_move: 10
 max_games_per_file: 100
+self_play_games: 800
 model_dir: models
-current_model_weight_fname: mcts_phase1.pt
-nextgen_model_weight_fname: mcts_phase2.pt
+current_model_weight_fname: null
+nextgen_model_weight_fname: mcts_phase1.pt
 best_model_weight_fname: _best_model.pt
 replace_rate: 0.55
 eval_games: 100
-play_data_dir: play_data/run2
+play_data_dir: play_data/raw
 play_data_filename_tmpl: play_%s.pkl
 log_dir: logs
 main_log_path: main.log
@@ -56,6 +57,5 @@ clip_grads: 10.0
 checkpoint_freq: 10.0
 num_learner_threads: 1
 load_dir: null
-checkpoint_file: null
 n_value_warmup_batches: 0
 debug: false

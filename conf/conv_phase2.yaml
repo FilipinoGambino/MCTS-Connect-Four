@@ -20,7 +20,7 @@ model_arch: conv_model
 
 unexplored_action: 1e-5
 disable_wandb: true
-worker_type: evaluate # self_play, optimize, evaluate
+worker_type: self_play # self_play, optimize, evaluate
 seed: 42
 device: cpu
 batch_size: 1024
@@ -56,9 +56,10 @@ actor_device: cpu
 learner_device: cpu
 
 # Play
-search_threads: 2
+search_threads: 1
 max_processes: 1
-simulation_num_per_move: 10
+simulation_num_per_move: 5
+self_play_games: 800
 
 # Play Data
 max_games_per_file: 100
@@ -70,11 +71,11 @@ best_model_weight_fname: "_best_model.pt"
 replace_rate: .55
 eval_games: 100
 
-play_data_dir: "play_data/run2"
+play_data_dir: "play_data/raw"
 play_data_filename_tmpl: "play_%s.pkl"
 
 log_dir: "logs"
 main_log_path: "main.log"
 
 # Supervised Learning
-max_epochs: 10
+max_epochs: 100

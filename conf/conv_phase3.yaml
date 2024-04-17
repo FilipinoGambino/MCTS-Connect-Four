@@ -70,7 +70,7 @@ best_model_weight_fname: "_best_model.pt"
 replace_rate: .55
 eval_games: 100
 
-play_data_dir: "play_data/run3"
+play_data_dir: "play_data/raw"
 play_data_filename_tmpl: "play_%s.pkl"
 
 log_dir: "logs"

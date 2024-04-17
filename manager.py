@@ -21,9 +21,6 @@ def get_default_flags(flags: DictConfig) -> DictConfig:
     flags = OmegaConf.to_container(flags)
     # Env params
     flags.setdefault("seed", None)
-    # flags.setdefault("num_buffers", max(2 * flags["num_actors"], flags["batch_size"] // flags["n_actor_envs"]))
-    # flags.setdefault("obs_space_kwargs", {})
-    # flags.setdefault("reward_space_kwargs", {})
 
     # Training params
     flags.setdefault("use_mixed_precision", True)
@@ -32,15 +29,13 @@ def get_default_flags(flags: DictConfig) -> DictConfig:
     flags.setdefault("clip_grads", 10.)
     flags.setdefault("checkpoint_freq", 10.)
     flags.setdefault("num_learner_threads", 1)
-    # flags.setdefault("use_teacher", False)
-    # flags.setdefault("teacher_baseline_cost", flags.get("teacher_kl_cost", 0.) / 2.)
 
     # Model params
 
 
     # Reloading previous run params
     flags.setdefault("load_dir", None)
-    flags.setdefault("checkpoint_file", None)
+    flags.setdefault("current_model_weight_fname", None)
     flags.setdefault("weights_only", False)
     flags.setdefault("n_value_warmup_batches", 0)
 
@@ -51,7 +46,7 @@ def get_default_flags(flags: DictConfig) -> DictConfig:
     return OmegaConf.create(flags)
 
 
-@hydra.main(config_path="conf", config_name="conv_phase2", version_base=None)
+@hydra.main(config_path="conf", config_name="conv_phase1", version_base=None)
 def main(flags: DictConfig):
     cli_conf = OmegaConf.from_cli()
 

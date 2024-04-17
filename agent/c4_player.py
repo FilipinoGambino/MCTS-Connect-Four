@@ -63,29 +63,40 @@ class C4Player:
         """
         reset the tree to begin a new exploration of states
         """
+        logger.info("Resetting")
         self.tree = defaultdict(VisitStats)
 
     def action(self, env, env_output, can_stop = True) -> str:
         """
-        Figures out the next best move
-        within the specified environment and returns a string describing the action to take.
+        Figures out the next best move within the specified environment and returns
+        a string describing the action to take.
 
-        :param ChessEnv env: environment in which to figure out the action
+        :param C4Env env: environment in which to figure out the action
         :param np.array env_output: observation planes
         :param boolean can_stop: whether we are allowed to take no action (return None)
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
-        # self.reset()
+        self.reset()
 
         root_value, naked_value = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
+        if any(np.isnan(policy)):
+            logger.info(f"Policy: {policy}\n{env.board}")
         my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
 
         self.moves.append([{"obs":env_output["obs"],
                             "info":{"available_actions_mask":env_output["info"]["available_actions_mask"]}},
                            policy])
         return my_action
+
+    def deboog(self, env):
+        try:
+            myvisit_stats = self.tree[env.string_board]
+            for _,action in myvisit_stats.a.items():
+                logger.info(f"n:{action.n:>6.2f} w:{action.w:>6.2f} q:{action.q:>6.2f} p:{action.p:>6.2f} inst:{hash(env)}")
+        except TypeError:
+            pass
 
     def search_moves(self, env, obs) -> (float, float):
         """
@@ -98,17 +109,17 @@ class C4Player:
         :return (float,float): the maximum value of all values predicted by each thread,
             and the first value that was predicted.
         """
-        futures = []
+
         with ThreadPoolExecutor(max_workers=self.flags.search_threads) as executor:
-            for _ in range(self.flags.simulation_num_per_move):
-                futures.append(
-                    executor.submit(
-                        self.search_my_move,
-                        env=copy.deepcopy(env),
-                        env_output=obs,
-                        is_root_node=True
-                    )
+            futures = [
+                executor.submit(
+                    self.search_my_move,
+                    env=copy.deepcopy(env),
+                    env_output=obs,
+                    is_root_node=True
                 )
+                for _ in range(self.flags.simulation_num_per_move)
+            ]
 
         vals = [f.result() for f in futures]
 
@@ -153,11 +164,10 @@ class C4Player:
             my_stats.n += virtual_loss
             my_stats.w += -virtual_loss
             my_stats.q = my_stats.w / my_stats.n
-
+        self.deboog(env)
         env_output = env.step(action_t) # noqa
 
-        leaf_v = self.search_my_move(env, env_output)  # next move from enemy POV
-        leaf_v = -leaf_v
+        leaf_v = -1 * self.search_my_move(env, env_output)  # next move from enemy POV
 
         # BACKUP STEP
         # on returning search path

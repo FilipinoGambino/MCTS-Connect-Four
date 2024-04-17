@@ -21,7 +21,7 @@ class C4API:
         :ivar list(Connection): list of pipe connections to listen for states on and return predictions on.
     """
     # noinspection PyUnusedLocal
-    def __init__(self, agent_model):  # C4Model
+    def __init__(self, agent_model):
         """
 
         :param C4Model agent_model: model used to make predictions
@@ -54,21 +54,16 @@ class C4API:
         Thread worker which listens on each pipe in self.pipes for an observation, and then outputs
         the predictions for the policy and value networks when the observations come in. Repeats.
         """
-        while True:
-            ready = connection.wait(self.pipes,timeout=0.001)
-            if not ready:
-                continue
-            data, result_pipes = [], []
-            for pipe in ready:
-                while pipe.poll():
-                    data.append(pipe.recv())
-                    result_pipes.append(pipe)
+        while self.pipes:
+            for pipe in connection.wait(self.pipes, timeout=0.1): # Returns pipes that are ready OR when the other side closes
+                try:
+                    obs = pipe.recv()
 
-            obs = data.pop(0)
+                    output = self.agent_model.model.sample_actions(obs)
 
-            output = self.agent_model.model.sample_actions(obs)
+                    policy_ary = output['policy_logits'][0].tolist()
+                    value_ary = output['baseline'].item()
 
-            policy_ary = output['policy_logits']
-            value_ary = output['baseline']
-            for pipe, p, v in zip(result_pipes, policy_ary, value_ary):
-                pipe.send((p, float(v)))
+                    pipe.send((policy_ary, float(value_ary)))
+                except EOFError: # Triggers when the other side of the pipe is closed
+                    pass
