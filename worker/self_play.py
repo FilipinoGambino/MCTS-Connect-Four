@@ -1,6 +1,5 @@
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
-import copy
 from datetime import datetime
 from logging import getLogger
 from multiprocessing import Manager
@@ -13,8 +12,7 @@ from c4_gym import create_flexible_obs_space, create_reward_space, DictEnv, Logg
 from c4_gym.c4_env import C4Env
 from agent.c4_model import C4Model
 from agent.c4_player import C4Player
-from lib.data_helper import get_game_data_filenames, write_game_data_to_file
-from lib.model_helper import load_best_model_weight, save_as_best_model
+from lib.data_helper import write_game_data_to_file
 
 logger = getLogger(__name__)
 
@@ -40,7 +38,7 @@ class SelfPlayWorker:
     """
     def __init__(self, config: SimpleNamespace):
         self.flags = config
-        self.current_model = C4Model(self.flags)
+        self.current_model = C4Model(self.flags, self.flags.current_model_weight_fname)
         self.m = Manager()
         self.cur_pipes = self.m.list(
             [self.current_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
@@ -66,7 +64,7 @@ class SelfPlayWorker:
                       f"winner={env.winner:2}\n{env.game_state.board}\n")
 
                 self.buffer += data
-                if (game_idx % self.flags.nb_game_in_file) == 0:
+                if (game_idx % self.flags.max_games_per_file) == 0:
                     self.flush_buffer()
                 futures.append(executor.submit(self_play_buffer, self.flags, cur=self.cur_pipes))
 
@@ -75,9 +73,10 @@ class SelfPlayWorker:
         Flush the play data buffer and write the data to the appropriate location
         """
         game_id = datetime.now().strftime("%Y%m%d-%H%M%S.%f")
-        path = os.path.join(os.getcwd(), self.flags.play_data_dir, self.flags.play_data_filename_tmpl % game_id)
+        path = os.path.join(os.getcwd(), self.flags.play_data_dir)
+        fname = self.flags.play_data_filename_tmpl % game_id
         logger.info(f"save play data to {path}")
-        thread = Thread(target=write_game_data_to_file, args=(path, self.buffer))
+        thread = Thread(target=write_game_data_to_file, args=(path, fname, self.buffer))
         thread.start()
         self.buffer = []
 
@@ -116,6 +115,7 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
             action = p1.action(env, output)
         else:
             action = p2.action(env, output)
+
         output = env.step(action)
 
     p1_reward, p2_reward = output['reward'].tolist()[0]

@@ -25,10 +25,10 @@ class C4Model:
         :ivar ChessModelAPI api: the api to use to listen for and then return this models predictions (on a pipe).
     """
 
-    def __init__(self, flags: SimpleNamespace):
+    def __init__(self, flags: SimpleNamespace, fname=None):
         self.flags = flags
         self.api = None
-        self.model = self.build_and_load_best_model()
+        self.model = self.build_and_load_model(fname)
 
     def get_pipes(self, n_pipes=1):
         """
@@ -43,30 +43,27 @@ class C4Model:
             self.api.start()
         return [self.api.create_pipe() for _ in range(n_pipes)]
 
-    def build_and_load_best_model(self):
+    def build_and_load_model(self, fname):
         model = create_model(self.flags, device=self.flags.device)
         model.eval()
         model = model.share_memory()
 
-        checkpoint_state = torch.load(
-            Path(self.flags.model_dir) / Path(self.flags.best_model_weight_fname), map_location=torch.device("cpu")
-        )
+        if fname:
+            checkpoint_state = torch.load(
+                Path(self.flags.model_dir) / Path(fname),
+                map_location=torch.device("cpu")
+            )["model_state_dict"]
 
-        model.load_state_dict(checkpoint_state["model_state_dict"])
+            model.load_state_dict(checkpoint_state)
+
         return model
 
-    def save_checkpoint(self, checkpoint_path, weight_path, step, total_games_played):
-        """
+    def save_model(self):
+        fpath = Path(self.flags.model_dir) / Path(self.flags.nextgen_model_weight_fname)
+        logger.debug(f"Saving checkpoint to {fpath}")
+        torch.save(obj={"model_state_dict": self.model.state_dict()}, f=fpath)
 
-        :param str checkpoint_path: path to save the entire configuration to
-        :param str weight_path: path to save the model weights to
-        :param str step: current step through all games played so far
-        :param str total_games_played: current number of games played so far
-        """
-        logger.debug(f"Saving checkpoint to {checkpoint_path}")
-        torch.save({"model_state_dict": self.model.state_dict(),
-                        "step": step,
-                        "total_games_played": total_games_played},
-                   checkpoint_path + ".pt",)
-        torch.save({"model_state_dict": self.model.state_dict()},
-                   weight_path + ".pt")
+    def save_as_best_model(self):
+        fpath = Path(self.flags.model_dir) / Path(self.flags.name + self.flags.best_model_weight_fname)
+        logger.debug(f"Saving checkpoint to {fpath}")
+        torch.save(obj={"model_state_dict": self.model.state_dict()}, f=fpath)

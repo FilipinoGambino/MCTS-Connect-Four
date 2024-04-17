@@ -9,8 +9,9 @@ from typing import Any, Callable, Dict, NoReturn, Optional, Tuple, Union
 from .in_blocks import DictInputLayer
 from c4_gym.reward_spaces import RewardSpec
 from utility_constants import BOARD_SIZE
-import logging
+from logging import getLogger
 
+logger = getLogger(__name__)
 
 class DictActor(nn.Module):
     def __init__(
@@ -43,7 +44,7 @@ class DictActor(nn.Module):
         logits = self.actor(x)
         logits = logits.view(-1,self.n_actions)
 
-        if available_actions_mask.shape[1] == 1 and len(available_actions_mask.shape) == 3:
+        if len(available_actions_mask.shape) == 3:
             aam = available_actions_mask.squeeze(1)
         else:
             aam = available_actions_mask

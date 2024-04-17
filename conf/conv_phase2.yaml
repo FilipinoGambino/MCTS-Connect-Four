@@ -1,0 +1,80 @@
+#defaults:
+#- override hydra/job_logging: colorlog
+#- override hydra/hydra_logging: colorlog
+
+hydra:
+  run:
+    dir: ./outputs/${now:%m-%d}/${now:%H-%M-%S}
+
+name: mcts_phase2
+## WANDB params
+# The wandb project name
+project: MCTS_Connect4
+# The wandb user to log to
+entity: filipinogambino
+# The wandb group for the run
+group: initial_testing
+
+weights_only: false
+model_arch: conv_model
+
+unexplored_action: 1e-5
+disable_wandb: true
+worker_type: evaluate # self_play, optimize, evaluate
+seed: 42
+device: cpu
+batch_size: 1024
+
+virtual_loss: 3
+noise_eps: .25
+c_puct: 1.5
+dirichlet_alpha: .3
+tau_decay_rate: .99
+
+n_blocks: 8
+hidden_dim: 128
+embedding_dim: 32
+kernel_size: 3
+normalize: false
+rescale_value_input: false
+rescale_se_input: false
+
+obs_space_kwargs: {}
+reward_space_kwargs: {}
+act_space: BasicActionSpace
+obs_space: HistoricalObs
+reward_space: GameResultReward
+
+optimizer_class: Adam
+optimizer_kwargs:
+  lr: 1e-5
+  # See https://arxiv.org/pdf/2105.05246.pdf
+  eps: 0.0003
+min_lr_mod: .002
+
+actor_device: cpu
+learner_device: cpu
+
+# Play
+search_threads: 2
+max_processes: 1
+simulation_num_per_move: 10
+
+# Play Data
+max_games_per_file: 100
+
+model_dir: "models"
+current_model_weight_fname: "mcts_phase1.pt"
+nextgen_model_weight_fname: "mcts_phase2.pt"
+best_model_weight_fname: "_best_model.pt"
+replace_rate: .55
+eval_games: 100
+
+play_data_dir: "play_data/run2"
+play_data_filename_tmpl: "play_%s.pkl"
+
+log_dir: "logs"
+main_log_path: "main.log"
+
+# Supervised Learning
+max_epochs: 10

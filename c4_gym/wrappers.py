@@ -93,7 +93,7 @@ class VecOneEnv(gym.Env):
 
     @property
     def done(self):
-        return self.env.done
+        return self.env.done # noqa
 
     @property
     def game_state(self):
@@ -102,6 +102,10 @@ class VecOneEnv(gym.Env):
     @property
     def string_board(self):
         return self.env.string_board # noqa
+
+    @property
+    def board(self):
+        return self.env.board # noqa
 
     @property
     def available_actions_mask(self):

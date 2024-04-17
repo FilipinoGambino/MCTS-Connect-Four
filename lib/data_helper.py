@@ -35,9 +35,12 @@ def get_next_generation_model_dirs(flags):
     dirs = list(sorted(glob(dir_pattern)))
     return dirs
 
-def write_game_data_to_file(path, data):
+def write_game_data_to_file(path, fname, data):
+    if not os.path.isdir(path):
+        os.mkdir(path)
     try:
-        with open(path, "wb") as f:
+        fpath = os.path.join(path, fname)
+        with open(fpath, "wb") as f:
             pickle.dump(obj=data, file=f)
     except Exception as e:
         print(e)

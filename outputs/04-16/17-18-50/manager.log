@@ -1,0 +1,312 @@
+[2024-04-16 17:18:50,517][__main__][INFO] - name: mcts_phase2
+project: MCTS_Connect4
+entity: filipinogambino
+group: initial_testing
+weights_only: false
+model_arch: conv_model
+unexplored_action: 1.0e-05
+disable_wandb: true
+worker_type: evaluate
+seed: 42
+device: cpu
+batch_size: 1024
+virtual_loss: 3
+noise_eps: 0.25
+c_puct: 1.5
+dirichlet_alpha: 0.3
+tau_decay_rate: 0.99
+n_blocks: 8
+hidden_dim: 128
+embedding_dim: 32
+kernel_size: 3
+normalize: false
+rescale_value_input: false
+rescale_se_input: false
+obs_space_kwargs: {}
+reward_space_kwargs: {}
+act_space: BasicActionSpace
+obs_space: HistoricalObs
+reward_space: GameResultReward
+optimizer_class: Adam
+optimizer_kwargs:
+  lr: 1.0e-05
+  eps: 0.0003
+min_lr_mod: 0.002
+actor_device: cpu
+learner_device: cpu
+search_threads: 2
+max_processes: 1
+simulation_num_per_move: 10
+max_games_per_file: 100
+model_dir: models
+current_model_weight_fname: mcts_phase1.pt
+nextgen_model_weight_fname: mcts_phase2.pt
+best_model_weight_fname: _best_model.pt
+replace_rate: 0.55
+eval_games: 100
+play_data_dir: play_data/run2
+play_data_filename_tmpl: play_%s.pkl
+log_dir: logs
+main_log_path: main.log
+max_epochs: 10
+use_mixed_precision: true
+discounting: 0.999
+reduction: mean
+clip_grads: 10.0
+checkpoint_freq: 10.0
+num_learner_threads: 1
+load_dir: null
+checkpoint_file: null
+n_value_warmup_batches: 0
+debug: false
+
+[2024-04-16 17:18:50,524][__main__][INFO] - Running: evaluate
+[2024-04-16 17:18:55,281][worker.evaluate][INFO] - Starting evaluation of the nextgen model
+[2024-04-16 17:19:03,428][worker.evaluate][INFO] - Game   1: Win_rate=100.00%
+[[0 0 1 0 1 1 0]
+ [0 0 2 0 2 2 0]
+ [1 0 2 0 1 1 0]
+ [1 2 1 0 2 2 0]
+ [1 2 2 0 2 1 0]
+ [1 2 1 0 2 1 0]]
+
+[2024-04-16 17:19:06,431][worker.evaluate][INFO] - Game   2: Win_rate=50.00%
+[[0 0 1 0 0 2 0]
+ [0 0 2 0 0 1 0]
+ [0 0 1 0 1 2 0]
+ [2 0 2 0 1 2 0]
+ [2 0 1 0 1 1 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:19:09,356][worker.evaluate][INFO] - Game   3: Win_rate=66.67%
+[[0 0 1 0 0 1 0]
+ [0 0 2 0 0 1 0]
+ [1 0 2 0 0 2 0]
+ [1 0 2 0 2 1 0]
+ [1 0 1 0 2 2 0]
+ [1 0 2 0 2 1 0]]
+
+[2024-04-16 17:19:11,086][worker.evaluate][INFO] - Game   4: Win_rate=75.00%
+[[0 0 0 0 0 1 0]
+ [0 0 2 0 0 1 0]
+ [0 0 2 0 0 2 0]
+ [0 0 2 0 0 1 0]
+ [0 0 2 0 0 2 0]
+ [0 0 1 0 1 1 0]]
+
+[2024-04-16 17:19:13,761][worker.evaluate][INFO] - Game   5: Win_rate=60.00%
+[[0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 2 1 0]
+ [0 0 1 0 2 2 0]
+ [1 0 1 0 2 2 0]
+ [1 0 1 0 2 1 0]]
+
+[2024-04-16 17:19:16,512][worker.evaluate][INFO] - Game   6: Win_rate=50.00%
+[[0 0 2 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 1 2 0]
+ [0 0 1 0 1 1 0]
+ [0 0 2 0 1 2 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:19:20,447][worker.evaluate][INFO] - Game   7: Win_rate=57.14%
+[[0 0 2 0 0 1 0]
+ [0 0 1 0 2 1 0]
+ [1 0 2 0 2 2 0]
+ [1 0 1 0 2 1 0]
+ [1 0 2 0 1 2 0]
+ [1 0 2 0 2 1 0]]
+
+[2024-04-16 17:19:23,547][worker.evaluate][INFO] - Game   8: Win_rate=50.00%
+[[0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 1 2 0]
+ [2 0 2 0 1 1 0]
+ [2 0 1 0 1 2 0]
+ [2 0 1 0 1 1 0]]
+
+[2024-04-16 17:19:27,884][worker.evaluate][INFO] - Game   9: Win_rate=55.56%
+[[0 0 2 0 1 2 0]
+ [0 0 2 0 1 1 0]
+ [1 0 1 0 1 2 0]
+ [1 2 2 0 2 1 0]
+ [1 2 2 0 2 2 0]
+ [1 2 1 0 1 1 0]]
+
+[2024-04-16 17:19:31,118][worker.evaluate][INFO] - Game  10: Win_rate=50.00%
+[[0 0 1 0 0 1 0]
+ [0 0 2 0 0 2 0]
+ [0 0 2 0 1 1 0]
+ [2 0 1 0 1 1 0]
+ [2 0 2 0 1 2 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:19:34,561][worker.evaluate][INFO] - Game  11: Win_rate=45.45%
+[[0 0 1 0 0 2 0]
+ [0 0 2 0 0 1 0]
+ [0 0 1 0 2 2 0]
+ [0 0 1 0 2 2 0]
+ [1 0 2 0 2 1 0]
+ [1 0 1 0 2 1 0]]
+
+[2024-04-16 17:19:37,726][worker.evaluate][INFO] - Game  12: Win_rate=41.67%
+[[0 0 2 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 1 1 0]
+ [2 0 2 0 1 1 0]
+ [2 0 1 0 1 2 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:19:41,476][worker.evaluate][INFO] - Game  13: Win_rate=46.15%
+[[0 0 1 0 1 2 0]
+ [0 0 2 0 2 1 0]
+ [1 0 1 0 2 2 0]
+ [1 2 2 0 1 1 0]
+ [1 2 2 0 1 2 0]
+ [1 2 1 0 2 1 0]]
+
+[2024-04-16 17:19:42,683][worker.evaluate][INFO] - Game  14: Win_rate=50.00%
+[[0 0 0 0 0 0 0]
+ [0 0 2 0 0 0 0]
+ [0 0 2 0 0 0 0]
+ [0 0 2 0 0 0 0]
+ [0 0 2 0 1 0 0]
+ [0 0 1 0 1 1 0]]
+
+[2024-04-16 17:19:46,838][worker.evaluate][INFO] - Game  15: Win_rate=53.33%
+[[0 0 2 0 1 1 0]
+ [0 0 2 0 2 2 0]
+ [1 0 2 0 1 1 0]
+ [1 2 1 0 2 2 0]
+ [1 2 2 0 1 1 0]
+ [1 2 1 0 2 1 0]]
+
+[2024-04-16 17:19:49,545][worker.evaluate][INFO] - Game  16: Win_rate=50.00%
+[[0 0 2 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 1 2 0]
+ [0 0 2 0 1 1 0]
+ [0 0 1 0 1 2 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:19:52,648][worker.evaluate][INFO] - Game  17: Win_rate=47.06%
+[[0 0 2 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 2 2 0]
+ [0 0 1 0 2 1 0]
+ [1 0 2 0 2 1 0]
+ [1 0 1 0 2 1 0]]
+
+[2024-04-16 17:19:55,972][worker.evaluate][INFO] - Game  18: Win_rate=44.44%
+[[0 0 2 0 0 2 0]
+ [0 0 1 0 0 1 0]
+ [0 0 2 0 1 2 0]
+ [2 0 1 0 1 1 0]
+ [2 0 1 0 1 2 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:19:59,087][worker.evaluate][INFO] - Game  19: Win_rate=47.37%
+[[0 0 2 0 0 1 0]
+ [0 0 2 0 0 2 0]
+ [1 0 1 0 0 2 0]
+ [1 0 1 0 2 1 0]
+ [1 0 1 0 2 2 0]
+ [1 0 2 0 1 2 0]]
+
+[2024-04-16 17:20:02,150][worker.evaluate][INFO] - Game  20: Win_rate=45.00%
+[[0 0 1 0 0 1 0]
+ [0 0 2 0 0 2 0]
+ [0 0 1 0 1 1 0]
+ [2 0 2 0 1 1 0]
+ [2 0 2 0 1 1 0]
+ [2 0 2 0 1 2 0]]
+
+[2024-04-16 17:20:05,479][worker.evaluate][INFO] - Game  21: Win_rate=47.62%
+[[0 0 2 0 0 2 0]
+ [0 0 1 0 0 1 0]
+ [1 0 2 0 0 2 0]
+ [1 0 1 0 2 1 0]
+ [1 0 2 0 2 1 0]
+ [1 0 1 0 2 2 0]]
+
+[2024-04-16 17:20:06,903][worker.evaluate][INFO] - Game  22: Win_rate=45.45%
+[[0 0 0 0 0 0 0]
+ [0 0 1 0 0 0 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 0 1 0]]
+
+[2024-04-16 17:20:08,642][worker.evaluate][INFO] - Game  23: Win_rate=47.83%
+[[0 0 0 0 0 2 0]
+ [0 0 0 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 2 1 0]]
+
+[2024-04-16 17:20:11,905][worker.evaluate][INFO] - Game  24: Win_rate=45.83%
+[[0 0 2 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 2 0 1 1 0]
+ [2 0 1 0 1 1 0]
+ [2 0 2 0 1 2 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:20:13,549][worker.evaluate][INFO] - Game  25: Win_rate=48.00%
+[[0 0 0 0 0 0 0]
+ [0 0 0 0 0 1 0]
+ [0 0 2 0 0 1 0]
+ [0 0 2 0 0 1 0]
+ [0 0 2 0 2 1 0]
+ [0 0 1 0 1 2 0]]
+
+[2024-04-16 17:20:16,655][worker.evaluate][INFO] - Game  26: Win_rate=46.15%
+[[0 0 1 0 0 2 0]
+ [0 0 2 0 0 1 0]
+ [0 0 1 0 1 2 0]
+ [0 0 2 0 1 2 0]
+ [0 2 1 0 1 1 0]
+ [2 2 1 0 1 2 0]]
+
+[2024-04-16 17:20:17,713][worker.evaluate][INFO] - Game  27: Win_rate=48.15%
+[[0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0]
+ [0 0 1 0 0 0 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]]
+
+[2024-04-16 17:20:21,166][worker.evaluate][INFO] - Game  28: Win_rate=46.43%
+[[0 0 1 0 0 2 0]
+ [0 0 2 0 0 1 0]
+ [0 0 1 0 1 2 0]
+ [2 0 1 0 1 1 0]
+ [2 2 2 0 1 2 0]
+ [2 2 1 0 1 1 0]]
+
+[2024-04-16 17:20:23,143][worker.evaluate][INFO] - Game  29: Win_rate=48.28%
+[[0 0 0 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 0 2 0]
+ [1 0 2 0 2 1 0]]
+
+[2024-04-16 17:20:26,243][worker.evaluate][INFO] - Game  30: Win_rate=46.67%
+[[0 0 2 0 0 2 0]
+ [0 0 1 0 0 1 0]
+ [0 0 1 0 1 1 0]
+ [2 0 2 0 1 2 0]
+ [2 0 2 0 1 1 0]
+ [2 0 2 0 1 1 0]]
+
+[2024-04-16 17:20:28,316][worker.evaluate][INFO] - Game  31: Win_rate=48.39%
+[[0 0 0 0 0 2 0]
+ [0 0 0 0 0 2 0]
+ [0 0 1 0 0 1 0]
+ [0 0 1 0 0 2 0]
+ [0 0 1 0 2 2 0]
+ [1 0 1 0 2 1 0]]
+

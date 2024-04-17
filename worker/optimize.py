@@ -38,21 +38,21 @@ class OptimizeWorker:
     """
     def __init__(self, flags):
         self.flags = flags
-        self.data = pd.read_pickle(open(".\\play_data\\run2\\gamestates_df.pkl", "rb"))
+        self.data = pd.read_pickle(open(".\\play_data\\gamestates_df.pkl", "rb"))
 
     def start(self):
         """
         Load the next generation model from disk and start doing the training endlessly.
         """
-        model = C4Model(self.flags).model
-        optimizer = Adam(model.parameters())
+        model = C4Model(self.flags, self.flags.current_model_weight_fname)
+        optimizer = Adam(model.model.parameters(), **self.flags.optimizer_kwargs)
 
-        t = self.flags.unroll_length
         b = self.flags.batch_size
+        t = len(self.data)
 
         def lr_lambda(epoch):
             min_pct = self.flags.min_lr_mod
-            pct_complete = min(epoch * t * b, self.flags.total_steps) / self.flags.total_steps
+            pct_complete = min(epoch * b, t) / t
             scaled_pct_complete = pct_complete * (1. - min_pct)
             return 1. - scaled_pct_complete
 
@@ -67,12 +67,12 @@ class OptimizeWorker:
         max_epochs = self.flags.max_epochs
 
         train_ds = C4Dataset(self.data)
-        train_dl = DataLoader(train_ds, batch_size=64, shuffle=True)
+        train_dl = DataLoader(train_ds, batch_size=self.flags.batch_size, shuffle=True)
 
         for epoch in range(max_epochs):
-            print(f"Epoch {epoch:>2}")
+            print(f"Epoch {epoch+1:>2}")
             for game_states, probs, values in train_dl:
-                outputs = model(game_states)
+                outputs = model.model(game_states)
 
                 policy_probs = softmax(outputs['policy_logits'], dim=-1).float()
                 values = values.unsqueeze(-1).float()
@@ -90,8 +90,4 @@ class OptimizeWorker:
 
                 optimizer.step()
             lr_scheduler.step()
-        print(f"Saving model")
-        torch.save(
-            {"model_state_dict": model.state_dict(),},
-            ".\\models\\best_model.pt"
-        )
+        model.save_model()

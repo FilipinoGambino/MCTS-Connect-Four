@@ -218,7 +218,7 @@ class C4Player:
         c_puct = self.flags.c_puct
         dir_alpha = self.flags.dirichlet_alpha
 
-        best_s = -999
+        best_s = -np.inf
         best_a = None
         if is_root_node:
             noise = np.random.dirichlet([dir_alpha] * len(my_visitstats.a))
