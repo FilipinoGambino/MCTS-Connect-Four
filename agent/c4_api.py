@@ -35,8 +35,7 @@ class C4API:
         Starts a thread to listen on the pipe and make predictions
         :return:
         """
-        prediction_worker = Thread(target=self._predict_batch_worker, name="prediction_worker")
-        prediction_worker.daemon = True
+        prediction_worker = Thread(target=self._predict_batch_worker, name="prediction_worker", daemon=True)
         prediction_worker.start()
 
     def create_pipe(self):

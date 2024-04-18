@@ -1,0 +1,35 @@
+2024-04-18 17:26:34,818 INFO    StreamThr :9768 [internal.py:wandb_internal():86] W&B internal server running at pid: 9768, started at: 2024-04-18 17:26:34.817567
+2024-04-18 17:26:34,820 DEBUG   HandlerThread:9768 [handler.py:handle_request():146] handle_request: status
+2024-04-18 17:26:34,831 INFO    WriterThread:9768 [datastore.py:open_for_write():87] open: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240418_172634-2ua2owtv\run-2ua2owtv.wandb
+2024-04-18 17:26:34,832 DEBUG   SenderThread:9768 [sender.py:send():382] send: header
+2024-04-18 17:26:34,882 DEBUG   SenderThread:9768 [sender.py:send():382] send: run
+2024-04-18 17:26:35,175 INFO    SenderThread:9768 [dir_watcher.py:__init__():211] watching files in: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240418_172634-2ua2owtv\files
+2024-04-18 17:26:35,175 INFO    SenderThread:9768 [sender.py:_start_run_threads():1136] run started: 2ua2owtv with start time 1713479194.820557
+2024-04-18 17:26:35,187 DEBUG   HandlerThread:9768 [handler.py:handle_request():146] handle_request: check_version
+2024-04-18 17:26:35,187 DEBUG   SenderThread:9768 [sender.py:send_request():409] send_request: check_version
+2024-04-18 17:26:35,317 DEBUG   HandlerThread:9768 [handler.py:handle_request():146] handle_request: run_start
+2024-04-18 17:26:35,337 DEBUG   HandlerThread:9768 [system_info.py:__init__():27] System info init
+2024-04-18 17:26:35,337 DEBUG   HandlerThread:9768 [system_info.py:__init__():42] System info init done
+2024-04-18 17:26:35,337 INFO    HandlerThread:9768 [system_monitor.py:start():194] Starting system monitor
+2024-04-18 17:26:35,337 INFO    SystemMonitor:9768 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-04-18 17:26:35,338 INFO    HandlerThread:9768 [system_monitor.py:probe():214] Collecting system info
+2024-04-18 17:26:35,342 INFO    SystemMonitor:9768 [interfaces.py:start():190] Started cpu monitoring
+2024-04-18 17:26:35,345 DEBUG   HandlerThread:9768 [system_info.py:probe():151] Probing system
+2024-04-18 17:26:35,346 INFO    SystemMonitor:9768 [interfaces.py:start():190] Started disk monitoring
+2024-04-18 17:26:35,353 INFO    SystemMonitor:9768 [interfaces.py:start():190] Started memory monitoring
+2024-04-18 17:26:35,370 INFO    SystemMonitor:9768 [interfaces.py:start():190] Started network monitoring
+2024-04-18 17:26:35,371 DEBUG   HandlerThread:9768 [system_info.py:_probe_git():136] Probing git
+2024-04-18 17:26:35,460 DEBUG   HandlerThread:9768 [system_info.py:_probe_git():144] Probing git done
+2024-04-18 17:26:35,460 DEBUG   HandlerThread:9768 [system_info.py:probe():199] Probing system done
+2024-04-18 17:26:35,460 DEBUG   HandlerThread:9768 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.22631-SP0', 'python': '3.9.6', 'heartbeatAt': '2024-04-18T22:26:35.345756', 'startedAt': '2024-04-18T22:26:34.803201', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'C:\\Users\\nick.gorichs\\PycharmProjects\\MCTS-Connect-Four\\manager.py', 'codePathLocal': 'manager.py', 'codePath': 'manager.py', 'git': {'remote': 'https://github.com/FilipinoGambino/MCTS-Connect-Four.git', 'commit': '42f2aa0f68444fa1c7bed7a7b1bbe00a509e2028'}, 'email': None, 'root': 'C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four', 'host': 'WI-7C7X4S2', 'username': 'Nick.Gorichs', 'executable': 'C:\\Users\\nick.gorichs\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 1910.0, 'min': 0.0, 'max': 2112.0}, 'cpu_freq_per_core': [{'current': 1910.0, 'min': 0.0, 'max': 2112.0}], 'disk': {'/': {'total': 236.73046493530273, 'used': 222.4986228942871}}, 'memory': {'total': 7.861743927001953}}
+2024-04-18 17:26:35,460 INFO    HandlerThread:9768 [system_monitor.py:probe():224] Finished collecting system info
+2024-04-18 17:26:35,460 INFO    HandlerThread:9768 [system_monitor.py:probe():227] Publishing system info
+2024-04-18 17:26:35,461 INFO    HandlerThread:9768 [system_monitor.py:probe():229] Finished publishing system info
+2024-04-18 17:26:35,494 DEBUG   SenderThread:9768 [sender.py:send():382] send: files
+2024-04-18 17:26:35,494 INFO    SenderThread:9768 [sender.py:_save_file():1403] saving file wandb-metadata.json with policy now
+2024-04-18 17:26:35,501 DEBUG   HandlerThread:9768 [handler.py:handle_request():146] handle_request: python_packages
+2024-04-18 17:26:35,501 DEBUG   SenderThread:9768 [sender.py:send_request():409] send_request: python_packages
+2024-04-18 17:26:35,502 DEBUG   HandlerThread:9768 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-18 17:26:35,503 DEBUG   HandlerThread:9768 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-18 17:26:35,503 DEBUG   SenderThread:9768 [sender.py:send_request():409] send_request: stop_status
+2024-04-18 17:26:35,596 DEBUG   SenderThread:9768 [sender.py:send():382] send: telemetry

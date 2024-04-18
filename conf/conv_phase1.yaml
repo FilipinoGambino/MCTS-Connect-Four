@@ -19,7 +19,8 @@ weights_only: false
 model_arch: conv_model
 
 unexplored_action: 1e-5
-disable_wandb: true
+disable_wandb: false
+log_freq: 10
 worker_type: optimize # self_play, optimize, evaluate
 seed: 42
 device: cpu
@@ -46,7 +47,7 @@ reward_space: GameResultReward
 
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 1e-5
+  lr: 1e-6
   # See https://arxiv.org/pdf/2105.05246.pdf
   eps: 0.0003
 min_lr_mod: .002
@@ -57,7 +58,7 @@ learner_device: cpu
 # Play
 search_threads: 2
 max_processes: 1
-simulation_num_per_move: 10
+simulation_num_per_move: 100
 
 # Play Data
 max_games_per_file: 100

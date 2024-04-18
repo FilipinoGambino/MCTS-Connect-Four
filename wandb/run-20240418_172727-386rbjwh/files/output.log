@@ -1,0 +1,16 @@
+
+[2024-04-18 17:27:28,031][__main__][INFO] - Running: optimize
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\manager.py", line 82, in main
+    start(flags)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\manager.py", line 100, in start
+    return optimize.start(flags)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 26, in start
+    return OptimizeWorker(flags).start()
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 63, in start
+    self.training(model, optimizer, lr_scheduler)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 75, in training
+    wandb.watch(model.model, self.flags.log_freq, log='all', log_graph=True)
+AttributeError: 'types.SimpleNamespace' object has no attribute 'log_freq'
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

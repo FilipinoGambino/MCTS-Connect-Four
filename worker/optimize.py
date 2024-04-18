@@ -11,6 +11,7 @@ import torch
 from torch.nn.functional import cross_entropy, mse_loss, softmax
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+import wandb
 
 from agent.c4_model import C4Model
 from .torch_units.trainer import C4Dataset
@@ -47,6 +48,7 @@ class OptimizeWorker:
         """
         model = C4Model(self.flags, self.flags.current_model_weight_fname)
         optimizer = Adam(model.model.parameters(), **self.flags.optimizer_kwargs)
+        logger.info(f"Training model with {model.model.parameters():,} parameters")
 
         b = self.flags.batch_size
         t = len(self.data)
@@ -69,6 +71,9 @@ class OptimizeWorker:
 
         train_ds = C4Dataset(self.data)
         train_dl = DataLoader(train_ds, batch_size=self.flags.batch_size, shuffle=True)
+        if not self.flags.disable_wandb:
+            step = 0
+            wandb.watch(model.model, self.flags.log_freq, log='all', log_graph=True)
 
         for epoch in range(max_epochs):
             print(f"Epoch {epoch+1:>2}")
@@ -90,6 +95,17 @@ class OptimizeWorker:
                 total_loss.backward()
 
                 optimizer.step()
+                if not self.flags.disable_wandb:
+                    stats = {
+                        "Loss": {
+                            "cross_entropy_loss": prob_loss,
+                            "mse_loss": val_loss,
+                            "total_loss": total_loss
+                        },
+                        "Learning Rate": lr_scheduler.get_last_lr()
+                    }
+                    step += self.flags.batch_size
+                    wandb.log(stats, step=step)
             lr_scheduler.step()
         model.save_model()
 

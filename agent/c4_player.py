@@ -54,6 +54,8 @@ class ActionStats:
 class C4Player:
     def __init__(self, flags, pipes=None):
         self.tree = defaultdict(VisitStats)
+        self.tree_path = []
+        self.tree_actions = []
         self.flags = flags
         self.moves = []
         self.pipe_pool = pipes
@@ -64,7 +66,8 @@ class C4Player:
         reset the tree to begin a new exploration of states
         """
         logger.info("Resetting")
-        self.tree = defaultdict(VisitStats)
+        # self.tree = defaultdict(VisitStats)
+        self.tree_path = []
 
     def action(self, env, env_output, can_stop = True) -> str:
         """
@@ -77,7 +80,7 @@ class C4Player:
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
-        # self.reset()
+        self.reset()
 
         root_value, naked_value = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
@@ -90,9 +93,9 @@ class C4Player:
                            policy])
         return my_action
 
-    def deboog(self, env):
+    def deboog(self, env, state):
         try:
-            myvisit_stats = self.tree[env.string_board]
+            myvisit_stats = self.tree[state]
             for idx,action in myvisit_stats.a.items():
                 logger.info(f"{idx} | n:{action.n:>6.2f} w:{action.w:>6.2f} q:{action.q:>6.2f} p:{action.p:>6.2f} inst:{hash(env)}")
         except TypeError:
@@ -104,7 +107,7 @@ class C4Player:
          and finds the highest value possible move. Does so using multiple threads to get multiple
          estimates from the AGZ MCTS algorithm so we can pick the best.
 
-        :param ChessEnv env: env to search for moves within
+        :param C4Env env: env to search for moves within
         :param np.ndarry obs: observation planes derived from the game state
         :return (float,float): the maximum value of all values predicted by each thread,
             and the first value that was predicted.
@@ -146,23 +149,16 @@ class C4Player:
         state = env.string_board
 
         with self.node_lock[state]:
-            leaf_p, leaf_v = self.expand_and_evaluate(env_output)
             if state not in self.tree:
+                leaf_p, leaf_v = self.evaluate(env_output)
                 for a in range(N_ACTIONS):
                     self.tree[state].a[a].p = leaf_p[a]
                 return leaf_v # I'm returning everything from the POV of side to move
 
-            # SELECT STEP
-            action_t = self.select_action_q_and_u(env, is_root_node)
+        action_t = self.select_action_q_and_u(env, is_root_node)
+        my_visit_stats = self.tree[state]
+        action_stats = my_visit_stats.a[action_t]
 
-            my_visit_stats = self.tree[state]
-            my_stats = my_visit_stats.a[action_t]
-
-            my_visit_stats.sum_n += 1
-            my_stats.n += 1
-            my_stats.w += leaf_v
-            my_stats.q = my_stats.w / my_stats.n
-        # self.deboog(env)
         env_output = env.step(action_t) # noqa
 
         leaf_v = -1 * self.search_my_move(env, env_output)  # next move from enemy POV
@@ -172,13 +168,13 @@ class C4Player:
         # update: N, W, Q
         with self.node_lock[state]:
             my_visit_stats.sum_n += 1
-            my_stats.n += 1
-            my_stats.w += leaf_v
-            my_stats.q = my_stats.w / my_stats.n
-
+            action_stats.n += 1
+            action_stats.w += leaf_v
+            action_stats.q = action_stats.w / action_stats.n
+        # self.deboog(env, state)
         return leaf_v
 
-    def expand_and_evaluate(self, obs) -> (np.ndarray, float):
+    def evaluate(self, obs) -> (np.ndarray, float):
         """ expand new leaf, this is called only once per state
         this is called with state locked
         insert P(a|s), return leaf_v
@@ -189,7 +185,6 @@ class C4Player:
         leaf_p, leaf_v = self.predict(obs)
 
         return leaf_p, leaf_v
-
 
     def predict(self, state_planes):
         """

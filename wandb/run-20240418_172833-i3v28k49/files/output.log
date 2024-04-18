@@ -1,0 +1,13 @@
+
+[2024-04-18 17:28:34,482][__main__][INFO] - Running: optimize
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+Epoch  1
+Epoch  2
+Epoch  3
+Epoch  4
+Epoch  5
+Epoch  6
+Epoch  7
+Epoch  8
+Epoch  9
+Epoch 10
