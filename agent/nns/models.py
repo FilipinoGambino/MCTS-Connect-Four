@@ -28,7 +28,6 @@ class DictActor(nn.Module):
             kernel_size=BOARD_SIZE
         )
 
-
     def forward(
             self,
             x: torch.Tensor,
@@ -109,15 +108,14 @@ class BaselineLayer(nn.Module):
             self.linear = MultiLinear(n_value_heads, in_channels, 1)
         else:
             self.linear = nn.Linear(in_channels, 1)
-        if reward_space.zero_sum:
-            self.activation = nn.Softmax(dim=-1)
-        else:
-            self.activation = nn.Sigmoid()
-        if not reward_space.only_once:
-            # Expand reward space to n_steps for rewards that occur more than once
-            reward_space_expanded = np.prod(BOARD_SIZE)
-            self.reward_min *= reward_space_expanded
-            self.reward_max *= reward_space_expanded
+
+        self.activation = nn.Sigmoid()
+
+        # if not reward_space.only_once:
+        #     # Expand reward space to n_steps for rewards that occur more than once
+        #     reward_space_expanded = np.prod(BOARD_SIZE)
+        #     self.reward_min *= reward_space_expanded
+        #     self.reward_max *= reward_space_expanded
 
     def forward(self, x: torch.Tensor,
                 input_mask: Optional[torch.Tensor]=None,
@@ -140,7 +138,6 @@ class BaselineLayer(nn.Module):
             x = self.linear(x)
         # Rescale to [0, 1], and then to the desired reward space
         x = self.activation(x)
-
         return x * (self.reward_max - self.reward_min) + self.reward_min
 
 class BasicActorCriticNetwork(nn.Module):
@@ -205,7 +202,8 @@ class BasicActorCriticNetwork(nn.Module):
         return dict(
             actions=actions,
             policy_logits=policy_logits,
-            baseline=baseline
+            baseline=baseline,
+            aam=available_actions_mask
         )
 
     def sample_actions(self, *args, **kwargs):

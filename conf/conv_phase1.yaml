@@ -20,7 +20,7 @@ model_arch: conv_model
 
 unexplored_action: 1e-5
 disable_wandb: true
-worker_type: self_play # self_play, optimize, evaluate
+worker_type: optimize # self_play, optimize, evaluate
 seed: 42
 device: cpu
 batch_size: 1024

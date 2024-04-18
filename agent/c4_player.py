@@ -77,7 +77,7 @@ class C4Player:
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
-        self.reset()
+        # self.reset()
 
         root_value, naked_value = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
@@ -93,8 +93,8 @@ class C4Player:
     def deboog(self, env):
         try:
             myvisit_stats = self.tree[env.string_board]
-            for _,action in myvisit_stats.a.items():
-                logger.info(f"n:{action.n:>6.2f} w:{action.w:>6.2f} q:{action.q:>6.2f} p:{action.p:>6.2f} inst:{hash(env)}")
+            for idx,action in myvisit_stats.a.items():
+                logger.info(f"{idx} | n:{action.n:>6.2f} w:{action.w:>6.2f} q:{action.q:>6.2f} p:{action.p:>6.2f} inst:{hash(env)}")
         except TypeError:
             pass
 
@@ -146,8 +146,8 @@ class C4Player:
         state = env.string_board
 
         with self.node_lock[state]:
+            leaf_p, leaf_v = self.expand_and_evaluate(env_output)
             if state not in self.tree:
-                leaf_p, leaf_v = self.expand_and_evaluate(env_output)
                 for a in range(N_ACTIONS):
                     self.tree[state].a[a].p = leaf_p[a]
                 return leaf_v # I'm returning everything from the POV of side to move
@@ -155,15 +155,14 @@ class C4Player:
             # SELECT STEP
             action_t = self.select_action_q_and_u(env, is_root_node)
 
-
             my_visit_stats = self.tree[state]
             my_stats = my_visit_stats.a[action_t]
 
             my_visit_stats.sum_n += 1
             my_stats.n += 1
-            my_stats.w += -virtual_loss
+            my_stats.w += leaf_v
             my_stats.q = my_stats.w / my_stats.n
-        self.deboog(env)
+        # self.deboog(env)
         env_output = env.step(action_t) # noqa
 
         leaf_v = -1 * self.search_my_move(env, env_output)  # next move from enemy POV

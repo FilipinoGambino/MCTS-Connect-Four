@@ -61,7 +61,7 @@ class SelfPlayWorker:
                 start_time = time()
                 env, data = futures.popleft().result()
                 print(f"Game {game_idx:3} Duration= {time() - start_time:2.1f}s "
-                      f"Winner={env.winner:2}\n{env.game_state.board}\n")
+                      f"Winner= {env.winner}\n{env.game_state.board}\n")
 
                 self.buffer += data
                 if (game_idx % self.flags.max_games_per_file) == 0:

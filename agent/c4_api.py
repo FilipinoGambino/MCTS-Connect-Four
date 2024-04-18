@@ -7,6 +7,7 @@ from multiprocessing import connection, Pipe
 from threading import Thread
 import torch
 from logging import getLogger
+from torch.nn.functional import softmax
 
 logger = getLogger(__name__)
 
@@ -61,9 +62,11 @@ class C4API:
 
                     output = self.agent_model.model.sample_actions(obs)
 
-                    policy_ary = output['policy_logits'][0].tolist()
+                    policy_ary = softmax(output['policy_logits'][0], dim=0).to(dtype=torch.double)
+                    action_mask = output['aam'].squeeze(dim=0)
+                    policy_ary = torch.where(action_mask, float("-inf"), policy_ary).tolist()
                     value_ary = output['baseline'].item()
 
-                    pipe.send((policy_ary, float(value_ary)))
+                    pipe.send((policy_ary, value_ary))
                 except EOFError: # Triggers when the other side of the pipe is closed
                     pass

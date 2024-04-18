@@ -46,7 +46,7 @@ def get_default_flags(flags: DictConfig) -> DictConfig:
     return OmegaConf.create(flags)
 
 
-@hydra.main(config_path="conf", config_name="conv_phase1", version_base=None)
+@hydra.main(config_path="conf", config_name="conv_phase2", version_base=None)
 def main(flags: DictConfig):
     cli_conf = OmegaConf.from_cli()
 

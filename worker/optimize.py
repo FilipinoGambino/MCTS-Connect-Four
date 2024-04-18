@@ -95,13 +95,15 @@ class OptimizeWorker:
 
     @staticmethod
     def collect_data():
-        df_paths = Path(os.getcwd()) / Path("play_data")
-        df = None
-        for root, dirs, files in os.walk(df_paths, topdown=False):
-            for file in files:
-                fname = os.path.join(df_paths, file)
-                if isinstance(df, pd.DataFrame):
-                    df = pd.read_pickle(fname)
-                else:
-                    df = pd.concat([df, pd.read_pickle(fname)])
-        return df.reset_index(drop=True)
+        df_path = Path(os.getcwd()) / Path("play_data") / Path("gamestate_df.pkl")
+        return pd.read_pickle(df_path)
+        # df_paths = Path(os.getcwd()) / Path("play_data")
+        # df = None
+        # for root, dirs, files in os.walk(df_paths, topdown=False):
+        #     for file in files:
+        #         fname = os.path.join(df_paths, file)
+        #         if isinstance(df, pd.DataFrame):
+        #             df = pd.read_pickle(fname)
+        #         else:
+        #             df = pd.concat([df, pd.read_pickle(fname)])
+        # return df.reset_index(drop=True)
