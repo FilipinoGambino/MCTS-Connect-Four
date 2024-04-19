@@ -1,0 +1,32 @@
+
+[2024-04-19 01:34:29,802][__main__][INFO] - Running: evaluate
+[2024-04-19 01:34:34,532][agent.c4_api][INFO] - Model loaded onto cpu device
+[2024-04-19 01:34:34,536][agent.c4_api][INFO] - Model loaded onto cpu device
+[2024-04-19 01:34:34,540][worker.evaluate][INFO] - Starting evaluation of the nextgen model
+[2024-04-19 01:34:56,637][worker.evaluate][INFO] - Game   1: Win_rate=100.00%
+[[0 0 0 0 0 0 0]
+ [0 0 1 1 0 0 0]
+ [0 0 2 1 0 0 0]
+ [0 0 2 1 0 0 0]
+ [1 0 2 1 2 2 2]
+ [2 2 1 2 1 1 1]]
+[2024-04-19 01:35:08,589][worker.evaluate][INFO] - Game   2: Win_rate=50.00%
+[[0 0 0 2 0 0 0]
+ [0 0 1 2 0 0 0]
+ [0 0 1 2 0 0 0]
+ [0 0 1 1 0 0 0]
+ [0 0 1 2 0 0 0]
+ [0 1 2 1 0 2 0]]
+[2024-04-19 01:35:31,602][worker.evaluate][INFO] - Game   3: Win_rate=66.67%
+[[0 0 0 0 0 2 0]
+ [0 0 2 0 0 1 0]
+ [0 0 1 1 1 1 2]
+ [0 0 2 2 1 2 1]
+ [0 0 1 2 2 1 1]
+ [0 0 2 1 1 2 2]]
+[2024-04-19 01:35:54,455][worker.evaluate][INFO] - Game   4: Win_rate=75.00%
+[[0 0 2 2 0 0 0]
+ [0 0 1 2 0 0 0]
+ [0 0 1 1 0 0 0]
+ [0 0 1 2 0 2 0]
+ [0 1 2 2 2 2 1]

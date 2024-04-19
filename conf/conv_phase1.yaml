@@ -19,11 +19,12 @@ weights_only: false
 model_arch: conv_model
 
 unexplored_action: 1e-5
-disable_wandb: false
+enable_wandb: false
 log_freq: 10
-worker_type: optimize # self_play, optimize, evaluate
+worker_type: evaluate # self_play, optimize, evaluate
 seed: 42
-device: cpu
+learner_device: "cuda"
+actor_device: "cpu"
 batch_size: 1024
 
 noise_eps: .25
@@ -47,16 +48,13 @@ reward_space: GameResultReward
 
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 1e-6
+  lr: 1e-3
   # See https://arxiv.org/pdf/2105.05246.pdf
   eps: 0.0003
 min_lr_mod: .002
 
-actor_device: cpu
-learner_device: cpu
-
 # Play
-search_threads: 2
+search_threads: 10
 max_processes: 1
 simulation_num_per_move: 100
 
@@ -69,7 +67,7 @@ current_model_weight_fname: null
 nextgen_model_weight_fname: "mcts_phase1.pt"
 best_model_weight_fname: "_best_model.pt"
 replace_rate: .55
-eval_games: 100
+eval_games: 200
 
 play_data_dir: "play_data/raw"
 play_data_filename_tmpl: "play_%s.pkl"
@@ -78,4 +76,4 @@ log_dir: "logs"
 main_log_path: "main.log"
 
 # Supervised Learning
-max_epochs: 10
+max_epochs: 20

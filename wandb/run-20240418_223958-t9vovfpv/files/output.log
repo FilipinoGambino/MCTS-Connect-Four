@@ -1,0 +1,18 @@
+
+[2024-04-18 22:40:04,960][__main__][INFO] - Running: self_play
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\manager.py", line 82, in main
+    start(flags)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\manager.py", line 97, in start
+    return self_play.start(flags)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\worker\self_play.py", line 21, in start
+    return SelfPlayWorker(config).start()
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\worker\self_play.py", line 62, in start
+    env, data = futures.popleft().result()
+  File "C:\Users\Nick\anaconda3\lib\concurrent\futures\_base.py", line 446, in result
+    return self.__get_result()
+  File "C:\Users\Nick\anaconda3\lib\concurrent\futures\_base.py", line 391, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

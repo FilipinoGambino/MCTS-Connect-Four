@@ -1,0 +1,480 @@
+2024-04-19 01:09:28,489 INFO    StreamThr :24460 [internal.py:wandb_internal():86] W&B internal server running at pid: 24460, started at: 2024-04-19 01:09:28.488010
+2024-04-19 01:09:28,530 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status
+2024-04-19 01:09:28,565 INFO    WriterThread:24460 [datastore.py:open_for_write():87] open: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\run-coq8p4wy.wandb
+2024-04-19 01:09:28,566 DEBUG   SenderThread:24460 [sender.py:send():379] send: header
+2024-04-19 01:09:28,832 DEBUG   SenderThread:24460 [sender.py:send():379] send: run
+2024-04-19 01:09:29,914 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: check_version
+2024-04-19 01:09:29,929 INFO    SenderThread:24460 [dir_watcher.py:__init__():211] watching files in: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files
+2024-04-19 01:09:29,929 INFO    SenderThread:24460 [sender.py:_start_run_threads():1124] run started: coq8p4wy with start time 1713506968.485011
+2024-04-19 01:09:29,929 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: check_version
+2024-04-19 01:09:30,806 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: run_start
+2024-04-19 01:09:30,935 DEBUG   HandlerThread:24460 [system_info.py:__init__():26] System info init
+2024-04-19 01:09:30,935 DEBUG   HandlerThread:24460 [system_info.py:__init__():41] System info init done
+2024-04-19 01:09:30,935 INFO    HandlerThread:24460 [system_monitor.py:start():194] Starting system monitor
+2024-04-19 01:09:30,937 INFO    SystemMonitor:24460 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-04-19 01:09:30,937 INFO    HandlerThread:24460 [system_monitor.py:probe():214] Collecting system info
+2024-04-19 01:09:30,951 INFO    SystemMonitor:24460 [interfaces.py:start():190] Started cpu monitoring
+2024-04-19 01:09:30,952 INFO    SystemMonitor:24460 [interfaces.py:start():190] Started disk monitoring
+2024-04-19 01:09:30,955 DEBUG   HandlerThread:24460 [system_info.py:probe():150] Probing system
+2024-04-19 01:09:30,958 DEBUG   HandlerThread:24460 [system_info.py:_probe_git():135] Probing git
+2024-04-19 01:09:30,960 INFO    SystemMonitor:24460 [interfaces.py:start():190] Started gpu monitoring
+2024-04-19 01:09:30,975 INFO    SystemMonitor:24460 [interfaces.py:start():190] Started memory monitoring
+2024-04-19 01:09:31,032 INFO    SystemMonitor:24460 [interfaces.py:start():190] Started network monitoring
+2024-04-19 01:09:31,575 DEBUG   HandlerThread:24460 [system_info.py:_probe_git():143] Probing git done
+2024-04-19 01:09:31,576 DEBUG   HandlerThread:24460 [system_info.py:probe():198] Probing system done
+2024-04-19 01:09:31,576 DEBUG   HandlerThread:24460 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.9.19', 'heartbeatAt': '2024-04-19T06:09:30.955663', 'startedAt': '2024-04-19T06:09:28.367103', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'D:\\Nick\\Documents\\GitHub\\MCTS-Connect-Four\\manager.py', 'codePathLocal': 'manager.py', 'codePath': 'manager.py', 'git': {'remote': 'https://github.com/FilipinoGambino/MCTS-Connect-Four.git', 'commit': '57019e2d8e1668c856dec48298e34983f415d4eb'}, 'email': 'ngorichs1@gmail.com', 'root': 'D:/Nick/Documents/GitHub/MCTS-Connect-Four', 'host': 'NickPC', 'username': 'Nick', 'executable': 'C:\\Users\\Nick\\anaconda3\\python.exe', 'cpu_count': 4, 'cpu_count_logical': 4, 'cpu_freq': {'current': 3401.0, 'min': 0.0, 'max': 3401.0}, 'cpu_freq_per_core': [{'current': 3401.0, 'min': 0.0, 'max': 3401.0}], 'disk': {'/': {'total': 418.7450981140137, 'used': 274.3014945983887}}, 'gpu': 'NVIDIA GeForce RTX 2070 SUPER', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2070 SUPER', 'memory_total': 8589934592}], 'memory': {'total': 15.939006805419922}}
+2024-04-19 01:09:31,576 INFO    HandlerThread:24460 [system_monitor.py:probe():224] Finished collecting system info
+2024-04-19 01:09:31,576 INFO    HandlerThread:24460 [system_monitor.py:probe():227] Publishing system info
+2024-04-19 01:09:31,576 DEBUG   HandlerThread:24460 [system_info.py:_save_conda():207] Saving list of conda packages installed into the current environment
+2024-04-19 01:09:31,958 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\conda-environment.yaml
+2024-04-19 01:09:37,746 DEBUG   HandlerThread:24460 [system_info.py:_save_conda():222] Saving conda packages done
+2024-04-19 01:09:37,751 INFO    HandlerThread:24460 [system_monitor.py:probe():229] Finished publishing system info
+2024-04-19 01:09:37,757 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:09:37,757 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: keepalive
+2024-04-19 01:09:37,758 DEBUG   SenderThread:24460 [sender.py:send():379] send: files
+2024-04-19 01:09:37,758 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-metadata.json with policy now
+2024-04-19 01:09:38,032 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\conda-environment.yaml
+2024-04-19 01:09:38,032 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-metadata.json
+2024-04-19 01:09:38,105 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: python_packages
+2024-04-19 01:09:38,105 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:09:38,106 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:09:38,106 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: python_packages
+2024-04-19 01:09:38,107 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:09:38,156 DEBUG   SenderThread:24460 [sender.py:send():379] send: telemetry
+2024-04-19 01:09:38,640 INFO    wandb-upload_0:24460 [upload_job.py:push():131] Uploaded file C:\Users\Nick\AppData\Local\Temp\tmplm760na0wandb\62gfde4v-wandb-metadata.json
+2024-04-19 01:09:39,037 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\requirements.txt
+2024-04-19 01:09:39,038 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:09:39,455 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:09:41,050 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:09:44,487 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:09:47,743 DEBUG   SenderThread:24460 [sender.py:send():379] send: telemetry
+2024-04-19 01:09:49,105 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:09:49,221 DEBUG   SenderThread:24460 [sender.py:send():379] send: telemetry
+2024-04-19 01:09:49,228 DEBUG   SenderThread:24460 [sender.py:send():379] send: files
+2024-04-19 01:09:49,228 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file media\graph\graph_0_summary_95958cec8a1ad88a9866.graph.json with policy now
+2024-04-19 01:09:49,230 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:49,231 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:49,477 INFO    wandb-upload_0:24460 [upload_job.py:push():131] Uploaded file C:\Users\Nick\AppData\Local\Temp\tmplm760na0wandb\enxpojn9-media/graph/graph_0_summary_95958cec8a1ad88a9866.graph.json
+2024-04-19 01:09:49,513 DEBUG   SenderThread:24460 [sender.py:send():379] send: telemetry
+2024-04-19 01:09:49,514 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:09:49,514 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:50,113 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:09:50,113 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\media\graph\graph_0_summary_95958cec8a1ad88a9866.graph.json
+2024-04-19 01:09:50,114 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:50,114 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\media\graph
+2024-04-19 01:09:50,115 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\media
+2024-04-19 01:09:50,596 INFO    wandb-upload_0:24460 [upload_job.py:push():131] Uploaded file C:\Users\Nick\AppData\Local\Temp\tmplm760na0wandb\elii51k7-media/graph/graph_0_summary_95958cec8a1ad88a9866.graph.json
+2024-04-19 01:09:51,496 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:51,497 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:51,497 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:51,498 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:52,124 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:52,590 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:52,591 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:52,591 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:52,592 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:53,113 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:09:53,115 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:09:53,115 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:09:53,131 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:53,591 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:53,593 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:53,593 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:53,594 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:54,136 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:54,602 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:09:54,728 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:54,730 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:54,730 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:54,730 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:55,144 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:56,080 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:56,081 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:56,082 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:56,084 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:56,150 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:56,985 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:56,988 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:56,988 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:56,990 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:57,156 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:57,953 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:57,956 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:57,957 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:57,958 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:58,164 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:58,991 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:58,993 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:58,993 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:09:58,994 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:09:59,170 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:09:59,171 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:09:59,991 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:09:59,994 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:09:59,999 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:00,081 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:00,081 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:00,177 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\config.yaml
+2024-04-19 01:10:00,178 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:01,048 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:01,050 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:01,051 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:01,052 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:01,184 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:02,533 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:02,535 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:02,535 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:02,536 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:03,197 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:04,032 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:04,033 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:04,034 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:04,037 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:04,212 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:05,465 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:05,467 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:05,467 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:05,468 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:05,468 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:06,232 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:06,496 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:06,497 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:06,497 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:06,498 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:07,239 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:07,240 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:07,487 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:07,489 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:07,489 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:07,490 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:08,120 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:10:08,121 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:10:08,121 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:10:08,249 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:08,537 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:08,538 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:08,539 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:08,540 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:09,253 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:09,631 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:09,632 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:09,632 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:09,633 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:10,261 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:10,645 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:10,931 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:10,932 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:10,932 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:10,936 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:11,271 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:12,431 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:12,433 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:12,433 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:12,433 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:13,296 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:13,388 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:13,391 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:13,391 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:13,395 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:14,302 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:14,570 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:14,578 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:14,578 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:14,579 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:15,308 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:15,310 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:16,324 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:16,326 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:16,326 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:16,327 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:16,339 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:17,322 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:17,488 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:17,490 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:17,491 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:17,492 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:18,328 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:18,605 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:18,607 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:18,607 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:18,608 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:19,336 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:19,539 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:19,540 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:19,541 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:19,541 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:20,342 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:20,513 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:20,514 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:20,515 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:20,515 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:21,319 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:21,321 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:21,322 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:21,326 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:21,327 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:21,349 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:22,548 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:22,549 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:22,549 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:22,550 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:23,129 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:10:23,130 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:10:23,134 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:10:23,371 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:23,372 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:23,883 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:23,884 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:23,884 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:23,887 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:24,384 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:25,041 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:25,043 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:25,043 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:25,044 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:25,390 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:26,142 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:26,143 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:26,143 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:26,144 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:26,399 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:27,154 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:27,506 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:27,508 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:27,508 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:27,508 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:28,411 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:28,758 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:28,760 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:28,760 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:28,761 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:29,417 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:29,816 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:29,817 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:29,817 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:29,818 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:30,424 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:31,028 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:31,029 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:31,029 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:31,030 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:31,041 DEBUG   SystemMonitor:24460 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-04-19 01:10:31,044 DEBUG   SenderThread:24460 [sender.py:send():379] send: stats
+2024-04-19 01:10:31,431 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:31,432 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:32,189 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:32,190 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:32,190 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:32,190 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:32,191 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:32,438 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:33,275 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:33,276 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:33,276 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:33,278 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:33,446 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:34,460 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:34,462 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:34,462 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:34,463 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:35,457 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:35,469 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:35,472 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:35,472 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:35,473 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:36,404 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:36,405 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:36,405 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:36,407 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:36,464 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:37,227 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:37,229 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:37,229 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:37,230 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:37,229 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:37,471 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:38,135 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:10:38,136 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:10:38,136 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:10:38,207 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:38,243 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:38,244 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:38,245 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:38,478 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:39,265 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:39,266 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:39,266 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:39,267 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:39,484 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:39,484 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:40,733 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:40,734 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:40,735 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:40,736 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:41,501 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:41,697 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:41,699 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:41,699 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:41,702 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:42,505 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:42,694 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:42,694 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:42,695 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:42,695 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:42,696 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:43,510 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:43,627 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:43,628 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:43,628 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:43,628 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:44,400 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:44,402 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:44,402 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:44,404 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:44,520 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:45,341 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:45,343 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:45,343 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:45,344 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:45,526 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:46,250 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:46,252 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:46,252 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:46,254 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:46,540 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:47,198 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:47,199 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:47,199 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:47,199 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:47,553 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:47,554 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:48,150 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:48,151 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:48,152 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:48,152 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:48,153 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:48,567 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:49,090 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:49,091 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:49,091 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:49,092 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:49,585 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:50,143 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:50,144 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:50,144 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:50,145 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:50,621 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:51,013 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:51,014 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:51,014 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:51,015 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:51,627 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:52,016 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:52,017 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:52,017 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:52,018 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:52,656 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:53,084 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:53,086 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:53,086 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:53,087 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:53,144 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:10:53,331 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:10:53,331 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:10:53,579 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:53,669 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:10:53,670 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:54,458 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:54,459 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:54,460 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:54,460 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:54,691 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:55,679 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:55,680 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:55,680 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:55,684 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:55,703 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:56,845 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:56,846 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:56,847 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:56,855 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:57,745 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:58,381 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:58,382 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:58,382 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:58,383 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:58,761 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:10:59,174 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:10:59,176 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:10:59,176 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:10:59,177 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:10:59,177 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:10:59,775 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:00,348 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:00,351 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:00,351 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:00,352 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:00,787 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:11:00,788 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:01,056 DEBUG   SenderThread:24460 [sender.py:send():379] send: stats
+2024-04-19 01:11:01,391 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:01,393 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:01,394 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:01,395 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:01,804 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:02,481 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:02,482 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:02,482 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:02,485 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:02,819 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:03,583 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:03,584 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:03,584 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:03,594 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:03,830 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:04,618 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:11:05,078 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:05,080 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:05,081 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:05,082 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:05,876 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:06,678 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:06,679 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:06,679 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:06,680 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:06,897 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:07,764 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:07,765 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:07,766 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:07,767 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:07,902 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:08,149 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:11:08,150 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:11:08,150 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:11:08,828 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:08,829 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:08,829 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:08,830 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:08,937 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\output.log
+2024-04-19 01:11:08,937 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:09,835 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:11:09,888 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:09,889 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:09,890 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:09,891 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:09,950 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:11,035 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:11,036 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:11,036 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:11,037 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:11,991 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:12,097 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:12,099 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:12,099 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:12,100 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:13,011 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json
+2024-04-19 01:11:13,234 DEBUG   HandlerThread:24460 [handler.py:handle_request():146] handle_request: partial_history
+2024-04-19 01:11:13,238 DEBUG   SenderThread:24460 [sender.py:send():379] send: history
+2024-04-19 01:11:13,239 DEBUG   SenderThread:24460 [sender.py:send_request():406] send_request: summary_record
+2024-04-19 01:11:13,242 INFO    SenderThread:24460 [sender.py:_save_file():1390] saving file wandb-summary.json with policy end
+2024-04-19 01:11:14,020 INFO    Thread-16 :24460 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_010928-coq8p4wy\files\wandb-summary.json

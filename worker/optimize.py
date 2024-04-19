@@ -46,16 +46,15 @@ class OptimizeWorker:
         """
         Load the next generation model from disk and start doing the training endlessly.
         """
-        model = C4Model(self.flags, self.flags.current_model_weight_fname)
-        optimizer = Adam(model.model.parameters(), **self.flags.optimizer_kwargs)
-        logger.info(f"Training model with {model.model.parameters():,} parameters")
+        model = C4Model(self.flags, self.flags.learner_device, self.flags.current_model_weight_fname)
+        params = sum(p.numel() for p in model.model.parameters() if p.requires_grad)
+        logger.info(f"Training model with {params:,} parameters")
 
-        b = self.flags.batch_size
-        t = len(self.data)
+        optimizer = Adam(model.model.parameters(), **self.flags.optimizer_kwargs)
 
         def lr_lambda(epoch):
             min_pct = self.flags.min_lr_mod
-            pct_complete = min(epoch * b, t) / t
+            pct_complete = epoch / self.flags.max_epochs
             scaled_pct_complete = pct_complete * (1. - min_pct)
             return 1. - scaled_pct_complete
 
@@ -69,15 +68,16 @@ class OptimizeWorker:
         """
         max_epochs = self.flags.max_epochs
 
-        train_ds = C4Dataset(self.data)
+        train_ds = C4Dataset(self.data, self.flags.learner_device)
         train_dl = DataLoader(train_ds, batch_size=self.flags.batch_size, shuffle=True)
-        if not self.flags.disable_wandb:
+        if self.flags.enable_wandb:
             step = 0
             wandb.watch(model.model, self.flags.log_freq, log='all', log_graph=True)
 
         for epoch in range(max_epochs):
             print(f"Epoch {epoch+1:>2}")
             for game_states, probs, values in train_dl:
+                game_states = game_states
                 outputs = model.model(game_states)
 
                 policy_probs = softmax(outputs['policy_logits'], dim=-1).float()
@@ -95,14 +95,14 @@ class OptimizeWorker:
                 total_loss.backward()
 
                 optimizer.step()
-                if not self.flags.disable_wandb:
+                if self.flags.enable_wandb:
                     stats = {
                         "Loss": {
-                            "cross_entropy_loss": prob_loss,
-                            "mse_loss": val_loss,
-                            "total_loss": total_loss
+                            "cross_entropy_loss": prob_loss.detach().item(),
+                            "mse_loss": val_loss.detach().item(),
+                            "total_loss": total_loss.detach().item()
                         },
-                        "Learning Rate": lr_scheduler.get_last_lr()
+                        "Learning Rate": lr_scheduler.get_last_lr()[0]
                     }
                     step += self.flags.batch_size
                     wandb.log(stats, step=step)

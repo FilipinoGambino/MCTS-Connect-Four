@@ -1,0 +1,94 @@
+2024-04-19 01:34:23,492 INFO    StreamThr :22812 [internal.py:wandb_internal():86] W&B internal server running at pid: 22812, started at: 2024-04-19 01:34:23.492362
+2024-04-19 01:34:23,494 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status
+2024-04-19 01:34:23,509 INFO    WriterThread:22812 [datastore.py:open_for_write():87] open: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\run-kvxr0bni.wandb
+2024-04-19 01:34:23,509 DEBUG   SenderThread:22812 [sender.py:send():379] send: header
+2024-04-19 01:34:23,631 DEBUG   SenderThread:22812 [sender.py:send():379] send: run
+2024-04-19 01:34:24,347 INFO    SenderThread:22812 [dir_watcher.py:__init__():211] watching files in: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files
+2024-04-19 01:34:24,347 INFO    SenderThread:22812 [sender.py:_start_run_threads():1124] run started: kvxr0bni with start time 1713508463.492362
+2024-04-19 01:34:24,367 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: check_version
+2024-04-19 01:34:24,368 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: check_version
+2024-04-19 01:34:24,841 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: run_start
+2024-04-19 01:34:24,906 DEBUG   HandlerThread:22812 [system_info.py:__init__():26] System info init
+2024-04-19 01:34:24,906 DEBUG   HandlerThread:22812 [system_info.py:__init__():41] System info init done
+2024-04-19 01:34:24,907 INFO    HandlerThread:22812 [system_monitor.py:start():194] Starting system monitor
+2024-04-19 01:34:24,907 INFO    SystemMonitor:22812 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-04-19 01:34:24,907 INFO    HandlerThread:22812 [system_monitor.py:probe():214] Collecting system info
+2024-04-19 01:34:24,910 INFO    SystemMonitor:22812 [interfaces.py:start():190] Started cpu monitoring
+2024-04-19 01:34:24,911 INFO    SystemMonitor:22812 [interfaces.py:start():190] Started disk monitoring
+2024-04-19 01:34:24,912 INFO    SystemMonitor:22812 [interfaces.py:start():190] Started gpu monitoring
+2024-04-19 01:34:24,912 INFO    SystemMonitor:22812 [interfaces.py:start():190] Started memory monitoring
+2024-04-19 01:34:24,925 INFO    SystemMonitor:22812 [interfaces.py:start():190] Started network monitoring
+2024-04-19 01:34:24,938 DEBUG   HandlerThread:22812 [system_info.py:probe():150] Probing system
+2024-04-19 01:34:24,941 DEBUG   HandlerThread:22812 [system_info.py:_probe_git():135] Probing git
+2024-04-19 01:34:25,145 DEBUG   HandlerThread:22812 [system_info.py:_probe_git():143] Probing git done
+2024-04-19 01:34:25,145 DEBUG   HandlerThread:22812 [system_info.py:probe():198] Probing system done
+2024-04-19 01:34:25,145 DEBUG   HandlerThread:22812 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.9.19', 'heartbeatAt': '2024-04-19T06:34:24.938672', 'startedAt': '2024-04-19T06:34:23.472135', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'D:\\Nick\\Documents\\GitHub\\MCTS-Connect-Four\\manager.py', 'codePathLocal': 'manager.py', 'codePath': 'manager.py', 'git': {'remote': 'https://github.com/FilipinoGambino/MCTS-Connect-Four.git', 'commit': '57019e2d8e1668c856dec48298e34983f415d4eb'}, 'email': 'ngorichs1@gmail.com', 'root': 'D:/Nick/Documents/GitHub/MCTS-Connect-Four', 'host': 'NickPC', 'username': 'Nick', 'executable': 'C:\\Users\\Nick\\anaconda3\\python.exe', 'cpu_count': 4, 'cpu_count_logical': 4, 'cpu_freq': {'current': 3401.0, 'min': 0.0, 'max': 3401.0}, 'cpu_freq_per_core': [{'current': 3401.0, 'min': 0.0, 'max': 3401.0}], 'disk': {'/': {'total': 418.7450981140137, 'used': 274.3031311035156}}, 'gpu': 'NVIDIA GeForce RTX 2070 SUPER', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2070 SUPER', 'memory_total': 8589934592}], 'memory': {'total': 15.939006805419922}}
+2024-04-19 01:34:25,145 INFO    HandlerThread:22812 [system_monitor.py:probe():224] Finished collecting system info
+2024-04-19 01:34:25,145 INFO    HandlerThread:22812 [system_monitor.py:probe():227] Publishing system info
+2024-04-19 01:34:25,145 DEBUG   HandlerThread:22812 [system_info.py:_save_conda():207] Saving list of conda packages installed into the current environment
+2024-04-19 01:34:25,356 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\conda-environment.yaml
+2024-04-19 01:34:29,604 DEBUG   HandlerThread:22812 [system_info.py:_save_conda():222] Saving conda packages done
+2024-04-19 01:34:29,607 INFO    HandlerThread:22812 [system_monitor.py:probe():229] Finished publishing system info
+2024-04-19 01:34:29,612 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:34:29,613 DEBUG   SenderThread:22812 [sender.py:send():379] send: files
+2024-04-19 01:34:29,613 INFO    SenderThread:22812 [sender.py:_save_file():1390] saving file wandb-metadata.json with policy now
+2024-04-19 01:34:29,800 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: python_packages
+2024-04-19 01:34:29,800 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:34:29,801 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: python_packages
+2024-04-19 01:34:29,801 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:34:29,802 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:34:29,872 DEBUG   SenderThread:22812 [sender.py:send():379] send: telemetry
+2024-04-19 01:34:30,191 INFO    wandb-upload_0:22812 [upload_job.py:push():131] Uploaded file C:\Users\Nick\AppData\Local\Temp\tmprestlswuwandb\qjyna15l-wandb-metadata.json
+2024-04-19 01:34:30,387 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\conda-environment.yaml
+2024-04-19 01:34:30,388 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\requirements.txt
+2024-04-19 01:34:30,388 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\wandb-metadata.json
+2024-04-19 01:34:30,389 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_created():271] file/dir created: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:34:32,397 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:34:33,899 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:34:36,422 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:34:39,579 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:34:44,612 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:34:44,800 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:34:44,800 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:34:44,814 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:34:49,907 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:34:54,943 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:34:55,545 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\config.yaml
+2024-04-19 01:34:58,564 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:34:59,818 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:34:59,818 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:34:59,818 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:35:00,979 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:06,012 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:10,642 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:35:11,626 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:14,822 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:35:14,823 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:35:14,823 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:35:16,943 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:21,976 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:24,950 DEBUG   SystemMonitor:22812 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-04-19 01:35:24,953 DEBUG   SenderThread:22812 [sender.py:send():379] send: stats
+2024-04-19 01:35:27,968 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:29,827 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:35:29,827 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:35:29,828 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:35:33,009 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:35:33,621 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:38,653 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:42,310 ERROR   FileStreamThread:22812 [file_stream.py:_handle_response():523] dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/filipinogambino/MCTS_Connect4/kvxr0bni/file_stream
+NoneType: None
+2024-04-19 01:35:43,686 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:44,832 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:35:44,832 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:35:44,832 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status
+2024-04-19 01:35:48,904 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:53,935 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:54,958 DEBUG   SenderThread:22812 [sender.py:send():379] send: stats
+2024-04-19 01:35:54,991 ERROR   FileStreamThread:22812 [file_stream.py:_handle_response():523] dropped chunk 404 Client Error: Not Found for url: https://api.wandb.ai/files/filipinogambino/MCTS_Connect4/kvxr0bni/file_stream
+NoneType: None
+2024-04-19 01:35:57,436 INFO    Thread-16 :22812 [dir_watcher.py:_on_file_modified():288] file/dir modified: D:\Nick\Documents\GitHub\MCTS-Connect-Four\wandb\run-20240419_013423-kvxr0bni\files\output.log
+2024-04-19 01:35:58,983 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: status_report
+2024-04-19 01:35:59,835 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-19 01:35:59,850 DEBUG   HandlerThread:22812 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-19 01:35:59,851 DEBUG   SenderThread:22812 [sender.py:send_request():406] send_request: stop_status

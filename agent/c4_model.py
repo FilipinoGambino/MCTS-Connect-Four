@@ -25,8 +25,9 @@ class C4Model:
         :ivar ChessModelAPI api: the api to use to listen for and then return this models predictions (on a pipe).
     """
 
-    def __init__(self, flags: SimpleNamespace, fname=None):
+    def __init__(self, flags: SimpleNamespace, device, fname=None):
         self.flags = flags
+        self.device = device
         self.api = None
         self.model = self.build_and_load_model(fname)
 
@@ -46,7 +47,7 @@ class C4Model:
         return [self.api.create_pipe() for _ in range(n_pipes)]
 
     def build_and_load_model(self, fname):
-        model = create_model(self.flags, device=self.flags.device)
+        model = create_model(self.flags, device=self.device)
         if self.flags.worker_type == 'optimize':
             model.train()
         else:

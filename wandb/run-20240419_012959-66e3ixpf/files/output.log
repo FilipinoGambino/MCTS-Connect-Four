@@ -1,0 +1,24 @@
+[2024-04-19 01:30:05,661][__main__][INFO] - Running: optimize
+[2024-04-19 01:30:05,880][numexpr.utils][INFO] - NumExpr defaulting to 4 threads.
+[2024-04-19 01:30:13,259][worker.optimize][INFO] - Training model with 2,519,240 parameters
+Epoch  1
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+Epoch  2
+Epoch  3
+Epoch  4
+Epoch  5
+Epoch  6
+Epoch  7
+Epoch  8
+Epoch  9
+Epoch 10
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 20

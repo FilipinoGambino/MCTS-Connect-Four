@@ -1,0 +1,14 @@
+
+[2024-04-18 22:37:26,997][__main__][INFO] - Running: self_play
+Exception in thread prediction_worker_1:
+Traceback (most recent call last):
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 980, in _bootstrap_inner
+    self.run()
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 917, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\Nick\anaconda3\lib\site-packages\torch\utils\_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\agent\c4_api.py", line 66, in _predict_batch_worker
+    obs = pipe.recv()
+  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 251, in recv
+    return _ForkingPickler.loads(buf.getbuffer())

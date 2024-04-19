@@ -1,0 +1,61 @@
+
+[2024-04-18 22:20:16,521][__main__][INFO] - Running: self_play
+Exception in thread Exception in thread Exception in thread Exception in thread Exception in thread prediction_worker_0prediction_worker_1prediction_worker_6prediction_worker_2prediction_worker_5:
+:
+:
+:
+:
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 980, in _bootstrap_inner
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 980, in _bootstrap_inner
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 980, in _bootstrap_inner
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 980, in _bootstrap_inner
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 980, in _bootstrap_inner
+        self.run()self.run()
+self.run()self.run()self.run()  File "C:\Users\Nick\anaconda3\lib\threading.py", line 917, in run
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 917, in run
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 917, in run
+  File "C:\Users\Nick\anaconda3\lib\threading.py", line 917, in run
+          File "C:\Users\Nick\anaconda3\lib\threading.py", line 917, in run
+self._target(*self._args, **self._kwargs)self._target(*self._args, **self._kwargs)
+      File "C:\Users\Nick\anaconda3\lib\site-packages\torch\utils\_contextlib.py", line 115, in decorate_context
+self._target(*self._args, **self._kwargs)self._target(*self._args, **self._kwargs)  File "C:\Users\Nick\anaconda3\lib\site-packages\torch\utils\_contextlib.py", line 115, in decorate_context
+self._target(*self._args, **self._kwargs)
+  File "C:\Users\Nick\anaconda3\lib\site-packages\torch\utils\_contextlib.py", line 115, in decorate_context
+      File "C:\Users\Nick\anaconda3\lib\site-packages\torch\utils\_contextlib.py", line 115, in decorate_context
+return func(*args, **kwargs)  File "C:\Users\Nick\anaconda3\lib\site-packages\torch\utils\_contextlib.py", line 115, in decorate_context
+return func(*args, **kwargs)
+      File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\agent\c4_api.py", line 64, in _predict_batch_worker
+return func(*args, **kwargs)return func(*args, **kwargs)  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\agent\c4_api.py", line 64, in _predict_batch_worker
+return func(*args, **kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\agent\c4_api.py", line 64, in _predict_batch_worker
+      File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\agent\c4_api.py", line 64, in _predict_batch_worker
+obs = pipe.recv()  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\agent\c4_api.py", line 64, in _predict_batch_worker
+obs = pipe.recv()
+  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 250, in recv
+obs = pipe.recv()    obs = pipe.recv()  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 251, in recv
+obs = pipe.recv()
+      File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 250, in recv
+  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 250, in recv
+    buf = self._recv_bytes()  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 250, in recv
+return _ForkingPickler.loads(buf.getbuffer())
+buf = self._recv_bytes()      File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 318, in _recv_bytes
+buf = self._recv_bytes()_pickle
+buf = self._recv_bytes()
+.  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 318, in _recv_bytes
+  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 318, in _recv_bytes
+UnpicklingErrorreturn self._get_more_data(ov, maxsize)  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 318, in _recv_bytes
+    :
+    return self._get_more_data(ov, maxsize)invalid load key, '\x00'.      File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 337, in _get_more_data
+return self._get_more_data(ov, maxsize)
+return self._get_more_data(ov, maxsize)
+  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 337, in _get_more_data
+  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 337, in _get_more_data
+assert left > 0  File "C:\Users\Nick\anaconda3\lib\multiprocessing\connection.py", line 337, in _get_more_data
+assert left > 0    AssertionError
+    assert left > 0AssertionErrorassert left > 0
+AssertionError

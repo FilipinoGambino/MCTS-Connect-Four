@@ -5,11 +5,12 @@ group: initial_testing
 weights_only: false
 model_arch: conv_model
 unexplored_action: 1.0e-05
-disable_wandb: false
-log_freq: 100
-worker_type: optimize
+enable_wandb: true
+log_freq: 10
+worker_type: evaluate
 seed: 42
-device: cpu
+learner_device: cuda
+actor_device: cpu
 batch_size: 1024
 noise_eps: 0.25
 c_puct: 1.5
@@ -29,12 +30,10 @@ obs_space: HistoricalObs
 reward_space: GameResultReward
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 1.0e-05
+  lr: 0.001
   eps: 0.0003
 min_lr_mod: 0.002
-actor_device: cpu
-learner_device: cpu
-search_threads: 2
+search_threads: 10
 max_processes: 1
 simulation_num_per_move: 100
 max_games_per_file: 100
@@ -44,12 +43,12 @@ current_model_weight_fname: null
 nextgen_model_weight_fname: mcts_phase1.pt
 best_model_weight_fname: _best_model.pt
 replace_rate: 0.55
-eval_games: 100
+eval_games: 200
 play_data_dir: play_data/raw
 play_data_filename_tmpl: play_%s.pkl
 log_dir: logs
 main_log_path: main.log
-max_epochs: 10
+max_epochs: 20
 use_mixed_precision: true
 discounting: 0.999
 reduction: mean

@@ -40,7 +40,7 @@ def get_default_flags(flags: DictConfig) -> DictConfig:
     flags.setdefault("n_value_warmup_batches", 0)
 
     # Miscellaneous params
-    flags.setdefault("disable_wandb", False)
+    flags.setdefault("enable_wandb", False)
     flags.setdefault("debug", False)
 
     return OmegaConf.create(flags)
@@ -69,7 +69,7 @@ def main(flags: DictConfig):
     logger.info(OmegaConf.to_yaml(flags, resolve=True))
     OmegaConf.save(flags, "outputs/config.yaml")
     flags = flags_to_namespace(OmegaConf.to_container(flags))
-    if not flags.disable_wandb:
+    if flags.enable_wandb:
         wandb.init(
             config=flags,
             project=flags.project,

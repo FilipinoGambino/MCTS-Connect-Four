@@ -186,6 +186,7 @@ class _HistoricalObsWrapper(gym.Wrapper):
         p2_obs = np.where(p2_obs == game.p2_mark, 1, 0)
 
         p1_turn = np.full(
+
             shape=(1, *game.board_dims),
             fill_value=game.is_p1_turn,
             dtype=np.int64

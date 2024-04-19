@@ -1,0 +1,6 @@
+[2024-04-19 01:33:37,657][__main__][INFO] - Running: optimize
+[2024-04-19 01:33:37,894][numexpr.utils][INFO] - NumExpr defaulting to 4 threads.
+[2024-04-19 01:33:45,137][worker.optimize][INFO] - Training model with 2,519,240 parameters
+Epoch  1 |
+Epoch  1 | Total Loss: 2.9291886620852914
+Epoch  2 | Total Loss: 2.9287686340372083

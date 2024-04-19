@@ -38,7 +38,7 @@ class SelfPlayWorker:
     """
     def __init__(self, config: SimpleNamespace):
         self.flags = config
-        self.current_model = C4Model(self.flags, self.flags.current_model_weight_fname)
+        self.current_model = C4Model(self.flags, self.flags.actor_device, self.flags.current_model_weight_fname)
         self.m = Manager()
         self.cur_pipes = self.m.list(
             [self.current_model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
@@ -102,7 +102,7 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
     env = env.obs_space.wrap_env(env)
     env = LoggingEnv(env, reward_space)
     env = VecOneEnv(env)
-    env = PytorchEnv(env, flags.device)
+    env = PytorchEnv(env, flags.actor_device)
     env = DictEnv(env)
 
     output = env.reset()

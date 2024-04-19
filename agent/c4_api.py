@@ -29,14 +29,17 @@ class C4API:
         """
         self.agent_model = agent_model
         self.pipes = []
+        self.flags = agent_model.flags
+        self.predictors = []
 
     def start(self):
         """
         Starts a thread to listen on the pipe and make predictions
         :return:
         """
-        prediction_worker = Thread(target=self._predict_batch_worker, name="prediction_worker", daemon=True)
+        prediction_worker = Thread(target=self._predict_batch_worker, name=f"prediction_worker", daemon=True)
         prediction_worker.start()
+        logger.info(f"Model loaded onto {next(self.agent_model.model.parameters()).device} device")
 
     def create_pipe(self):
         """
@@ -68,4 +71,6 @@ class C4API:
 
                     pipe.send((policy_ary, value_ary))
                 except EOFError: # Triggers when the other side of the pipe is closed
-                    pass
+                    for thread in self.predictors:
+                        thread.join()
+                    return

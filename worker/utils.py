@@ -4,6 +4,7 @@ from typing import Dict
 
 from c4_gym import ACT_SPACES_DICT, OBS_SPACES_DICT, REWARD_SPACES_DICT
 
+
 def flags_to_namespace(flags: Dict) -> SimpleNamespace:
     flags = SimpleNamespace(**flags)
 
@@ -17,7 +18,7 @@ def flags_to_namespace(flags: Dict) -> SimpleNamespace:
     flags.optimizer_class = torch.optim.__dict__[flags.optimizer_class]
 
     # Miscellaneous params
-    flags.actor_device = torch.device(flags.actor_device)
     flags.learner_device = torch.device(flags.learner_device)
+    flags.actor_device = torch.device(flags.actor_device)
 
     return flags

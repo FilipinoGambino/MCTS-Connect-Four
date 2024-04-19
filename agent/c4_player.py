@@ -1,3 +1,4 @@
+import threading
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import copy
@@ -54,8 +55,6 @@ class ActionStats:
 class C4Player:
     def __init__(self, flags, pipes=None):
         self.tree = defaultdict(VisitStats)
-        self.tree_path = []
-        self.tree_actions = []
         self.flags = flags
         self.moves = []
         self.pipe_pool = pipes
@@ -65,9 +64,7 @@ class C4Player:
         """
         reset the tree to begin a new exploration of states
         """
-        logger.info("Resetting")
-        # self.tree = defaultdict(VisitStats)
-        self.tree_path = []
+        self.tree = defaultdict(VisitStats)
 
     def action(self, env, env_output, can_stop = True) -> str:
         """
@@ -136,7 +133,7 @@ class C4Player:
         This method searches for possible moves, adds them to a search tree, and eventually returns the
         best move that was found during the search.
 
-        :param ChessEnv env: environment in which to search for the move
+        :param C4Env env: environment in which to search for the move
         :param np.ndarry env_output: observation planes derived from the game state
         :param boolean is_root_node: whether this is the root node of the search.
         :return float: value of the move. This is calculated by getting a prediction from the value network.

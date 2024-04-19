@@ -1,0 +1,47 @@
+
+[2024-04-18 20:18:07,382][__main__][INFO] - Running: self_play
+Error executing job with overrides: []
+concurrent.futures.process._RemoteTraceback:
+"""
+Traceback (most recent call last):
+  File "C:\Users\Nick\anaconda3\lib\concurrent\futures\process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\worker\self_play.py", line 108, in self_play_buffer
+    output = env.reset()
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\c4_gym\wrappers.py", line 223, in reset
+    return DictEnv._dict_env_out(super(DictEnv, self).reset(**kwargs))
+  File "C:\Users\Nick\anaconda3\lib\site-packages\gym\core.py", line 323, in reset
+    return self.env.reset(**kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\c4_gym\wrappers.py", line 198, in reset
+    return tuple([self._to_tensor(out) for out in super(PytorchEnv, self).reset(**kwargs)])
+  File "C:\Users\Nick\anaconda3\lib\site-packages\gym\core.py", line 323, in reset
+    return self.env.reset(**kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\c4_gym\wrappers.py", line 78, in reset
+    self.last_out = self.env.reset(**kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\c4_gym\wrappers.py", line 35, in reset
+    obs, reward, done, info = super(LoggingEnv, self).reset(**kwargs)
+  File "C:\Users\Nick\anaconda3\lib\site-packages\gym\core.py", line 323, in reset
+    return self.env.reset(**kwargs)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\c4_gym\obs_spaces.py", line 164, in reset
+    return self.observation(observation), reward, done, info
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\c4_gym\obs_spaces.py", line 174, in observation
+    p1_obs = np.stack(
+  File "<__array_function__ internals>", line 4, in stack
+TypeError: _stack_dispatcher() got an unexpected keyword argument 'dtype'
+"""
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\manager.py", line 82, in main
+    start(flags)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\manager.py", line 97, in start
+    return self_play.start(flags)
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\worker\self_play.py", line 21, in start
+    return SelfPlayWorker(config).start()
+  File "D:\Nick\Documents\GitHub\MCTS-Connect-Four\worker\self_play.py", line 62, in start
+    env, data = futures.popleft().result()
+  File "C:\Users\Nick\anaconda3\lib\concurrent\futures\_base.py", line 446, in result
+    return self.__get_result()
+  File "C:\Users\Nick\anaconda3\lib\concurrent\futures\_base.py", line 391, in __get_result
+    raise self._exception
+TypeError: _stack_dispatcher() got an unexpected keyword argument 'dtype'
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

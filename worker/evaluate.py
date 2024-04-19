@@ -76,7 +76,7 @@ class EvaluateWorker:
         Loads the best model from the standard directory.
         :return C4Model: the last best model to evaluate against
         """
-        model = C4Model(self.flags, self.flags.current_model_weight_fname)
+        model = C4Model(self.flags, self.flags.actor_device, self.flags.current_model_weight_fname)
         return model
 
     def load_next_generation_model(self):
@@ -84,7 +84,7 @@ class EvaluateWorker:
         Loads the next generation model from the standard directory
         :return C4Model: the next gen model to evaluate
         """
-        model = C4Model(self.flags, self.flags.nextgen_model_weight_fname)
+        model = C4Model(self.flags, self.flags.actor_device, self.flags.nextgen_model_weight_fname)
         return model
 
 
@@ -113,7 +113,7 @@ def play_game(flags, cur, ng, switch_p1: bool) -> (float, C4Env, bool):
     env = env.obs_space.wrap_env(env)
     env = LoggingEnv(env, reward_space)
     env = VecOneEnv(env)
-    env = PytorchEnv(env, flags.device)
+    env = PytorchEnv(env, flags.actor_device)
     env = DictEnv(env)
 
     env_output = env.reset()
