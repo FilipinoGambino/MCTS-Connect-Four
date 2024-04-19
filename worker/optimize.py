@@ -8,7 +8,7 @@ from logging import getLogger
 from pathlib import Path
 import pandas as pd
 import torch
-from torch.nn.functional import cross_entropy, mse_loss, softmax
+import torch.nn.functional as F
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 import wandb
@@ -76,33 +76,34 @@ class OptimizeWorker:
 
         for epoch in range(max_epochs):
             print(f"Epoch {epoch+1:>2}")
-            for game_states, probs, values in train_dl:
+            for game_states, probs, targets, values in train_dl:
                 game_states = game_states
                 outputs = model.model(game_states)
 
-                policy_probs = softmax(outputs['policy_logits'], dim=-1).float()
+                policy_probs = F.softmax(outputs['policy_logits'], dim=-1).float()
+                # policy_logits = outputs['policy_logits']
                 values = values.unsqueeze(-1).float()
-
-                assert policy_probs.shape == probs.shape, f"policy probs: {policy_probs.shape} | probs: {probs.shape}"
-                assert outputs['baseline'].shape == values.shape, f"policy values: {outputs['baseline'].shape} | values: {values.shape}"
 
                 optimizer.zero_grad()
 
-                prob_loss = cross_entropy(policy_probs, probs)
-                val_loss = mse_loss(outputs['baseline'], values)
+                celoss = OptimizeWorker.monte_carlo_cross_entropy(policy_probs, targets)
+                mseloss = F.mse_loss(outputs['baseline'], values)
 
-                total_loss = prob_loss + val_loss
+                total_loss = celoss + mseloss
                 total_loss.backward()
 
                 optimizer.step()
                 if self.flags.enable_wandb:
                     stats = {
                         "Loss": {
-                            "cross_entropy_loss": prob_loss.detach().item(),
-                            "mse_loss": val_loss.detach().item(),
+                            "monte_carlo_cross_entropy_loss": celoss.detach().item(),
+                            "mse_loss": mseloss.detach().item(),
                             "total_loss": total_loss.detach().item()
                         },
-                        "Learning Rate": lr_scheduler.get_last_lr()[0]
+                        "Misc": {
+                            "Epoch": epoch,
+                            "Learning Rate": lr_scheduler.get_last_lr()[0]
+                        }
                     }
                     step += self.flags.batch_size
                     wandb.log(stats, step=step)
@@ -110,16 +111,23 @@ class OptimizeWorker:
         model.save_model()
 
     @staticmethod
+    def monte_carlo_cross_entropy(logits, targets):
+        probs = F.log_softmax(logits, dim=-1)
+        prob_estimate = torch.gather(input=probs, index=targets, dim=-1)
+        prob_estimate /= len(prob_estimate)
+        mcce_loss = -1 * torch.sum(prob_estimate)
+        return mcce_loss
+
+    @staticmethod
     def collect_data():
-        df_path = Path(os.getcwd()) / Path("play_data") / Path("gamestate_df.pkl")
-        return pd.read_pickle(df_path)
-        # df_paths = Path(os.getcwd()) / Path("play_data")
-        # df = None
-        # for root, dirs, files in os.walk(df_paths, topdown=False):
-        #     for file in files:
-        #         fname = os.path.join(df_paths, file)
-        #         if isinstance(df, pd.DataFrame):
-        #             df = pd.read_pickle(fname)
-        #         else:
-        #             df = pd.concat([df, pd.read_pickle(fname)])
-        # return df.reset_index(drop=True)
+        df_paths = Path(os.getcwd()) / Path("play_data")
+        df = None
+        for file in os.listdir(df_paths):
+            fname = os.path.join(df_paths, file)
+            if os.path.isdir(fname):
+                continue
+            if isinstance(df, pd.DataFrame):
+                df = pd.read_pickle(fname)
+            else:
+                df = pd.concat([df, pd.read_pickle(fname)])
+        return df.reset_index(drop=True)

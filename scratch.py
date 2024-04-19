@@ -9,7 +9,7 @@ def check_type(x):
     elif isinstance(x, torch.Tensor):
         return x.to("cuda:0")
 
-df = pd.read_pickle("play_data/gamestate_df.pkl")
+df = pd.read_pickle("play_data/gamestate_df1.pkl")
 gamestate = df.obs
 
 t = check_type(gamestate[0])

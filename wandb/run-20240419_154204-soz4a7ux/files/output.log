@@ -1,0 +1,21 @@
+
+[2024-04-19 15:42:04,850][__main__][INFO] - Running: optimize
+[2024-04-19 15:42:22,704][worker.optimize][INFO] - Training model with 2,519,240 parameters
+Epoch  1
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\manager.py", line 82, in main
+    start(flags)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\manager.py", line 100, in start
+    return optimize.start(flags)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 26, in start
+    return OptimizeWorker(flags).start()
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 63, in start
+    self.training(model, optimizer, lr_scheduler)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 91, in training
+    prob_loss = F.nll_loss(policy_probs, probs, reduction='sum')
+  File "C:\Users\nick.gorichs\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\nn\functional.py", line 2729, in nll_loss
+    return torch._C._nn.nll_loss_nd(input, target, weight, _Reduction.get_enum(reduction), ignore_index)
+RuntimeError: 0D or 1D target tensor expected, multi-target not supported
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

@@ -1,0 +1,6 @@
+
+[2024-04-19 16:08:49,564][__main__][INFO] - Running: optimize
+[2024-04-19 16:09:12,357][worker.optimize][INFO] - Training model with 2,519,240 parameters
+Epoch  1
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+Epoch  2

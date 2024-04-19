@@ -16,10 +16,11 @@ class C4Dataset(Dataset):
         row = self.df.iloc[idx,:]
         game_state = self._to_tensor(row.obs)
         probs = self._to_tensor([row.prob_0, row.prob_1, row.prob_2, row.prob_3, row.prob_4, row.prob_5, row.prob_6])
+        target = torch.argmax(probs)
         value = self._to_tensor(row.vals)
-        return game_state, probs, value
+        return game_state, probs, target, value
 
-    def _to_tensor(self, x: Union[Dict, torch.Tensor]) -> Dict[str, Union[Dict, torch.Tensor]]:
+    def _to_tensor(self, x: Union[Dict, torch.Tensor]):
         if isinstance(x, dict):
             return {key: self._to_tensor(val) for key, val in x.items()}
         elif isinstance(x, torch.Tensor):

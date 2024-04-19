@@ -81,9 +81,8 @@ class C4Player:
 
         root_value, naked_value = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
-        if any(np.isnan(policy)):
-            logger.info(f"Policy: {policy}\n{env.board}")
-        my_action = int(np.random.choice(range(N_ACTIONS), p = self.apply_temperature(policy, env.game_state.turn)))
+
+        my_action = int(np.random.choice(range(N_ACTIONS), p = policy))
 
         self.moves.append([{"obs":env_output["obs"],
                             "info":{"available_actions_mask":env_output["info"]["available_actions_mask"]}},
@@ -236,27 +235,6 @@ class C4Player:
 
         return best_a
 
-    def apply_temperature(self, policy, turn):
-        """
-        Applies a random fluctuation to probability of choosing various actions
-        :param policy: list of probabilities of taking each action
-        :param turn: number of turns that have occurred in the game so far
-        :return: policy, randomly perturbed based on the temperature. High temp = more perturbation. Low temp
-            = less.
-        """
-        tau = np.power(self.flags.tau_decay_rate, turn + 1)
-        if tau < 0.1:
-            tau = 0
-        if tau == 0:
-            action = np.argmax(policy)
-            ret = np.zeros(N_ACTIONS)
-            ret[action] = 1.0
-            return ret
-        else:
-            ret = np.power(policy, 1 / tau)
-            ret /= np.sum(ret)
-            return ret
-
     def calc_policy(self, env):
         """calc π(a|s0)
         :return list(float): a list of probabilities of taking each action, calculated based on visit counts.
@@ -266,25 +244,34 @@ class C4Player:
         policy = np.zeros(N_ACTIONS)
         for action, a_s in my_visitstats.a.items():
             policy[action] = a_s.n
-
         policy /= np.sum(policy)
-        return policy
 
-    def sl_action(self, observation, my_action, weight=1):
+        if self.flags.worker_type == "evaluate" and self.flags.temperature_tau > 0.:
+            logger.info(f"Deterministic play during evaluation, setting temperature_tau to 0.")
+            self.flags.temperature_tau = 0.
+
+        return self.apply_temperature(policy, env.game_state.turn)
+
+    def apply_temperature(self, policy, turn):
         """
-        Logs the action in self.moves. Useful for generating a game using game data.
-
-        :param str observation: FEN format observation indicating the game state
-        :param str my_action: uci format action to take
-        :param float weight: weight to assign to the taken action when logging it in self.moves
-        :return str: the action, unmodified.
+        Applies a random fluctuation to probability of choosing various actions
+        :param policy: list of probabilities of taking each action
+        :param turn: number of turns that have occurred in the game so far
+        :return: policy, randomly perturbed based on the temperature. High temp = more perturbation. Low temp
+            = less.
         """
-        policy = np.zeros(N_ACTIONS)
-
-        policy[my_action] = weight
-
-        self.moves.append([observation, list(policy)])
-        return my_action
+        tau = np.power(self.flags.temperature_tau, turn + 1)
+        if tau < 0.1:
+            tau = 0.
+        if tau == 0.:
+            action = np.argmax(policy)
+            ret = np.zeros(N_ACTIONS)
+            ret[action] = 1.
+            return ret
+        else:
+            ret = np.power(policy, 1 / tau)
+            ret /= np.sum(ret)
+            return ret
 
     def finish_game(self, z):
         """

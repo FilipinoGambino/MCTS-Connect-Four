@@ -1,0 +1,20 @@
+
+[2024-04-19 15:26:19,404][__main__][INFO] - Running: optimize
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\manager.py", line 82, in main
+    start(flags)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\manager.py", line 100, in start
+    return optimize.start(flags)
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 26, in start
+    return OptimizeWorker(flags).start()
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 43, in __init__
+    self.data = OptimizeWorker.collect_data()
+  File "C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\worker\optimize.py", line 125, in collect_data
+    df = pd.concat([df, pd.read_pickle(fname)])
+  File "C:\Users\nick.gorichs\AppData\Local\Programs\Python\Python39\lib\site-packages\pandas\io\pickle.py", line 189, in read_pickle
+    with get_handle(
+  File "C:\Users\nick.gorichs\AppData\Local\Programs\Python\Python39\lib\site-packages\pandas\io\common.py", line 872, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\nick.gorichs\\PycharmProjects\\MCTS-Connect-Four\\play_data\\play_20240419-120425.693990.pkl'
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

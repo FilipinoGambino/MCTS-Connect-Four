@@ -1,6 +1,7 @@
 from collections import defaultdict
 import pandas as pd
 import pickle
+import numpy as np
 import os
 from time import time
 import torch
@@ -25,12 +26,12 @@ import torch
 #                 )
 #
 # df = pd.DataFrame(data)
-# df.to_pickle('./play_data/gamestate_df.pkl')
+# df.to_pickle('./play_data/gamestate_df2.pkl')
 
 
-df = pd.read_pickle('./play_data/gamestate_df.pkl')
+df = pd.read_pickle('./play_data/gamestate_df2.pkl')
 obs = df['obs']
-probs = df.apply(lambda row: [row.prob_0, row.prob_1, row.prob_2, row.prob_3, row.prob_4, row.prob_5, row.prob_6], axis=1)
+probs = df.apply(lambda row: np.argmax([row.prob_0, row.prob_1, row.prob_2, row.prob_3, row.prob_4, row.prob_5, row.prob_6]), axis=1)
 vals = df['vals']
 print(obs.head(10))
 print(probs.head(10))
