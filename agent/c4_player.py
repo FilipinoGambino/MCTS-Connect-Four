@@ -66,36 +66,31 @@ class C4Player:
         """
         self.tree = defaultdict(VisitStats)
 
-    def action(self, env, env_output, can_stop = True) -> str:
+    def action(self, env, env_output) -> str:
         """
         Figures out the next best move within the specified environment and returns
         a string describing the action to take.
 
         :param C4Env env: environment in which to figure out the action
         :param np.array env_output: observation planes
-        :param boolean can_stop: whether we are allowed to take no action (return None)
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
         self.reset()
 
-        root_value, naked_value = self.search_moves(env, env_output)
+        _,_ = self.search_moves(env, env_output)
         policy = self.calc_policy(env)
 
         my_action = int(np.random.choice(range(N_ACTIONS), p = policy))
 
-        self.moves.append([{"obs":env_output["obs"],
-                            "info":{"available_actions_mask":env_output["info"]["available_actions_mask"]}},
-                           policy])
+        self.moves.append([
+            {
+                "obs":env_output["obs"],
+                 "info":{"available_actions_mask":env_output["info"]["available_actions_mask"]}
+            },
+            policy
+        ])
         return my_action
-
-    def deboog(self, env, state):
-        try:
-            myvisit_stats = self.tree[state]
-            for idx,action in myvisit_stats.a.items():
-                logger.info(f"{idx} | n:{action.n:>6.2f} w:{action.w:>6.2f} q:{action.q:>6.2f} p:{action.p:>6.2f} inst:{hash(env)}")
-        except TypeError:
-            pass
 
     def search_moves(self, env, obs) -> (float, float):
         """
@@ -167,7 +162,6 @@ class C4Player:
             action_stats.n += 1
             action_stats.w += leaf_v
             action_stats.q = action_stats.w / action_stats.n
-        # self.deboog(env, state)
         return leaf_v
 
     def evaluate(self, obs) -> (np.ndarray, float):

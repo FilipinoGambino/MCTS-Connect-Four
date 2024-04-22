@@ -7,7 +7,7 @@ import torch
 from logging import getLogger
 from types import SimpleNamespace
 
-from .nns import create_model
+from nns import create_model
 from agent.c4_api import C4API
 
 
@@ -56,7 +56,7 @@ class C4Model:
 
         if fname:
             checkpoint_state = torch.load(
-                Path(self.flags.model_dir) / Path(fname),
+                Path(__file__).parent.parent / Path(self.flags.model_dir) / Path(fname),
                 map_location=torch.device("cpu")
             )["model_state_dict"]
 

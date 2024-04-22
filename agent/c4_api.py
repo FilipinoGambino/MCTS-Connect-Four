@@ -39,7 +39,6 @@ class C4API:
         """
         prediction_worker = Thread(target=self._predict_batch_worker, name=f"prediction_worker", daemon=True)
         prediction_worker.start()
-        logger.info(f"Model loaded onto {next(self.agent_model.model.parameters()).device} device")
 
     def create_pipe(self):
         """

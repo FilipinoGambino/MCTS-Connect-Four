@@ -87,6 +87,9 @@ class VecOneEnv(gym.Env):
         self.last_out = self.env.step(action)
         return VecOneEnv._vectorize_env_outs(self.last_out)
 
+    def manual_step(self, obs):
+        return self.env.update(obs) # noqa
+
     def render(self, mode: str = "human", **kwargs):
         # noinspection PyArgumentList
         return self.env.render(**kwargs)
@@ -177,7 +180,7 @@ class VecEnv(gym.Env):
         return [env.action_space for env in self.envs]
 
     @property
-    def action_space_n(self):
+    def action_space_n(self) -> List[int]:
         return [act.n for act in self.action_space]
 
     @property
@@ -187,6 +190,26 @@ class VecEnv(gym.Env):
     @property
     def metadata(self) -> List[Dict]:
         return [env.metadata for env in self.envs]
+
+    @property
+    def done(self) -> List[bool]:
+        return [env.done for env in self.envs]
+
+    @property
+    def game_state(self) -> List[object]:
+        return [env.game_state for env in self.envs]
+
+    @property
+    def board(self) -> List[np.ndarray]:
+        return [env.board for env in self.envs]
+
+    @property
+    def available_actions_mask(self) -> List[np.ndarray]:
+        return [env.available_actions_mask for env in self.envs]
+
+    @property
+    def winner(self) -> List[bool]:
+        return [env.winner for env in self.envs]
 
 
 class PytorchEnv(gym.Wrapper):

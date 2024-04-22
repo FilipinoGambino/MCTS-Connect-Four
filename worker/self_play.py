@@ -8,7 +8,7 @@ from threading import Thread
 from time import time
 from types import SimpleNamespace
 
-from c4_gym import create_flexible_obs_space, create_reward_space, DictEnv, LoggingEnv, PytorchEnv, RewardSpaceWrapper, VecOneEnv
+from c4_gym import create_env
 from c4_gym.c4_env import C4Env
 from agent.c4_model import C4Model
 from agent.c4_player import C4Player
@@ -90,20 +90,9 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
     :return (ChessEnv,list((str,list(float)): a tuple containing the final ChessEnv state and then a list
         of data to be appended to the SelfPlayWorker.buffer
     """
-    pipes = cur.pop() # borrow
-    env = C4Env(
-        flags=flags,
-        act_space=flags.act_space(),
-        obs_space=create_flexible_obs_space(flags),
-        autoplay=True
-    )
-    reward_space = create_reward_space(flags)
-    env = RewardSpaceWrapper(env, reward_space)
-    env = env.obs_space.wrap_env(env)
-    env = LoggingEnv(env, reward_space)
-    env = VecOneEnv(env)
-    env = PytorchEnv(env, flags.actor_device)
-    env = DictEnv(env)
+    pipes = cur.pop()
+
+    env = create_env(flags, flags.actor_device)
 
     output = env.reset()
 
