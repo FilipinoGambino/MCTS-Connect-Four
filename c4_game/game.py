@@ -22,7 +22,7 @@ class Game:
         for row in range(self.rows-1, -1, -1):
             if self.board[row,column] == 0:
                 return row
-        raise StopIteration(f"Column {column} is full. {self.board}")
+        raise StopIteration(f"Column {column} is full.\n{self.board}")
 
     @property
     def current_player_mark(self):

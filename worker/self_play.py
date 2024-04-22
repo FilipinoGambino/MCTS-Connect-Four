@@ -94,20 +94,20 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
 
     env = create_env(flags, flags.actor_device)
 
-    output = env.reset()
+    env_output = env.reset()
 
     p1 = C4Player(flags, pipes=pipes)
     p2 = C4Player(flags, pipes=pipes)
 
     while not env.done:
         if env.game_state.is_p1_turn:
-            action = p1.action(env, output)
+            action = p1.action(env, env_output)
         else:
-            action = p2.action(env, output)
+            action = p2.action(env, env_output)
 
-        output = env.step(action)
+        env_output = env.step(action)
 
-    p1_reward, p2_reward = output['reward'].tolist()[0]
+    p1_reward, p2_reward = env_output['reward'].tolist()[0]
 
     p1.finish_game(p1_reward)
     p2.finish_game(p2_reward)

@@ -5,12 +5,12 @@ group: initial_testing
 weights_only: false
 model_arch: conv_model
 unexplored_action: 1.0e-05
-enable_wandb: true
+enable_wandb: false
 log_freq: 10
-worker_type: optimize
+worker_type: self_play
 seed: 42
-learner_device: cpu
-actor_device: cpu
+learner_device: cuda
+actor_device: cuda
 batch_size: 1024
 noise_eps: 0.25
 c_puct: 1.5
@@ -39,7 +39,7 @@ simulation_num_per_move: 100
 max_games_per_file: 100
 self_play_games: 800
 model_dir: models
-current_model_weight_fname: mcts_phase1_best_model.pt
+current_model_weight_fname: mcts_phase1.pt
 nextgen_model_weight_fname: mcts_phase2.pt
 best_model_weight_fname: _best_model.pt
 replace_rate: 0.55

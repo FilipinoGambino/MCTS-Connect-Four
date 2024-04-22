@@ -1,0 +1,4 @@
+
+[2024-04-19 19:20:19,311][__main__][INFO] - Running: evaluate
+[2024-04-19 19:20:24,142][agent.c4_api][INFO] - Model loaded onto cpu device
+[2024-04-19 19:20:24,146][agent.c4_api][INFO] - Model loaded onto cpu device

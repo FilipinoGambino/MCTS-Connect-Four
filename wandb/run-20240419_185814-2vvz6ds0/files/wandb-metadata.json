@@ -1,0 +1,53 @@
+{
+    "os": "Windows-10-10.0.19045-SP0",
+    "python": "3.9.19",
+    "heartbeatAt": "2024-04-19T23:58:16.148423",
+    "startedAt": "2024-04-19T23:58:14.746277",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "D:\\Nick\\Documents\\GitHub\\MCTS-Connect-Four\\manager.py",
+    "codePathLocal": "manager.py",
+    "codePath": "manager.py",
+    "git": {
+        "remote": "https://github.com/FilipinoGambino/MCTS-Connect-Four.git",
+        "commit": "8787b154c83de6a9f1371c71f59e5b347219ba6a"
+    },
+    "email": "ngorichs1@gmail.com",
+    "root": "D:/Nick/Documents/GitHub/MCTS-Connect-Four",
+    "host": "NickPC",
+    "username": "Nick",
+    "executable": "C:\\Users\\Nick\\anaconda3\\python.exe",
+    "cpu_count": 4,
+    "cpu_count_logical": 4,
+    "cpu_freq": {
+        "current": 3401.0,
+        "min": 0.0,
+        "max": 3401.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3401.0,
+            "min": 0.0,
+            "max": 3401.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 418.7450981140137,
+            "used": 274.46691513061523
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 2070 SUPER",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2070 SUPER",
+            "memory_total": 8589934592
+        }
+    ],
+    "memory": {
+        "total": 15.939006805419922
+    }
+}
