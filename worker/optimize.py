@@ -80,13 +80,14 @@ class OptimizeWorker:
                 game_states = game_states
                 outputs = model.model(game_states)
 
-                policy_probs = F.softmax(outputs['policy_logits'], dim=-1).float()
+                policy_logits = outputs['policy_logits']
                 # policy_logits = outputs['policy_logits']
+                targets = targets.unsqueeze(-1)
                 values = values.unsqueeze(-1).float()
 
                 optimizer.zero_grad()
-
-                celoss = OptimizeWorker.monte_carlo_cross_entropy(policy_probs, targets)
+                # logger.info(f"{policy_logits.shape} {targets.shape}")
+                celoss = OptimizeWorker.monte_carlo_cross_entropy(policy_logits, targets)
                 mseloss = F.mse_loss(outputs['baseline'], values)
 
                 total_loss = celoss + mseloss

@@ -59,6 +59,10 @@ class C4Player:
         self.moves = []
         self.pipe_pool = pipes
         self.node_lock = defaultdict(Lock)
+        self.temperature_tau = self.flags.temperature_tau
+        if self.flags.worker_type == "evaluate" and self.temperature_tau > 0.:
+            logger.info(f"Deterministic play during evaluation, setting temperature_tau to 0.")
+            self.temperature_tau = 0.
 
     def reset(self):
         """
@@ -147,17 +151,21 @@ class C4Player:
         with self.node_lock[state]:
             if state not in self.tree:
                 leaf_p, leaf_v = self.evaluate(env_output)
-                for a in range(N_ACTIONS):
-                    self.tree[state].a[a].p = leaf_p[a]
-                return leaf_v # I'm returning everything from the POV of side to move
+                action_mask = env_output['info']['available_actions_mask'][0].tolist()
+                for a,is_invalid in enumerate(action_mask):
+                    if is_invalid is False:
+                        self.tree[state].a[a].p = leaf_p[a]
+                return leaf_v # From the POV of side to move
 
         action_t = self.select_action_q_and_u(env, is_root_node)
+        if env_output['info']['available_actions_mask'][0][action_t]:
+            logger.info(f"\n{env.game_state.board}\n\n{self.tree[state].a}")
         my_visit_stats = self.tree[state]
         action_stats = my_visit_stats.a[action_t]
 
         env_output = env.step(action_t) # noqa
 
-        leaf_v = -1 * self.search_my_move(env, env_output)  # next move from enemy POV
+        leaf_v = -1 * self.search_my_move(env, env_output)  # Next move from enemy POV
 
         # BACKUP STEP
         # on returning search path
@@ -246,10 +254,6 @@ class C4Player:
             policy[action] = a_s.n
         policy /= np.sum(policy)
 
-        if self.flags.worker_type == "evaluate" and self.flags.temperature_tau > 0.:
-            logger.info(f"Deterministic play during evaluation, setting temperature_tau to 0.")
-            self.flags.temperature_tau = 0.
-
         return self.apply_temperature(policy, env.game_state.turn)
 
     def apply_temperature(self, policy, turn):
@@ -260,7 +264,7 @@ class C4Player:
         :return: policy, randomly perturbed based on the temperature. High temp = more perturbation. Low temp
             = less.
         """
-        tau = np.power(self.flags.temperature_tau, turn + 1)
+        tau = np.power(self.temperature_tau, turn + 1)
         if tau < 0.1:
             tau = 0.
         if tau == 0.:

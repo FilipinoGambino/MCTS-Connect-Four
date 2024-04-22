@@ -19,18 +19,18 @@ weights_only: false
 model_arch: conv_model
 
 unexplored_action: 1e-5
-enable_wandb: true
+enable_wandb: false
 log_freq: 10
 worker_type: evaluate # self_play, optimize, evaluate
 seed: 42
-learner_device: "cpu"
-actor_device: "cpu"
+learner_device: "cuda"
+actor_device: "cuda"
 batch_size: 1024
 
 noise_eps: .25
 c_puct: 1.5
 dirichlet_alpha: .3
-temperature_tau: .99
+temperature_tau: 0.
 
 n_blocks: 8
 hidden_dim: 128
@@ -51,6 +51,7 @@ optimizer_kwargs:
   lr: 1e-3
   # See https://arxiv.org/pdf/2105.05246.pdf
   eps: 0.0003
+  weight_decay: 1e-3 # L2 reg
 min_lr_mod: .002
 
 # Play
@@ -64,10 +65,10 @@ self_play_games: 800
 
 model_dir: "models"
 current_model_weight_fname: null
-nextgen_model_weight_fname: "mcts_phase1.pt"
+nextgen_model_weight_fname: "mcts_phase1.pt" # "mcts_phase1_best_model.pt"
 best_model_weight_fname: "_best_model.pt"
 replace_rate: .55
-eval_games: 200
+eval_games: 100
 
 play_data_dir: "play_data/raw"
 play_data_filename_tmpl: "play_%s.pkl"

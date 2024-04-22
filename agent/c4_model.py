@@ -57,7 +57,7 @@ class C4Model:
         if fname:
             checkpoint_state = torch.load(
                 Path(self.flags.model_dir) / Path(fname),
-                map_location=torch.device("cpu")
+                map_location=torch.device(self.device)
             )["model_state_dict"]
 
             model.load_state_dict(checkpoint_state)
@@ -66,10 +66,10 @@ class C4Model:
 
     def save_model(self):
         fpath = Path(self.flags.model_dir) / Path(self.flags.nextgen_model_weight_fname)
-        logger.debug(f"Saving checkpoint to {fpath}")
+        logger.info(f"Saving checkpoint to {fpath}")
         torch.save(obj={"model_state_dict": self.model.state_dict()}, f=fpath)
 
     def save_as_best_model(self):
         fpath = Path(self.flags.model_dir) / Path(self.flags.name + self.flags.best_model_weight_fname)
-        logger.debug(f"Saving checkpoint to {fpath}")
+        logger.info(f"Saving checkpoint to {fpath}")
         torch.save(obj={"model_state_dict": self.model.state_dict()}, f=fpath)
