@@ -88,7 +88,7 @@ class VecOneEnv(gym.Env):
         return VecOneEnv._vectorize_env_outs(self.last_out)
 
     def manual_step(self, obs):
-        return self.env.update(obs) # noqa
+        return self.env.manual_step(obs) # noqa
 
     def render(self, mode: str = "human", **kwargs):
         # noinspection PyArgumentList

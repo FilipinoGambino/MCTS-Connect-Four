@@ -36,7 +36,7 @@ class Stopwatch:
         self._start_times: List[float] = []
 
     def __str__(self):
-        timing_info = " - ".join([f"{key}: {val['duration']:.2f}" for key, val in self.durations.items()])
+        timing_info = " - ".join([f"{key}: {val['duration']:4>.2f}" for key, val in self.durations.items()])
         return f"Timing info: {{{timing_info}}}"
 
     def start(self, key: str):
