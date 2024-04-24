@@ -1,12 +1,16 @@
 from abc import ABC, abstractmethod
 from collections import deque
+import copy
 import gym
+from logging import getLogger
 import math
 import numpy as np
 from typing import Dict, Tuple
 
 from c4_game.game import Game
 from utility_constants import BOARD_SIZE
+
+logger = getLogger(__name__)
 
 
 class BaseObsSpace(ABC):
@@ -59,7 +63,7 @@ class _MultiObsWrapper(gym.Wrapper):
         return {
             name + key: val
             for name, obs_space in self.named_obs_space_wrappers.items()
-            for key, val in obs_space.observation(observation).items()
+            for key, val in obs_space.update_obs(observation).items()
         }
 
 class BasicObsSpace(BaseObsSpace, ABC):
@@ -143,7 +147,9 @@ class _HistoricalObsWrapper(gym.Wrapper):
     def __init__(self, env: gym.Env):
         super(_HistoricalObsWrapper, self).__init__(env)
         self._empty_obs = {}
-        self.historical_obs = deque(maxlen=8)
+        self.history_length = 4
+        self.historical_obs1 = deque(maxlen=self.history_length)
+        self.historical_obs2 = deque(maxlen=self.history_length)
         self.reset_obs()
 
         for key, spec in HistoricalObs().get_obs_spec().spaces.items():
@@ -155,35 +161,38 @@ class _HistoricalObsWrapper(gym.Wrapper):
                 raise NotImplementedError(f"{type(spec)} is not an accepted observation space.")
 
     def reset_obs(self):
-        for _ in range(self.historical_obs.maxlen):
-            self.historical_obs.appendleft(np.zeros(shape=(1, 1, *BOARD_SIZE), dtype=np.int64))
+        for _ in range(self.history_length):
+            self.historical_obs1.appendleft(np.zeros(shape=(1, 1, *BOARD_SIZE), dtype=np.int64))
+            self.historical_obs2.appendleft(np.zeros(shape=(1, 1, *BOARD_SIZE), dtype=np.int64))
 
     def reset(self, **kwargs):
-        observation, reward, done, info = self.env.reset(**kwargs) # noqa
         self.reset_obs()
-        return self.observation(observation), reward, done, info
+        observation, reward, done, info = self.env.reset(**kwargs) # noqa
+        return self.update_obs(observation), reward, done, info
 
     def step(self, action):
         observation, reward, done, info = self.env.step(action) # noqa
-        return self.observation(observation), reward, done, info
+        return self.update_obs(observation), reward, done, info
 
-    def observation(self, game: Game) -> Dict[str, np.ndarray]:
+    def update_obs(self, game) -> Dict[str, np.ndarray]:
         board = np.reshape(game.board, newshape=(1, 1, *game.board_dims))
-        self.historical_obs.appendleft(board)
+        if game.turn % 2 == 1:
+            p1_obs = np.where(board == game.p1_mark, 1, 0)
+            self.historical_obs1.appendleft(copy.copy(p1_obs))
+        else:
+            p2_obs = np.where(board == game.p2_mark, 1, 0)
+            self.historical_obs2.appendleft(copy.copy(p2_obs))
 
         p1_obs = np.stack(
-            [state for idx, state in enumerate(self.historical_obs, start=game.turn) if idx % 2 == 0],
+            self.historical_obs1,
             dtype=np.int64,
             axis=1
         )
         p2_obs = np.stack(
-            [state for idx, state in enumerate(self.historical_obs, start=game.turn) if idx % 2 == 1],
+            self.historical_obs2,
             dtype=np.int64,
             axis=1
         )
-
-        p1_obs = np.where(p1_obs == game.p1_mark, 1, 0)
-        p2_obs = np.where(p2_obs == game.p2_mark, 1, 0)
 
         p1_turn = np.full(
             shape=(1, *game.board_dims),

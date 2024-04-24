@@ -1,4 +1,3 @@
-from collections import deque
 import numpy as np
 
 
@@ -10,9 +9,6 @@ class Game:
         self.board_dims = (self.rows, self.cols)
         self.in_a_row = config['inarow']
         self.board = np.zeros(shape=self.board_dims, dtype=np.uint8)
-
-    def update(self, obs):
-        self.board = np.array(obs['board'], dtype=np.uint8).reshape(self.board_dims)
 
     def step(self, action):
         row = self.get_lowest_available_row(action)

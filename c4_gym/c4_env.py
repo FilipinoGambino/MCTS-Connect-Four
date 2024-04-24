@@ -21,7 +21,6 @@ class C4Env(gym.Env):
             act_space: BaseActSpace,
             obs_space: BaseObsSpace,
             configuration: Optional[Dict[str, Any]] = None,
-            autoplay: bool = True
     ):
         super(C4Env, self).__init__()
 
@@ -34,7 +33,6 @@ class C4Env(gym.Env):
         else:
             self.configuration = dict(rows=ROWS, columns=COLUMNS, inarow=IN_A_ROW)
 
-        self.autoplay = autoplay
 
         self.game_state = Game(self.configuration)
 
@@ -48,12 +46,8 @@ class C4Env(gym.Env):
         return self.get_obs_reward_done_info()
 
     def step(self, action):
-        if self.autoplay:
-            self.game_state.step(action)
+        self.game_state.step(action)
         return self.get_obs_reward_done_info()
-
-    def manual_step(self, obs):
-        self.game_state.update(obs)
 
     def check_game_over(self):
         for player_mark in PLAYER_MARKS:

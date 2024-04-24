@@ -23,7 +23,6 @@ def create_env(flags, device: torch.device) -> PytorchEnv:
         flags=flags,
         act_space=flags.act_space(),
         obs_space=create_obs_space(flags),
-        autoplay=True
     )
     reward_space = create_reward_space(flags)
     env = RewardSpaceWrapper(env, reward_space)

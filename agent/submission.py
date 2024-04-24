@@ -1,6 +1,7 @@
 from itertools import count
 import logging
 from multiprocessing import Manager
+import numpy as np
 import os
 from pathlib import Path
 import yaml
@@ -27,7 +28,7 @@ class RLAgent:
 
         self.env = create_env(
             self.flags,
-            device=self.device
+            device=self.device,
         )
         self.action_placeholder = torch.ones(1)
 
@@ -44,16 +45,14 @@ class RLAgent:
         self.stopwatch.reset()
 
         self.stopwatch.start("Observation processing")
-        self.preprocess(obs)
-
-        env_output = self.get_env_output()
+        env_output = self.preprocess(obs)
 
         self.stopwatch.stop().start("Model inference")
         pipes = self.pipe_pool.pop()
 
         player = C4Player(self.flags, pipes)
         action = player.action(self.env, env_output)
-        self.env.step(action)
+        env_output = self.env.step(action)
 
         self.pipe_pool.append(pipes)
 
@@ -63,22 +62,21 @@ class RLAgent:
         timing_msg = f"{str(self.stopwatch)} | "
         overage_time_msg = f"Remaining overage time: {obs['remainingOverageTime']:.2f}"
 
-        logger.debug(" - ".join([value_msg, timing_msg, overage_time_msg]))
+        # logger.debug(" - ".join([value_msg, timing_msg, overage_time_msg]))
         return action
 
-    def get_env_output(self):
-        return self.env.step(self.action_placeholder)
-
     def preprocess(self, obs):
-        if obs['step'] == 0 or obs['step'] == 1:
-            self.unwrapped_env.reset()
+        if obs['step'] == 0:
             self.game_idx = next(RLAgent.game) + 1
-        else:
-            self.unwrapped_env.manual_step(obs)
-
-    @property
-    def unwrapped_env(self) -> C4Env:
-        return self.env.unwrapped
+            return self.env.reset()
+        if obs['step'] == 1:
+            self.game_idx = next(RLAgent.game) + 1
+            self.env.reset()
+        old_board = self.env.board
+        new_board = np.array(obs['board']).reshape(old_board.shape)
+        difference = np.subtract(new_board, old_board)
+        opponent_action = np.argmax(difference) % self.env.game_state.cols
+        return self.env.step(opponent_action)
 
 
 if __name__=="__main__":
@@ -107,8 +105,7 @@ if __name__=="__main__":
 
 
     # Run multiple episodes to estimate its performance.
-    print(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=10))
-    # print("My Agent vs Random Agent: ", mean_reward1(evaluate("connectx", [RLAgent(), "random"], num_episodes=100)))
-    # print("My Agent vs Random Agent: ", mean_reward2(evaluate("connectx", ["random", RLAgent()], num_episodes=100)))
-    print("My Agent vs Negamax Agent: ", mean_reward1(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=10)))
-    print("My Agent vs Negamax Agent: ", mean_reward2(evaluate("connectx", ["negamax", RLAgent()], num_episodes=10)))
+    print("My Agent vs Random Agent: ", mean_reward1(evaluate("connectx", [RLAgent(), "random"], num_episodes=100)))
+    print("My Agent vs Random Agent: ", mean_reward2(evaluate("connectx", ["random", RLAgent()], num_episodes=100)))
+    print("My Agent vs Negamax Agent: ", mean_reward1(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=100)))
+    print("My Agent vs Negamax Agent: ", mean_reward2(evaluate("connectx", ["negamax", RLAgent()], num_episodes=100)))

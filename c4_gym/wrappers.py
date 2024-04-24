@@ -17,7 +17,7 @@ class LoggingEnv(gym.Wrapper):
         self.reward_sum = [0., 0.]
 
     def info(self, info: Dict[str, np.ndarray], rewards: int) -> Dict[str, np.ndarray]:
-        info = copy.copy(info)
+        info = copy.deepcopy(info)
         step = info["turn"]
         logs = dict(step=step)
 
@@ -86,9 +86,6 @@ class VecOneEnv(gym.Env):
     def step(self, action: int):
         self.last_out = self.env.step(action)
         return VecOneEnv._vectorize_env_outs(self.last_out)
-
-    def manual_step(self, obs):
-        return self.env.manual_step(obs) # noqa
 
     def render(self, mode: str = "human", **kwargs):
         # noinspection PyArgumentList
