@@ -106,7 +106,6 @@ def play_game(flags, cur, ng, switch_p1: bool) -> (float, C4Env, bool):
         flags=flags,
         act_space=flags.act_space(),
         obs_space=create_flexible_obs_space(flags),
-        autoplay=True
     )
     reward_space = create_reward_space(flags)
     env = RewardSpaceWrapper(env, reward_space)

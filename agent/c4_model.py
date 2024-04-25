@@ -7,7 +7,7 @@ import torch
 from logging import getLogger
 from types import SimpleNamespace
 
-from nns import create_model
+from agent.nns import create_model
 from agent.c4_api import C4API
 
 

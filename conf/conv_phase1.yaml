@@ -57,7 +57,7 @@ min_lr_mod: .002
 # Play
 search_threads: 10
 max_processes: 1
-simulation_num_per_move: 100
+simulation_num_per_move: 50
 
 # Play Data
 max_games_per_file: 100

@@ -77,13 +77,12 @@ class C4Player:
 
         :param C4Env env: environment in which to figure out the action
         :param np.array env_output: observation planes
-        :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
-            indicating the action to take in uci format
+        :return: returns an integer indicating the action
         """
         self.reset()
 
         _,_ = self.search_moves(env, env_output)
-        policy = self.calc_policy(env)
+        policy = self.calc_policy(env, env_output)
 
         my_action = int(np.random.choice(range(N_ACTIONS), p = policy))
 
@@ -144,17 +143,17 @@ class C4Player:
         state = env.string_board
 
         with self.node_lock[state]:
+            action_mask = env_output['info']['available_actions_mask'][0].tolist()
             if state not in self.tree:
                 leaf_p, leaf_v = self.evaluate(env_output)
-                action_mask = env_output['info']['available_actions_mask'][0].tolist()
                 for a,is_invalid in enumerate(action_mask):
                     if is_invalid is False:
                         self.tree[state].a[a].p = leaf_p[a]
                 return leaf_v # From the POV of side to move
 
         action_t = self.select_action_q_and_u(env, is_root_node)
-        if env_output['info']['available_actions_mask'][0][action_t]:
-            logger.info(f"\n{env.game_state.board}\n\n{self.tree[state].a}")
+        if action_mask[action_t]:
+            raise IndexError(f"Action {action_t} is an invalid action:\n{env.game_state.board}\n\n{self.tree[state].a}")
         my_visit_stats = self.tree[state]
         action_stats = my_visit_stats.a[action_t]
 
@@ -237,7 +236,7 @@ class C4Player:
 
         return best_a
 
-    def calc_policy(self, env):
+    def calc_policy(self, env, env_output):
         """calc π(a|s0)
         :return list(float): a list of probabilities of taking each action, calculated based on visit counts.
         """
@@ -246,6 +245,8 @@ class C4Player:
         policy = np.zeros(N_ACTIONS)
         for action, a_s in my_visitstats.a.items():
             policy[action] = a_s.n
+        mask = env_output['info']['available_actions_mask'].cpu()
+        policy = np.where(mask, 0, policy)
         policy /= np.sum(policy)
 
         return self.apply_temperature(policy, env.game_state.turn)
