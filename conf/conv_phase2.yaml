@@ -23,8 +23,8 @@ enable_wandb: false
 log_freq: 10
 worker_type: self_play # self_play, optimize, evaluate
 seed: 42
-learner_device: "cuda"
-actor_device: "cuda"
+learner_device: "cpu"
+actor_device: "cpu"
 batch_size: 1024
 
 noise_eps: .25

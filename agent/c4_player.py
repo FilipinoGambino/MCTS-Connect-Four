@@ -246,7 +246,7 @@ class C4Player:
         for action, a_s in my_visitstats.a.items():
             policy[action] = a_s.n
         mask = env_output['info']['available_actions_mask'].cpu()
-        policy = np.where(mask, 0, policy)
+        policy = np.where(mask, 0, policy).squeeze(axis=0)
         policy /= np.sum(policy)
 
         return self.apply_temperature(policy, env.game_state.turn)

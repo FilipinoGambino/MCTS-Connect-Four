@@ -41,7 +41,7 @@ self_play_games: 800
 model_dir: models
 current_model_weight_fname: mcts_phase1_best_model.pt
 nextgen_model_weight_fname: mcts_phase2.pt
-best_model_weight_fname: best_model.pt
+best_model_weight_fname: mcts_phase1.pt
 replace_rate: 0.55
 eval_games: 100
 play_data_dir: play_data/raw

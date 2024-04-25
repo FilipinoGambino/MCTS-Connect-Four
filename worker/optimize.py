@@ -131,4 +131,5 @@ class OptimizeWorker:
                 df = pd.read_pickle(fname)
             else:
                 df = pd.concat([df, pd.read_pickle(fname)])
+            logger.info(f"{file} loaded")
         return df.reset_index(drop=True)
