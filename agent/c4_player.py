@@ -223,12 +223,10 @@ class C4Player:
         if is_root_node:
             noise = np.random.dirichlet([dir_alpha] * len(my_visitstats.a))
 
-        i = 0
-        for action, a_s in my_visitstats.a.items():
+        for idx,(action, a_s) in enumerate(my_visitstats.a.items()):
             p_ = a_s.p
             if is_root_node:
-                p_ = (1 - e) * p_ + e * noise[i]
-                i += 1
+                p_ = (1 - e) * p_ + e * noise[idx]
             b = a_s.q + c_puct * p_ * xx_ / (1 + a_s.n)
             if b > best_s:
                 best_s = b

@@ -4,6 +4,7 @@ from multiprocessing import Manager
 import numpy as np
 import os
 from pathlib import Path
+import time
 import yaml
 import torch
 
@@ -97,15 +98,25 @@ if __name__=="__main__":
     # print(f"\np1 v negamax\n{env.render(mode='ansi')}")
     # env.reset()
 
-    def mean_reward1(rewards):
-        return sum(r[0] for r in rewards) / float(len(rewards))
-
-    def mean_reward2(rewards):
-        return sum(r[-1] for r in rewards) / float(len(rewards))
+    def mean_reward(rewards, idx):
+        wins = sum([1 for r in rewards if r[idx] == 1])
+        losses = sum([1 for r in rewards if r[idx] == -1])
+        ties = sum([1 for r in rewards if r[idx] == 0])
+        return f"Wins: {wins:>3} | Losses: {losses:>3} | Ties: {ties:>3} | Win %: {100 * wins / len(rewards):>5.2f} %"
 
 
     # Run multiple episodes to estimate its performance.
-    print("My Agent vs Random Agent: ", mean_reward1(evaluate("connectx", [RLAgent(), "random"], num_episodes=100)))
-    print("My Agent vs Random Agent: ", mean_reward2(evaluate("connectx", ["random", RLAgent()], num_episodes=100)))
-    print("My Agent vs Negamax Agent: ", mean_reward1(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=100)))
-    print("My Agent vs Negamax Agent: ", mean_reward2(evaluate("connectx", ["negamax", RLAgent()], num_episodes=100)))
+    start = time.time()
+    print("vs Random Agent")
+    print("RLAgent as player 1 => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=1), idx=0))
+    print("RLAgent as player 2 => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=1), idx=-1))
+    print("vs Negamax Agent")
+    print("RLAgent as player 1 => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=1), idx=0))
+    print("RLAgent as player 2 => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=1), idx=-1))
+    duration = int(time.time() - start)
+    hours = duration // 3600
+    remaining_duration = duration % 3600
+    minutes = remaining_duration // 60
+    remaining_duration = remaining_duration % 60
+    seconds = remaining_duration // 1
+    print(f"That took {hours:02d}:{minutes:02d}:{seconds:02d}  |  (seconds duration: {duration})")

@@ -1,7 +1,9 @@
 import torch
+import numpy as np
 import pickle
 import pandas as pd
 
+dir_alpha = .3
 
-df = pd.read_pickle("play_data/gamestate_df1.pkl")
-print(df.iloc[:,1:].head(10))
+for x in np.random.dirichlet([dir_alpha] * 10):
+    print(x)

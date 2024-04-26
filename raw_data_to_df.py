@@ -13,32 +13,32 @@ class CPUUnpickler(pickle.Unpickler):
         else:
             return super().find_class(module, n)
 
-# data = []
-# for root, dirs, files in os.walk(".\\play_data\\raw", topdown=False):
-#     for idx,name in enumerate(files):
-#         print(f"Appending file {idx}")
-#         with open(os.path.join(root, name), "rb") as file:
-#             # output = pickle.load(file)
-#             output = CPUUnpickler(file).load()
-#             for obs, probs, values in output:
-#                 data.append({
-#                     "obs":obs,
-#                     "prob_0":probs[0],
-#                     "prob_1":probs[1],
-#                     "prob_2":probs[2],
-#                     "prob_3":probs[3],
-#                     "prob_4":probs[4],
-#                     "prob_5":probs[5],
-#                     "prob_6":probs[6],
-#                     "vals":values}
-#                 )
-#
-# df = pd.DataFrame(data)
-# df.to_pickle('./play_data/gamestate_df4.pkl')
+data = []
+for root, dirs, files in os.walk(".\\play_data\\raw", topdown=False):
+    for idx,name in enumerate(files):
+        print(f"Appending file {idx}")
+        with open(os.path.join(root, name), "rb") as file:
+            # output = pickle.load(file)
+            output = CPUUnpickler(file).load()
+            for obs, probs, values in output:
+                data.append({
+                    "obs":obs,
+                    "prob_0":probs[0],
+                    "prob_1":probs[1],
+                    "prob_2":probs[2],
+                    "prob_3":probs[3],
+                    "prob_4":probs[4],
+                    "prob_5":probs[5],
+                    "prob_6":probs[6],
+                    "vals":values}
+                )
+
+df = pd.DataFrame(data)
+df.to_pickle('./play_data/gamestate_df6.pkl')
 
 
-df = pd.read_pickle('./play_data/gamestate_df4.pkl')
-df1 = df.iloc[:len(df)//2,:]
-df2 = df.iloc[len(df)//2:,:]
-df1.to_pickle('./play_data/gamestate_df5.pkl')
-df2.to_pickle('./play_data/gamestate_df6.pkl')
+# df = pd.read_pickle('./play_data/gamestate_df4.pkl')
+# df1 = df.iloc[:len(df)//2,:]
+# df2 = df.iloc[len(df)//2:,:]
+# df1.to_pickle('./play_data/gamestate_df5.pkl')
+# df2.to_pickle('./play_data/gamestate_df6.pkl')

@@ -40,7 +40,7 @@ class OptimizeWorker:
     """
     def __init__(self, flags):
         self.flags = flags
-        self.data = OptimizeWorker.collect_data()
+        self.data = self.collect_data()
 
     def start(self):
         """
@@ -111,16 +111,7 @@ class OptimizeWorker:
             lr_scheduler.step()
         model.save_model()
 
-    @staticmethod
-    def monte_carlo_cross_entropy(logits, targets):
-        probs = F.log_softmax(logits, dim=-1)
-        prob_estimate = torch.gather(input=probs, index=targets, dim=-1)
-        prob_estimate /= len(prob_estimate)
-        mcce_loss = -1 * torch.sum(prob_estimate)
-        return mcce_loss
-
-    @staticmethod
-    def collect_data():
+    def collect_data(self):
         df_paths = Path(os.getcwd()) / Path("play_data")
         df = None
         for file in os.listdir(df_paths):
@@ -132,4 +123,14 @@ class OptimizeWorker:
             else:
                 df = pd.concat([df, pd.read_pickle(fname)])
             logger.info(f"{file} loaded")
+        logger.info(f"Training on {len(df):,} datapoints for {self.flags.max_epochs} epochs and "
+                    f"batch size of {self.flags.batch_size}")
         return df.reset_index(drop=True)
+
+    @staticmethod
+    def monte_carlo_cross_entropy(logits, targets):
+        probs = F.log_softmax(logits, dim=-1)
+        prob_estimate = torch.gather(input=probs, index=targets, dim=-1)
+        prob_estimate /= len(prob_estimate)
+        mcce_loss = -1 * torch.sum(prob_estimate)
+        return mcce_loss
