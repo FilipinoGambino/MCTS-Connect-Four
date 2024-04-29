@@ -13,7 +13,7 @@ project: MCTS_Connect4
 # The wandb user to log to
 entity: filipinogambino
 # The wandb group for the run
-group: initial_testing
+group: post_obs_bug_fix
 
 weights_only: false
 model_arch: conv_model
@@ -21,20 +21,20 @@ model_arch: conv_model
 unexplored_action: 1e-5
 enable_wandb: true
 log_freq: 10
-worker_type: optimize # self_play, optimize, evaluate
+worker_type: self_play # self_play, optimize, evaluate
 seed: 42
 learner_device: "cpu"
 actor_device: "cpu"
 batch_size: 1024
 
 noise_eps: .25
-c_puct: 1.5
+c_puct: .5
 dirichlet_alpha: .3
-temperature_tau: .99
+temperature_tau: .93
 
-n_blocks: 8
+n_blocks: 12
 hidden_dim: 128
-embedding_dim: 32
+embedding_dim: 16
 kernel_size: 3
 normalize: false
 rescale_value_input: false
@@ -51,16 +51,17 @@ optimizer_kwargs:
   lr: 1e-3
   # See https://arxiv.org/pdf/2105.05246.pdf
   eps: 0.0003
+  weight_decay: 1e-3 # L2 reg
 min_lr_mod: .002
 
 # Play
 search_threads: 10
 max_processes: 1
-simulation_num_per_move: 100
+simulation_num_per_move: 150
 
 # Play Data
 max_games_per_file: 100
-self_play_games: 800
+self_play_games: 400
 
 model_dir: "models"
 current_model_weight_fname: "mcts_phase1.pt"
@@ -69,7 +70,7 @@ best_model_weight_fname: "_best_model.pt"
 replace_rate: .55
 eval_games: 100
 
-play_data_dir: "play_data/raw"
+play_data_dir: "play_data\\raw"
 play_data_filename_tmpl: "play_%s.pkl"
 
 log_dir: "logs"

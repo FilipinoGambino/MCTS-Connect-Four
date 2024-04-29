@@ -146,14 +146,13 @@ class C4Player:
             action_mask = env_output['info']['available_actions_mask'][0].tolist()
             if state not in self.tree:
                 leaf_p, leaf_v = self.evaluate(env_output)
-                for a,is_invalid in enumerate(action_mask):
-                    if is_invalid is False:
+                for a,column_full in enumerate(action_mask):
+                    if not column_full:
                         self.tree[state].a[a].p = leaf_p[a]
                 return leaf_v # From the POV of side to move
 
         action_t = self.select_action_q_and_u(env, is_root_node)
-        if action_mask[action_t]:
-            raise IndexError(f"Action {action_t} is an invalid action:\n{env.game_state.board}\n\n{self.tree[state].a}")
+
         my_visit_stats = self.tree[state]
         action_stats = my_visit_stats.a[action_t]
 
