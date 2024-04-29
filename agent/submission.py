@@ -52,7 +52,9 @@ class RLAgent:
         pipes = self.pipe_pool.pop()
 
         player = C4Player(self.flags, pipes)
+
         action = player.action(self.env, env_output)
+
         env_output = self.env.step(action)
 
         self.pipe_pool.append(pipes)
@@ -108,11 +110,11 @@ if __name__=="__main__":
     # Run multiple episodes to estimate its performance.
     start = time.time()
     print("vs Random Agent")
-    print("RLAgent as player 1 => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=1), idx=0))
-    print("RLAgent as player 2 => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=1), idx=-1))
+    print("RLAgent as player 1 => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=2), idx=0))
+    print("RLAgent as player 2 => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=2), idx=-1))
     print("vs Negamax Agent")
-    print("RLAgent as player 1 => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=1), idx=0))
-    print("RLAgent as player 2 => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=1), idx=-1))
+    print("RLAgent as player 1 => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=2), idx=0))
+    print("RLAgent as player 2 => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=2), idx=-1))
     duration = int(time.time() - start)
     hours = duration // 3600
     remaining_duration = duration % 3600

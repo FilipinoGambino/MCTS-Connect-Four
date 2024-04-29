@@ -254,8 +254,7 @@ class C4Player:
         Applies a random fluctuation to probability of choosing various actions
         :param policy: list of probabilities of taking each action
         :param turn: number of turns that have occurred in the game so far
-        :return: policy, randomly perturbed based on the temperature. High temp = more perturbation. Low temp
-            = less.
+        :return: policy, randomly perturbed based on the temperature. High temp = more perturbation. Low temp = less.
         """
         tau = np.power(self.temperature_tau, turn + 1)
         if tau < 0.1:

@@ -13,15 +13,15 @@ project: MCTS_Connect4
 # The wandb user to log to
 entity: filipinogambino
 # The wandb group for the run
-group: initial_testing
+group: post_obs_bug_fix
 
 weights_only: false
 model_arch: conv_model
 
 unexplored_action: 1e-5
-enable_wandb: false
+enable_wandb: true
 log_freq: 10
-worker_type: optimize # self_play, optimize, evaluate
+worker_type: evaluate # self_play, optimize, evaluate
 seed: 42
 learner_device: "cpu"
 actor_device: "cpu"
@@ -30,7 +30,7 @@ batch_size: 1024
 noise_eps: .25
 c_puct: 1.5
 dirichlet_alpha: .3
-temperature_tau: 0.
+temperature_tau: 0.0
 
 n_blocks: 12
 hidden_dim: 128
@@ -57,10 +57,10 @@ min_lr_mod: .002
 # Play
 search_threads: 10
 max_processes: 1
-simulation_num_per_move: 100
+simulation_num_per_move: 200
 
 # Play Data
-max_games_per_file: 100
+max_games_per_file: 10
 self_play_games: 800
 
 model_dir: "models"
@@ -70,7 +70,7 @@ best_model_weight_fname: "_best_model.pt"
 replace_rate: .55
 eval_games: 100
 
-play_data_dir: "play_data/raw"
+play_data_dir: "play_data\\raw"
 play_data_filename_tmpl: "play_%s.pkl"
 
 log_dir: "logs"

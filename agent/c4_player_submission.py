@@ -191,6 +191,7 @@ class C4Player:
         (ActionStats.q) + an upper confidence bound on that action.
 
         :param Environment env: env to look for the next moves within
+        :param np.ndarray mask: a mask of the action space that is True for each full column
         :return int: the move to explore
         """
         # this method is called with state locked

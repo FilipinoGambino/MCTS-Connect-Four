@@ -34,7 +34,10 @@ for root, dirs, files in os.walk(".\\play_data\\raw", topdown=False):
                 )
 
 df = pd.DataFrame(data)
-df.to_pickle('./play_data/gamestate_df6.pkl')
+df1 = df.iloc[:len(df)//2,:]
+df2 = df.iloc[len(df)//2:,:]
+df1.to_pickle('./play_data/gamestate_df1.pkl')
+df2.to_pickle('./play_data/gamestate_df2.pkl')
 
 
 # df = pd.read_pickle('./play_data/gamestate_df4.pkl')
