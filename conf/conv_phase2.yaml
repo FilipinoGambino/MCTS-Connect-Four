@@ -19,7 +19,7 @@ weights_only: false
 model_arch: conv_model
 
 unexplored_action: 1e-5
-enable_wandb: true
+enable_wandb: false
 log_freq: 10
 worker_type: self_play # self_play, optimize, evaluate
 seed: 42
@@ -48,7 +48,7 @@ reward_space: GameResultReward
 
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 1e-3
+  lr: 1e-4
   # See https://arxiv.org/pdf/2105.05246.pdf
   eps: 0.0003
   weight_decay: 1e-3 # L2 reg

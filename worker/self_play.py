@@ -1,6 +1,7 @@
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime
+from itertools import chain
 from logging import getLogger
 from multiprocessing import Manager
 import os
@@ -38,6 +39,9 @@ class SelfPlayWorker:
     """
     def __init__(self, config: SimpleNamespace):
         self.flags = config
+        if self.flags.worker_type == "evaluate" and self.flags.temperature_tau > 0.:
+            logger.info(f"Deterministic play during evaluation, setting temperature_tau to 0.")
+            self.flags.temperature_tau = 0.
         self.current_model = C4Model(self.flags, self.flags.actor_device, self.flags.current_model_weight_fname)
         self.m = Manager()
         self.cur_pipes = self.m.list(
@@ -112,6 +116,7 @@ def self_play_buffer(flags, cur) -> (C4Env, list):
     p1.finish_game(p1_reward)
     p2.finish_game(p2_reward)
 
+    # data = list(chain.from_iterable((m1, m2) for m1, m2 in zip(p1.moves, p2.moves)))
     data = []
     for i in range(len(p1.moves)):
         data.append(p1.moves[i])

@@ -1,21 +1,21 @@
-name: mcts_phase1
+name: mcts_phase2
 project: MCTS_Connect4
 entity: filipinogambino
 group: post_obs_bug_fix
 weights_only: false
 model_arch: conv_model
 unexplored_action: 1.0e-05
-enable_wandb: true
+enable_wandb: false
 log_freq: 10
-worker_type: optimize
+worker_type: self_play
 seed: 42
 learner_device: cpu
 actor_device: cpu
 batch_size: 1024
 noise_eps: 0.25
-c_puct: 1.5
+c_puct: 0.5
 dirichlet_alpha: 0.3
-temperature_tau: 0.0
+temperature_tau: 0.93
 n_blocks: 12
 hidden_dim: 128
 embedding_dim: 16
@@ -30,18 +30,18 @@ obs_space: HistoricalObs
 reward_space: GameResultReward
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 0.001
+  lr: 0.0001
   eps: 0.0003
   weight_decay: 0.001
 min_lr_mod: 0.002
 search_threads: 10
 max_processes: 1
-simulation_num_per_move: 200
-max_games_per_file: 10
-self_play_games: 800
+simulation_num_per_move: 150
+max_games_per_file: 100
+self_play_games: 400
 model_dir: models
-current_model_weight_fname: null
-nextgen_model_weight_fname: mcts_phase1.pt
+current_model_weight_fname: mcts_phase1.pt
+nextgen_model_weight_fname: mcts_phase2.pt
 best_model_weight_fname: _best_model.pt
 replace_rate: 0.55
 eval_games: 100

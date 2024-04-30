@@ -1,0 +1,58 @@
+
+[2024-04-30 11:01:09,927][__main__][INFO] - Running: optimize
+[2024-04-30 11:01:15,047][worker.optimize][INFO] - gamestate_df1.pkl loaded
+[2024-04-30 11:01:18,566][worker.optimize][INFO] - gamestate_df2.pkl loaded
+[2024-04-30 11:01:18,567][worker.optimize][INFO] - Training on 4,540 datapoints for 50 epochs and batch size of 1024
+[2024-04-30 11:01:18,666][worker.optimize][INFO] - Training model with 3,689,384 parameters
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+Epoch  1
+Epoch  2
+Epoch  3
+Epoch  4
+Epoch  5
+Epoch  6
+Epoch  7
+Epoch  8
+Epoch  9
+Epoch 10
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 20
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 30
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 40
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Epoch 45
+Epoch 46
+Epoch 47
+Epoch 48
+Epoch 49
+Epoch 50
+[2024-04-30 11:29:46,627][agent.c4_model][INFO] - Saving checkpoint to models\mcts_phase2.pt

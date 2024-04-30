@@ -1,0 +1,30 @@
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Current SDK version is 0.16.3
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Configure stats pid to 18544
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Loading settings from C:\Users\nick.gorichs\.config\wandb\settings
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Loading settings from C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\settings
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'manager.py', 'program_abspath': 'C:\\Users\\nick.gorichs\\PycharmProjects\\MCTS-Connect-Four\\manager.py', 'program': 'C:\\Users\\nick.gorichs\\PycharmProjects\\MCTS-Connect-Four\\manager.py'}
+2024-04-30 11:01:09,216 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Applying login settings: {'api_key': '***REDACTED***'}
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_setup.py:_flush():76] Applying login settings: {'api_key': '***REDACTED***'}
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_init.py:_log_setup():526] Logging user logs to C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240430_110109-w82bhtod\logs\debug.log
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_init.py:_log_setup():527] Logging internal logs to C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240430_110109-w82bhtod\logs\debug-internal.log
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_init.py:init():566] calling init triggers
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {'name': 'mcts_phase2', 'project': 'MCTS_Connect4', 'entity': 'filipinogambino', 'group': 'post_obs_bug_fix', 'weights_only': False, 'model_arch': 'conv_model', 'unexplored_action': 1e-05, 'enable_wandb': True, 'log_freq': 10, 'worker_type': 'optimize', 'seed': 42, 'learner_device': device(type='cpu'), 'actor_device': device(type='cpu'), 'batch_size': 1024, 'noise_eps': 0.25, 'c_puct': 0.5, 'dirichlet_alpha': 0.3, 'temperature_tau': 0.93, 'n_blocks': 12, 'hidden_dim': 128, 'embedding_dim': 16, 'kernel_size': 3, 'normalize': False, 'rescale_value_input': False, 'rescale_se_input': False, 'obs_space_kwargs': {}, 'reward_space_kwargs': {}, 'act_space': <class 'c4_gym.act_spaces.BasicActionSpace'>, 'obs_space': <class 'c4_gym.obs_spaces.HistoricalObs'>, 'reward_space': <class 'c4_gym.reward_spaces.GameResultReward'>, 'optimizer_class': <class 'torch.optim.adam.Adam'>, 'optimizer_kwargs': {'lr': 0.0001, 'eps': 0.0003, 'weight_decay': 0.001}, 'min_lr_mod': 0.002, 'search_threads': 10, 'max_processes': 1, 'simulation_num_per_move': 150, 'max_games_per_file': 100, 'self_play_games': 400, 'model_dir': 'models', 'current_model_weight_fname': 'mcts_phase1.pt', 'nextgen_model_weight_fname': 'mcts_phase2.pt', 'best_model_weight_fname': '_best_model.pt', 'replace_rate': 0.55, 'eval_games': 100, 'play_data_dir': 'play_data\\raw', 'play_data_filename_tmpl': 'play_%s.pkl', 'log_dir': 'logs', 'main_log_path': 'main.log', 'max_epochs': 50, 'use_mixed_precision': True, 'discounting': 0.999, 'reduction': 'mean', 'clip_grads': 10.0, 'checkpoint_freq': 10.0, 'num_learner_threads': 1, 'load_dir': None, 'n_value_warmup_batches': 0, 'debug': False}
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_init.py:init():616] starting backend
+2024-04-30 11:01:09,217 INFO    MainThread:18544 [wandb_init.py:init():620] setting up manager
+2024-04-30 11:01:09,223 INFO    MainThread:18544 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2024-04-30 11:01:09,227 INFO    MainThread:18544 [wandb_init.py:init():628] backend started and connected
+2024-04-30 11:01:09,237 INFO    MainThread:18544 [wandb_init.py:init():720] updated telemetry
+2024-04-30 11:01:09,285 INFO    MainThread:18544 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-04-30 11:01:09,637 INFO    MainThread:18544 [wandb_run.py:_on_init():2262] communicating current version
+2024-04-30 11:01:09,747 INFO    MainThread:18544 [wandb_run.py:_on_init():2271] got version response upgrade_message: "wandb version 0.16.6 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-04-30 11:01:09,748 INFO    MainThread:18544 [wandb_init.py:init():804] starting run threads in backend
+2024-04-30 11:01:09,925 INFO    MainThread:18544 [wandb_run.py:_console_start():2241] atexit reg
+2024-04-30 11:01:09,925 INFO    MainThread:18544 [wandb_run.py:_redirect():2096] redirect: wrap_raw
+2024-04-30 11:01:09,926 INFO    MainThread:18544 [wandb_run.py:_redirect():2161] Wrapping output streams.
+2024-04-30 11:01:09,926 INFO    MainThread:18544 [wandb_run.py:_redirect():2186] Redirects installed.
+2024-04-30 11:01:09,926 INFO    MainThread:18544 [wandb_init.py:init():847] run started, returning control to user process
+2024-04-30 11:01:19,952 INFO    MainThread:18544 [wandb_watch.py:watch():51] Watching
+2024-04-30 11:29:53,656 WARNING MsgRouterThr:18544 [router.py:message_loop():77] message_loop has been closed

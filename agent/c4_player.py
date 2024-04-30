@@ -60,9 +60,6 @@ class C4Player:
         self.pipe_pool = pipes
         self.node_lock = defaultdict(Lock)
         self.temperature_tau = self.flags.temperature_tau
-        if self.flags.worker_type == "evaluate" and self.temperature_tau > 0.:
-            logger.info(f"Deterministic play during evaluation, setting temperature_tau to 0.")
-            self.temperature_tau = 0.
 
     def reset(self):
         """
