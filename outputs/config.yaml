@@ -1,4 +1,4 @@
-name: mcts_phase2
+name: mcts_phase3
 project: MCTS_Connect4
 entity: filipinogambino
 group: post_obs_bug_fix
@@ -30,9 +30,8 @@ obs_space: HistoricalObs
 reward_space: GameResultReward
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 0.0001
+  lr: 5.0e-05
   eps: 0.0003
-  weight_decay: 0.001
 min_lr_mod: 0.002
 search_threads: 10
 max_processes: 1
@@ -40,12 +39,12 @@ simulation_num_per_move: 150
 max_games_per_file: 100
 self_play_games: 400
 model_dir: models
-current_model_weight_fname: mcts_phase1.pt
-nextgen_model_weight_fname: mcts_phase2.pt
+current_model_weight_fname: mcts_phase2.pt
+nextgen_model_weight_fname: mcts_phase3.pt
 best_model_weight_fname: _best_model.pt
 replace_rate: 0.55
 eval_games: 100
-play_data_dir: play_data\raw
+play_data_dir: play_data/raw
 play_data_filename_tmpl: play_%s.pkl
 log_dir: logs
 main_log_path: main.log

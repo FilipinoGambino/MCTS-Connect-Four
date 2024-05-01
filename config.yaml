@@ -35,13 +35,13 @@ optimizer_kwargs:
 min_lr_mod: 0.002
 search_threads: 10
 max_processes: 1
-simulation_num_per_move: 50
+simulation_num_per_move: 150
 max_games_per_file: 100
-self_play_games: 800
+self_play_games: 400
 model_dir: models
 current_model_weight_fname: mcts_phase1.pt
 nextgen_model_weight_fname: mcts_phase2.pt
-best_model_weight_fname: mcts_phase1.pt
+best_model_weight_fname: mcts_phase2.pt
 replace_rate: 0.55
 eval_games: 100
 play_data_dir: play_data/raw

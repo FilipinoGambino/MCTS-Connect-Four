@@ -1,0 +1,39 @@
+2024-05-01 12:30:24,169 INFO    StreamThr :23832 [internal.py:wandb_internal():86] W&B internal server running at pid: 23832, started at: 2024-05-01 12:30:24.168268
+2024-05-01 12:30:24,171 DEBUG   HandlerThread:23832 [handler.py:handle_request():146] handle_request: status
+2024-05-01 12:30:24,182 INFO    WriterThread:23832 [datastore.py:open_for_write():87] open: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240501_123024-vdw37zkt\run-vdw37zkt.wandb
+2024-05-01 12:30:24,183 DEBUG   SenderThread:23832 [sender.py:send():382] send: header
+2024-05-01 12:30:24,237 DEBUG   SenderThread:23832 [sender.py:send():382] send: run
+2024-05-01 12:30:24,487 INFO    SenderThread:23832 [dir_watcher.py:__init__():211] watching files in: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240501_123024-vdw37zkt\files
+2024-05-01 12:30:24,487 INFO    SenderThread:23832 [sender.py:_start_run_threads():1136] run started: vdw37zkt with start time 1714584624.17026
+2024-05-01 12:30:24,503 DEBUG   HandlerThread:23832 [handler.py:handle_request():146] handle_request: check_version
+2024-05-01 12:30:24,503 DEBUG   SenderThread:23832 [sender.py:send_request():409] send_request: check_version
+2024-05-01 12:30:24,645 DEBUG   HandlerThread:23832 [handler.py:handle_request():146] handle_request: run_start
+2024-05-01 12:30:24,663 DEBUG   HandlerThread:23832 [system_info.py:__init__():27] System info init
+2024-05-01 12:30:24,663 DEBUG   HandlerThread:23832 [system_info.py:__init__():42] System info init done
+2024-05-01 12:30:24,663 INFO    HandlerThread:23832 [system_monitor.py:start():194] Starting system monitor
+2024-05-01 12:30:24,663 INFO    SystemMonitor:23832 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-05-01 12:30:24,663 INFO    HandlerThread:23832 [system_monitor.py:probe():214] Collecting system info
+2024-05-01 12:30:24,668 INFO    SystemMonitor:23832 [interfaces.py:start():190] Started cpu monitoring
+2024-05-01 12:30:24,668 INFO    SystemMonitor:23832 [interfaces.py:start():190] Started disk monitoring
+2024-05-01 12:30:24,672 DEBUG   HandlerThread:23832 [system_info.py:probe():151] Probing system
+2024-05-01 12:30:24,680 INFO    SystemMonitor:23832 [interfaces.py:start():190] Started memory monitoring
+2024-05-01 12:30:24,697 INFO    SystemMonitor:23832 [interfaces.py:start():190] Started network monitoring
+2024-05-01 12:30:24,698 DEBUG   HandlerThread:23832 [system_info.py:_probe_git():136] Probing git
+2024-05-01 12:30:24,814 DEBUG   HandlerThread:23832 [system_info.py:_probe_git():144] Probing git done
+2024-05-01 12:30:24,814 DEBUG   HandlerThread:23832 [system_info.py:probe():199] Probing system done
+2024-05-01 12:30:24,814 DEBUG   HandlerThread:23832 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.22631-SP0', 'python': '3.9.6', 'heartbeatAt': '2024-05-01T17:30:24.672718', 'startedAt': '2024-05-01T17:30:24.153281', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'C:\\Users\\nick.gorichs\\PycharmProjects\\MCTS-Connect-Four\\manager.py', 'codePathLocal': 'manager.py', 'codePath': 'manager.py', 'git': {'remote': 'https://github.com/FilipinoGambino/MCTS-Connect-Four.git', 'commit': 'bf9b77065b159215a5cc8e67fe193cfc621a3801'}, 'email': None, 'root': 'C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four', 'host': 'WI-7C7X4S2', 'username': 'Nick.Gorichs', 'executable': 'C:\\Users\\nick.gorichs\\AppData\\Local\\Programs\\Python\\Python39\\python.exe', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 1910.0, 'min': 0.0, 'max': 2112.0}, 'cpu_freq_per_core': [{'current': 1910.0, 'min': 0.0, 'max': 2112.0}], 'disk': {'/': {'total': 236.73046493530273, 'used': 227.53599548339844}}, 'memory': {'total': 7.861743927001953}}
+2024-05-01 12:30:24,814 INFO    HandlerThread:23832 [system_monitor.py:probe():224] Finished collecting system info
+2024-05-01 12:30:24,814 INFO    HandlerThread:23832 [system_monitor.py:probe():227] Publishing system info
+2024-05-01 12:30:24,816 INFO    HandlerThread:23832 [system_monitor.py:probe():229] Finished publishing system info
+2024-05-01 12:30:24,842 DEBUG   SenderThread:23832 [sender.py:send():382] send: files
+2024-05-01 12:30:24,842 INFO    SenderThread:23832 [sender.py:_save_file():1403] saving file wandb-metadata.json with policy now
+2024-05-01 12:30:24,848 DEBUG   HandlerThread:23832 [handler.py:handle_request():146] handle_request: python_packages
+2024-05-01 12:30:24,848 DEBUG   SenderThread:23832 [sender.py:send_request():409] send_request: python_packages
+2024-05-01 12:30:24,849 DEBUG   HandlerThread:23832 [handler.py:handle_request():146] handle_request: stop_status
+2024-05-01 12:30:24,850 DEBUG   HandlerThread:23832 [handler.py:handle_request():146] handle_request: internal_messages
+2024-05-01 12:30:24,851 DEBUG   SenderThread:23832 [sender.py:send_request():409] send_request: stop_status
+2024-05-01 12:30:24,929 DEBUG   SenderThread:23832 [sender.py:send():382] send: telemetry
+2024-05-01 12:30:25,226 INFO    wandb-upload_0:23832 [upload_job.py:push():131] Uploaded file C:\Users\NICK~1.GOR\AppData\Local\Temp\tmpqsglpm94wandb\88d7yelh-wandb-metadata.json
+2024-05-01 12:30:25,499 INFO    Thread-16 :23832 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240501_123024-vdw37zkt\files\wandb-metadata.json
+2024-05-01 12:30:25,500 INFO    Thread-16 :23832 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240501_123024-vdw37zkt\files\requirements.txt
+2024-05-01 12:30:25,500 INFO    Thread-16 :23832 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\nick.gorichs\PycharmProjects\MCTS-Connect-Four\wandb\run-20240501_123024-vdw37zkt\files\output.log

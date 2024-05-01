@@ -107,7 +107,7 @@ if __name__=="__main__":
         minutes = remaining_duration // 60
         remaining_duration = remaining_duration % 60
         seconds = int(remaining_duration)
-        return f"That took {hours:02d}:{minutes:02d}:{seconds:02d}  |  (seconds duration: {duration})"
+        print(f"That took {hours:02d}:{minutes:02d}:{seconds:02d}  |  (seconds duration: {duration})")
 
     def mean_reward(rewards, idx):
         wins = sum([1 for r in rewards if r[idx] == 1])
@@ -119,16 +119,16 @@ if __name__=="__main__":
     # Run multiple episodes to estimate its performance.
     overall_start = time.time()
     section_start = time.time()
-    print("RLAgent vs Random Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=100), idx=0))
-    print(print_time(section_start, time.time()))
+    print("RLAgent vs Negamax Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=10), idx=0))
+    print_time(section_start, time.time())
     section_start = time.time()
-    print("Random Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=100), idx=-1))
-    print(print_time(section_start, time.time()))
+    print("Negamax Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=10), idx=-1))
+    print_time(section_start, time.time())
     section_start = time.time()
-    print("RLAgent vs Negamax Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=100), idx=0))
-    print(print_time(section_start, time.time()))
+    print("RLAgent vs Random Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=10), idx=0))
+    print_time(section_start, time.time())
     section_start = time.time()
-    print("Negamax Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=100), idx=-1))
-    print(print_time(section_start, time.time()))
+    print("Random Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=10), idx=-1))
+    print_time(section_start, time.time())
     print("Overall duration:")
-    print(print_time(overall_start, time.time()))
+    print_time(overall_start, time.time())
