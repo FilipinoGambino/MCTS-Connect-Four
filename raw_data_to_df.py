@@ -33,6 +33,6 @@ for root, dirs, files in os.walk(".\\play_data\\raw", topdown=False):
                     "vals":values}
                 )
 
-pd.DataFrame(data).to_pickle('./play_data/gamestate_df3.pkl')
+pd.DataFrame(data).to_pickle('./play_data/gamestate_df4.pkl')
 
 # df = pd.read_pickle('./play_data/gamestate_df1.pkl')
