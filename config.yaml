@@ -9,11 +9,11 @@ enable_wandb: false
 log_freq: 10
 worker_type: evaluate
 seed: 42
-learner_device: cuda:0
-actor_device: cuda:0
+learner_device: cpu
+actor_device: cpu
 batch_size: 1024
 noise_eps: 0.25
-c_puct: 1.5
+c_puct: 0.5
 dirichlet_alpha: 0.3
 temperature_tau: 0.0
 n_blocks: 12
@@ -30,7 +30,7 @@ obs_space: HistoricalObs
 reward_space: GameResultReward
 optimizer_class: Adam
 optimizer_kwargs:
-  lr: 0.001
+  lr: 0.00005
   eps: 0.0003
 min_lr_mod: 0.002
 search_threads: 10
@@ -41,7 +41,7 @@ self_play_games: 400
 model_dir: models
 current_model_weight_fname: mcts_phase1.pt
 nextgen_model_weight_fname: mcts_phase2.pt
-best_model_weight_fname: mcts_phase2.pt
+best_model_weight_fname: mcts_phase3.pt
 replace_rate: 0.55
 eval_games: 100
 play_data_dir: play_data/raw

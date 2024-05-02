@@ -1,0 +1,209 @@
+wandb_version: 1
+
+name:
+  desc: null
+  value: mcts_phase3
+project:
+  desc: null
+  value: MCTS_Connect4
+entity:
+  desc: null
+  value: filipinogambino
+group:
+  desc: null
+  value: post_obs_bug_fix
+weights_only:
+  desc: null
+  value: false
+model_arch:
+  desc: null
+  value: conv_model
+unexplored_action:
+  desc: null
+  value: 1.0e-05
+enable_wandb:
+  desc: null
+  value: true
+log_freq:
+  desc: null
+  value: 10
+worker_type:
+  desc: null
+  value: optimize
+seed:
+  desc: null
+  value: 42
+learner_device:
+  desc: null
+  value: cpu
+actor_device:
+  desc: null
+  value: cpu
+batch_size:
+  desc: null
+  value: 1024
+noise_eps:
+  desc: null
+  value: 0.25
+c_puct:
+  desc: null
+  value: 0.5
+dirichlet_alpha:
+  desc: null
+  value: 0.3
+temperature_tau:
+  desc: null
+  value: 0.93
+n_blocks:
+  desc: null
+  value: 12
+hidden_dim:
+  desc: null
+  value: 128
+embedding_dim:
+  desc: null
+  value: 16
+kernel_size:
+  desc: null
+  value: 3
+normalize:
+  desc: null
+  value: false
+rescale_value_input:
+  desc: null
+  value: false
+rescale_se_input:
+  desc: null
+  value: false
+obs_space_kwargs:
+  desc: null
+  value: {}
+reward_space_kwargs:
+  desc: null
+  value: {}
+act_space:
+  desc: null
+  value: c4_gym.act_spaces.BasicActionSpace
+obs_space:
+  desc: null
+  value: c4_gym.obs_spaces.HistoricalObs
+reward_space:
+  desc: null
+  value: c4_gym.reward_spaces.GameResultReward
+optimizer_class:
+  desc: null
+  value: torch.optim.adam.Adam
+optimizer_kwargs:
+  desc: null
+  value:
+    lr: 5.0e-05
+    eps: 0.0003
+min_lr_mod:
+  desc: null
+  value: 0.002
+search_threads:
+  desc: null
+  value: 10
+max_processes:
+  desc: null
+  value: 1
+simulation_num_per_move:
+  desc: null
+  value: 150
+max_games_per_file:
+  desc: null
+  value: 100
+self_play_games:
+  desc: null
+  value: 400
+model_dir:
+  desc: null
+  value: models
+current_model_weight_fname:
+  desc: null
+  value: mcts_phase2.pt
+nextgen_model_weight_fname:
+  desc: null
+  value: mcts_phase3.pt
+best_model_weight_fname:
+  desc: null
+  value: _best_model.pt
+replace_rate:
+  desc: null
+  value: 0.55
+eval_games:
+  desc: null
+  value: 100
+play_data_dir:
+  desc: null
+  value: play_data/raw
+play_data_filename_tmpl:
+  desc: null
+  value: play_%s.pkl
+log_dir:
+  desc: null
+  value: logs
+main_log_path:
+  desc: null
+  value: main.log
+max_epochs:
+  desc: null
+  value: 50
+use_mixed_precision:
+  desc: null
+  value: true
+discounting:
+  desc: null
+  value: 0.999
+reduction:
+  desc: null
+  value: mean
+clip_grads:
+  desc: null
+  value: 10.0
+checkpoint_freq:
+  desc: null
+  value: 10.0
+num_learner_threads:
+  desc: null
+  value: 1
+load_dir:
+  desc: null
+  value: null
+n_value_warmup_batches:
+  desc: null
+  value: 0
+debug:
+  desc: null
+  value: false
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.19
+    cli_version: 0.16.6
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1714605457.0
+    t:
+      1:
+      - 1
+      - 50
+      - 55
+      2:
+      - 1
+      - 50
+      - 55
+      3:
+      - 1
+      - 13
+      - 16
+      - 23
+      - 61
+      - 62
+      4: 3.9.19
+      5: 0.16.6
+      8:
+      - 3
+      - 5
+      13: windows-amd64

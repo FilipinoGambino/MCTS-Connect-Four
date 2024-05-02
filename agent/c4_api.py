@@ -70,6 +70,7 @@ class C4API:
 
                     pipe.send((policy_ary, value_ary))
                 except EOFError: # Triggers when the other side of the pipe is closed
+                    logger.info("EOFError | terminating prediction thread(s)")
                     for thread in self.predictors:
                         thread.join()
                     return

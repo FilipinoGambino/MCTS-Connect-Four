@@ -19,9 +19,9 @@ weights_only: false
 model_arch: conv_model
 
 unexplored_action: 1e-5
-enable_wandb: false
+enable_wandb: true
 log_freq: 10
-worker_type: self_play # self_play, optimize, evaluate
+worker_type: optimize # self_play, optimize, evaluate
 seed: 42
 learner_device: "cpu"
 actor_device: "cpu"

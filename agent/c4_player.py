@@ -1,4 +1,4 @@
-import threading
+import traceback
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import copy
@@ -6,6 +6,7 @@ from logging import getLogger
 import numpy as np
 from threading import Lock
 import torch
+import sys
 
 from c4_gym.c4_env import C4Env
 from utility_constants import BOARD_SIZE
@@ -13,6 +14,25 @@ from utility_constants import BOARD_SIZE
 logger = getLogger(__name__)
 _, N_ACTIONS = BOARD_SIZE
 
+class ThreadPoolExecutorStackTraced(ThreadPoolExecutor):
+
+    def submit(self, fn, *args, **kwargs):
+        """Submits the wrapped function instead of `fn`"""
+
+        return super(ThreadPoolExecutorStackTraced, self).submit(
+            ThreadPoolExecutorStackTraced._function_wrapper, fn, *args, **kwargs)
+
+    @staticmethod
+    def _function_wrapper(fn, *args, **kwargs):
+        """Wraps `fn` in order to preserve the traceback of any kind of
+        raised exception
+
+        """
+        try:
+            return fn(*args, **kwargs)
+        except Exception:
+            logger.info("TERMINATING")
+            raise sys.exc_info()[0](traceback.format_exc())
 
 # these are from AGZ nature paper
 class VisitStats:
@@ -76,6 +96,7 @@ class C4Player:
         :param np.array env_output: observation planes
         :return: returns an integer indicating the action
         """
+        logger.info('resetting')
         self.reset()
 
         _,_ = self.search_moves(env, env_output)
@@ -104,7 +125,7 @@ class C4Player:
             and the first value that was predicted.
         """
 
-        with ThreadPoolExecutor(max_workers=self.flags.search_threads) as executor:
+        with ThreadPoolExecutorStackTraced(max_workers=self.flags.search_threads) as executor:
             futures = [
                 executor.submit(
                     self.search_my_move,
