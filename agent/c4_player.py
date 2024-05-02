@@ -31,7 +31,6 @@ class ThreadPoolExecutorStackTraced(ThreadPoolExecutor):
         try:
             return fn(*args, **kwargs)
         except Exception:
-            logger.info("TERMINATING")
             raise sys.exc_info()[0](traceback.format_exc())
 
 # these are from AGZ nature paper
@@ -96,7 +95,6 @@ class C4Player:
         :param np.array env_output: observation planes
         :return: returns an integer indicating the action
         """
-        logger.info('resetting')
         self.reset()
 
         _,_ = self.search_moves(env, env_output)

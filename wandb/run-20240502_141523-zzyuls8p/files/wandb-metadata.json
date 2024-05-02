@@ -1,0 +1,45 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.9.6",
+    "heartbeatAt": "2024-05-02T19:15:24.383138",
+    "startedAt": "2024-05-02T19:15:23.874413",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\nick.gorichs\\PycharmProjects\\MCTS-Connect-Four\\manager.py",
+    "codePathLocal": "manager.py",
+    "codePath": "manager.py",
+    "git": {
+        "remote": "https://github.com/FilipinoGambino/MCTS-Connect-Four.git",
+        "commit": "db337cf73afc809c5bef575fe5760051f4727ebf"
+    },
+    "email": null,
+    "root": "C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four",
+    "host": "WI-7C7X4S2",
+    "username": "Nick.Gorichs",
+    "executable": "C:\\Users\\nick.gorichs\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 1910.0,
+        "min": 0.0,
+        "max": 2112.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1910.0,
+            "min": 0.0,
+            "max": 2112.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 236.73046493530273,
+            "used": 228.88511657714844
+        }
+    },
+    "memory": {
+        "total": 7.861743927001953
+    }
+}

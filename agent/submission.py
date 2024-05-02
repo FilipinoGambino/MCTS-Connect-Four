@@ -51,13 +51,8 @@ class RLAgent:
         self.stopwatch.stop().start("Model inference")
         pipes = self.pipe_pool.pop()
 
-        try:
-            print('hello')
-            player = C4Player(self.flags, pipes)
-            action = player.action(self.env, env_output)
-        except Exception as e:
-            logger.info('bye')
-            logger.info(e)
+        player = C4Player(self.flags, pipes)
+        action = player.action(self.env, env_output)
 
         env_output = self.env.step(action)
 
@@ -91,52 +86,48 @@ if __name__=="__main__":
     env = make('connectx', debug=True)
 
     env.reset()
-    try:
-        print(env.run([RLAgent(), RLAgent()]))
-        print(f"\np1 v p2\n{env.render(mode='ansi')}")
-        env.reset()
-        print(env.run([RLAgent(), 'random']))
-        print(f"\np1 v random\n{env.render(mode='ansi')}")
-        env.reset()
-        print(env.run(['negamax', RLAgent()]))
-        print(f"\nnegamax v p2\n{env.render(mode='ansi')}")
-        env.reset()
-        print(env.run([RLAgent(), 'negamax']))
-        print(f"\np1 v negamax\n{env.render(mode='ansi')}")
-        env.reset()
+    # print(env.run([RLAgent(), RLAgent()]))
+    # print(f"\np1 v p2\n{env.render(mode='ansi')}")
+    # env.reset()
+    # print(env.run([RLAgent(), 'random']))
+    # print(f"\np1 v random\n{env.render(mode='ansi')}")
+    # env.reset()
+    # print(env.run(['negamax', RLAgent()]))
+    # print(f"\nnegamax v p2\n{env.render(mode='ansi')}")
+    # env.reset()
+    # print(env.run([RLAgent(), 'negamax']))
+    # print(f"\np1 v negamax\n{env.render(mode='ansi')}")
+    # env.reset()
 
-        def print_time(start, end):
-            duration = int(end - start)
-            hours = duration // 3600
-            remaining_duration = duration % 3600
-            minutes = remaining_duration // 60
-            remaining_duration = remaining_duration % 60
-            seconds = int(remaining_duration)
-            print(f"That took {hours:02d}:{minutes:02d}:{seconds:02d}  |  (seconds duration: {duration})")
+    def print_time(start, end):
+        duration = int(end - start)
+        hours = duration // 3600
+        remaining_duration = duration % 3600
+        minutes = remaining_duration // 60
+        remaining_duration = remaining_duration % 60
+        seconds = int(remaining_duration)
+        print(f"That took {hours:02d}:{minutes:02d}:{seconds:02d}  |  (seconds duration: {duration})")
 
-        def mean_reward(rewards, idx):
-            wins = sum([1 for r in rewards if r[idx] == 1])
-            losses = sum([1 for r in rewards if r[idx] == -1])
-            ties = sum([1 for r in rewards if r[idx] == 0])
-            return f"Wins: {wins:>3} | Losses: {losses:>3} | Ties: {ties:>3} | Win %: {100 * wins / len(rewards):>5.2f} %"
+    def mean_reward(rewards, idx):
+        wins = sum([1 for r in rewards if r[idx] == 1])
+        losses = sum([1 for r in rewards if r[idx] == -1])
+        ties = sum([1 for r in rewards if r[idx] == 0])
+        return f"Wins: {wins:>3} | Losses: {losses:>3} | Ties: {ties:>3} | Win %: {100 * wins / len(rewards):>5.2f} %"
 
 
-        # Run multiple episodes to estimate its performance.
-        overall_start = time.time()
-        section_start = time.time()
-        print("RLAgent vs Negamax Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=10), idx=0))
-        print_time(section_start, time.time())
-        section_start = time.time()
-        print("Negamax Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=10), idx=-1))
-        print_time(section_start, time.time())
-        section_start = time.time()
-        print("RLAgent vs Random Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=10), idx=0))
-        print_time(section_start, time.time())
-        section_start = time.time()
-        print("Random Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=10), idx=-1))
-        print_time(section_start, time.time())
-        print("Overall duration:")
-        print_time(overall_start, time.time())
-    except Exception as e:
-        logger.info('hi')
-        logger.info(e)
+    # Run multiple episodes to estimate its performance.
+    overall_start = time.time()
+    section_start = time.time()
+    print("RLAgent vs Negamax Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "negamax"], num_episodes=100), idx=0))
+    print_time(section_start, time.time())
+    section_start = time.time()
+    print("Negamax Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["negamax", RLAgent()], num_episodes=100), idx=-1))
+    print_time(section_start, time.time())
+    section_start = time.time()
+    print("RLAgent vs Random Agent => ", mean_reward(evaluate("connectx", [RLAgent(), "random"], num_episodes=100), idx=0))
+    print_time(section_start, time.time())
+    section_start = time.time()
+    print("Random Agent vs RLAgent => ", mean_reward(evaluate("connectx", ["random", RLAgent()], num_episodes=100), idx=-1))
+    print_time(section_start, time.time())
+    print("Overall duration:")
+    print_time(overall_start, time.time())

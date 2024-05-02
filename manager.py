@@ -14,7 +14,7 @@ from worker.utils import flags_to_namespace
 
 logger = getLogger(__name__)
 
-CMD_LIST = ['self', 'opt', 'eval', 'sl', 'uci']
+CMD_LIST = ['self', 'opt', 'eval']
 
 
 def get_default_flags(flags: DictConfig) -> DictConfig:
@@ -46,7 +46,7 @@ def get_default_flags(flags: DictConfig) -> DictConfig:
     return OmegaConf.create(flags)
 
 
-@hydra.main(config_path="conf", config_name="conv_phase3", version_base=None)
+@hydra.main(config_path="conf", config_name="conv_phase4", version_base=None)
 def main(flags: DictConfig):
     cli_conf = OmegaConf.from_cli()
 
@@ -101,12 +101,6 @@ def start(flags):
     elif flags.worker_type == 'evaluate':
         from worker import evaluate
         return evaluate.start(flags)
-    # elif args.worker_type == 'sl':
-    #     from worker import sl
-    #     return sl.start(config)
-    # elif args.worker_type == 'uci':
-    #     from .play_game import uci
-    #     return uci.start(config)
 
 
 if __name__ == "__main__":
