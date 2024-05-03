@@ -119,9 +119,9 @@ class OptimizeWorker:
             if os.path.isdir(fname):
                 continue
             if isinstance(df, pd.DataFrame):
-                df = pd.read_pickle(fname)
-            else:
                 df = pd.concat([df, pd.read_pickle(fname)])
+            else:
+                df = pd.read_pickle(fname)
             logger.info(f"{file} loaded")
         logger.info(f"Training on {len(df):,} datapoints for {self.flags.max_epochs} epochs and "
                     f"batch size of {self.flags.batch_size}")

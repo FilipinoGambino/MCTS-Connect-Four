@@ -1,0 +1,97 @@
+[2024-05-03 00:29:26,155][__main__][INFO] - name: mcts_phase4
+project: MCTS_Connect4
+entity: filipinogambino
+group: post_obs_bug_fix
+weights_only: false
+model_arch: conv_model
+unexplored_action: 1.0e-05
+enable_wandb: false
+log_freq: 10
+worker_type: optimize
+seed: 42
+learner_device: cpu
+actor_device: cpu
+batch_size: 1024
+noise_eps: 0.25
+c_puct: 0.5
+dirichlet_alpha: 0.3
+temperature_tau: 0.9
+n_blocks: 12
+hidden_dim: 128
+embedding_dim: 16
+kernel_size: 3
+normalize: false
+rescale_value_input: false
+rescale_se_input: false
+obs_space_kwargs: {}
+reward_space_kwargs: {}
+act_space: BasicActionSpace
+obs_space: HistoricalObs
+reward_space: GameResultReward
+optimizer_class: Adam
+optimizer_kwargs:
+  lr: 3.0e-05
+  eps: 0.0003
+min_lr_mod: 0.002
+search_threads: 10
+max_processes: 1
+simulation_num_per_move: 150
+max_games_per_file: 100
+self_play_games: 400
+model_dir: models
+current_model_weight_fname: mcts_phase3.pt
+nextgen_model_weight_fname: mcts_phase4.pt
+best_model_weight_fname: _best_model.pt
+replace_rate: 0.55
+eval_games: 100
+play_data_dir: play_data/raw
+play_data_filename_tmpl: play_%s.pkl
+log_dir: logs
+main_log_path: main.log
+max_epochs: 50
+use_mixed_precision: true
+discounting: 0.999
+reduction: mean
+clip_grads: 10.0
+checkpoint_freq: 10.0
+num_learner_threads: 1
+load_dir: null
+n_value_warmup_batches: 0
+debug: false
+
+[2024-05-03 00:29:26,159][__main__][INFO] - Running: optimize
+[2024-05-03 00:29:26,299][numexpr.utils][INFO] - NumExpr defaulting to 4 threads.
+[2024-05-03 00:29:33,788][worker.optimize][INFO] - gamestate_df1.pkl loaded
+[2024-05-03 00:29:41,039][worker.optimize][INFO] - gamestate_df2.pkl loaded
+[2024-05-03 00:29:48,173][worker.optimize][INFO] - gamestate_df3.pkl loaded
+[2024-05-03 00:29:56,670][worker.optimize][INFO] - gamestate_df4.pkl loaded
+[2024-05-03 00:29:56,670][worker.optimize][INFO] -                                                      obs  ...  vals
+0      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...     1
+1      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...    -1
+2      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...     1
+3      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...    -1
+4      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...     1
+...                                                  ...  ...   ...
+10482  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10483  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10484  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10485  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10486  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+
+[10487 rows x 9 columns]
+[2024-05-03 00:29:56,876][worker.optimize][INFO] - <bound method DataFrame.info of                                                      obs  ...  vals
+0      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...     1
+1      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...    -1
+2      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...     1
+3      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...    -1
+4      {'obs': {'p1_turn-0': [tensor([[0, 0, 0, 0, 0,...  ...     1
+...                                                  ...  ...   ...
+10482  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10483  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10484  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10485  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+10486  {'obs': {'p1_turn-0': [tensor([[0, 0, 1, 1, 0,...  ...     0
+
+[10487 rows x 9 columns]>
+[2024-05-03 00:29:57,083][worker.optimize][INFO] - Training on 10,487 datapoints for 50 epochs and batch size of 1024
+[2024-05-03 00:29:57,141][worker.optimize][INFO] - Training model with 3,689,384 parameters

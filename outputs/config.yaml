@@ -7,7 +7,7 @@ model_arch: conv_model
 unexplored_action: 1.0e-05
 enable_wandb: false
 log_freq: 10
-worker_type: self_play
+worker_type: optimize
 seed: 42
 learner_device: cpu
 actor_device: cpu
