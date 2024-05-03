@@ -54,15 +54,15 @@ class RLAgent:
         player = C4Player(self.flags, pipes)
         action = player.action(self.env, env_output)
 
-        env_output = self.env.step(action)
+        _ = self.env.step(action)
 
         self.pipe_pool.append(pipes)
 
         self.stopwatch.stop()
 
-        value_msg = f"Game: {self.game_idx:>3} | Turn: {obs['step']:>2} | Column:{action} |"
-        timing_msg = f"{str(self.stopwatch)} | "
-        overage_time_msg = f"Remaining overage time: {obs['remainingOverageTime']:.2f}"
+        # value_msg = f"Game: {self.game_idx:>3} | Turn: {obs['step']:>2} | Column:{action} |"
+        # timing_msg = f"{str(self.stopwatch)} | "
+        # overage_time_msg = f"Remaining overage time: {obs['remainingOverageTime']:.2f}"
 
         # logger.debug(" - ".join([value_msg, timing_msg, overage_time_msg]))
         return action

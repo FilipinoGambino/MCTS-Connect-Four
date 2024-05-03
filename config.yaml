@@ -1,4 +1,4 @@
-name: mcts_phase1
+name: mcts_phase4
 project: MCTS_Connect4
 entity: filipinogambino
 group: post_obs_bug_fix
@@ -41,7 +41,7 @@ self_play_games: 400
 model_dir: models
 current_model_weight_fname: mcts_phase1.pt
 nextgen_model_weight_fname: mcts_phase2.pt
-best_model_weight_fname: mcts_phase3.pt
+best_model_weight_fname: mcts_phase4.pt
 replace_rate: 0.55
 eval_games: 100
 play_data_dir: play_data/raw
