@@ -25,11 +25,11 @@ class C4Model:
         :ivar ChessModelAPI api: the api to use to listen for and then return this models predictions (on a pipe).
     """
 
-    def __init__(self, flags: SimpleNamespace, device, fname=None):
+    def __init__(self, flags: SimpleNamespace, device, fpath=None):
         self.flags = flags
         self.device = device
         self.api = None
-        self.model = self.build_and_load_model(fname)
+        self.model = self.build_and_load_model(fpath)
 
     def get_pipes(self, n_pipes=1):
         """
@@ -46,7 +46,7 @@ class C4Model:
             return pipes
         return [self.api.create_pipe() for _ in range(n_pipes)]
 
-    def build_and_load_model(self, fname):
+    def build_and_load_model(self, fpath):
         model = create_model(self.flags, device=self.device)
         if self.flags.worker_type == 'optimize':
             model.train()
@@ -54,9 +54,9 @@ class C4Model:
             model.eval()
         model = model.share_memory()
 
-        if fname:
+        if fpath:
             checkpoint_state = torch.load(
-                Path(__file__).parent.parent / Path(self.flags.model_dir) / Path(fname),
+                fpath,
                 map_location=torch.device("cpu")
             )["model_state_dict"]
 

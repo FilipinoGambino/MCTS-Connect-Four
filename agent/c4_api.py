@@ -3,7 +3,7 @@ Defines the process which will listen on the pipe for
 an observation of the game state and return a prediction from the policy and
 value network.
 """
-from multiprocessing import connection, Pipe
+from multiprocessing import connection, Pipe, Process
 from threading import Thread
 import torch
 from logging import getLogger
@@ -37,7 +37,7 @@ class C4API:
         Starts a thread to listen on the pipe and make predictions
         :return:
         """
-        prediction_worker = Thread(target=self._predict_batch_worker, name=f"prediction_worker", daemon=True)
+        prediction_worker = Process(target=self._predict_batch_worker, name=f"prediction_worker", daemon=True)
         prediction_worker.start()
 
     def create_pipe(self):
