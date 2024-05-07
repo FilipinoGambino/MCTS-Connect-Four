@@ -30,7 +30,6 @@ class C4API:
         self.agent_model = agent_model
         self.pipes = []
         self.flags = agent_model.flags
-        self.predictors = []
 
     def start(self):
         """
@@ -69,7 +68,5 @@ class C4API:
                     value_ary = output['baseline'].item()
 
                     pipe.send((policy_ary, value_ary))
-                except EOFError: # Triggers when the other side of the pipe is closed
-                    for thread in self.predictors:
-                        thread.join()
-                    return
+                except Exception as e: # Triggers when the other side of the pipe is closed
+                    pass

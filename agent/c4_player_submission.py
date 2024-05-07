@@ -1,4 +1,4 @@
-import threading
+import concurrent
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import copy
@@ -106,9 +106,11 @@ class C4Player:
                 )
                 for _ in range(self.flags.simulation_num_per_move)
             ]
-
-        for f in futures:
-            f.result()
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    future.result(timeout=1.)
+                except Exception as e:
+                    print(f"Failed | {e}")
 
     def search_my_move(self, env: C4Env, env_output) -> float:
         """
@@ -139,8 +141,7 @@ class C4Player:
                 return leaf_v # From the POV of side to move
 
         action_t = self.select_action_q_and_u(env, action_mask)
-        if action_mask[action_t]:
-            logger.info(f"Action {action_t} is an invalid action:\n{env.game_state.board}\n\n{self.tree[state].a}")
+
         my_visit_stats = self.tree[state]
         action_stats = my_visit_stats.a[action_t]
 

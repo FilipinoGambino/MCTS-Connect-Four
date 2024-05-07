@@ -33,7 +33,7 @@ optimizer_kwargs:
   lr: 0.00005
   eps: 0.0003
 min_lr_mod: 0.002
-search_threads: 10
+search_threads: 4
 max_processes: 1
 simulation_num_per_move: 150
 max_games_per_file: 100

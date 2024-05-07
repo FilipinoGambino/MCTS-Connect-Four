@@ -1,6 +1,5 @@
-from itertools import count
 import logging
-from multiprocessing import Manager, SimpleQueue
+from multiprocessing import Manager
 import numpy as np
 import os
 from pathlib import Path
@@ -8,19 +7,20 @@ import yaml
 import torch
 
 from c4_gym import create_env
-from c4_model import C4Model
-from c4_player_submission import C4Player
-from utils import flags_to_namespace, Stopwatch
+from agent.c4_model import C4Model
+from agent.c4_player_submission import C4Player
+from agent.utils import flags_to_namespace
 
-CONFIG_PATH = "/kaggle/input/connectx-submission-files/config.yaml"
-MODEL_PATH = "/kaggle/input/connectx-submission-files/mcts_phase4.pt"
+# CONFIG_PATH = Path("/kaggle/input/connectx-submission-files/config.yaml")
+# MODEL_PATH = Path("/kaggle/input/connectx-submission-files/mcts_phase4.pt")
+CONFIG_PATH = Path("C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four/config.yaml")
+MODEL_PATH = Path("C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four/models/mcts_phase4.pt")
 
 os.environ["OMP_NUM_THREADS"] = "1"
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 class RLAgent:
-    game = count()
     def __init__(self, *args):
         with open(CONFIG_PATH, 'r') as file:
             self.flags = flags_to_namespace(yaml.safe_load(file))
@@ -34,47 +34,29 @@ class RLAgent:
         )
         self.action_placeholder = torch.ones(1)
 
-        # self.m = Manager()
+        self.m = Manager()
 
         self.model = C4Model(self.flags, self.device, self.model_path)
-        # self.pipe_pool = self.m.list(
-        #     [self.model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
-        # )
-        self.pipe_pool = [self.model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
-        self.game_idx = 0
-        self.stopwatch = Stopwatch()
+        self.pipe_pool = self.m.list(
+            [self.model.get_pipes(self.flags.search_threads) for _ in range(self.flags.max_processes)]
+        )
 
     def __call__(self, obs, conf):
-        self.stopwatch.reset()
-
-        self.stopwatch.start("Observation processing")
         env_output = self.preprocess(obs)
 
-        self.stopwatch.stop().start("Model inference")
         pipes = self.pipe_pool.pop()
-
         player = C4Player(self.flags, pipes)
+
         action = player.action(self.env, env_output)
 
         _ = self.env.step(action)
-
         self.pipe_pool.append(pipes)
-
-        self.stopwatch.stop()
-
-        # value_msg = f"Game: {self.game_idx:>3} | Turn: {obs['step']:>2} | Column:{action} |"
-        # timing_msg = f"{str(self.stopwatch)} | "
-        # overage_time_msg = f"Remaining overage time: {obs['remainingOverageTime']:.2f}"
-
-        # logger.debug(" - ".join([value_msg, timing_msg, overage_time_msg]))
         return action
 
     def preprocess(self, obs):
         if obs['step'] == 0:
-            self.game_idx = next(RLAgent.game) + 1
             return self.env.reset()
         if obs['step'] == 1:
-            self.game_idx = next(RLAgent.game) + 1
             self.env.reset()
         old_board = self.env.board
         new_board = np.array(obs['board']).reshape(old_board.shape)
@@ -84,12 +66,15 @@ class RLAgent:
 
 
 # if __name__=="__main__":
-    # from kaggle_environments import evaluate, make
-    # env = make('connectx', debug=True)
-    #
-    # env.reset()
-    # print(env.run([RLAgent(), RLAgent()]))
-    # print(f"\np1 v p2\n{env.render(mode='ansi')}")
+#     from kaggle_environments import evaluate, make
+#     import multiprocessing as mp
+#
+#     mp.set_start_method("spawn")
+#     env = make('connectx', debug=True)
+#
+#     env.reset()
+#     env.run(["random", RLAgent()])
+#     print(f"\np1 v p2\n{env.render(mode='ansi')}")
     # env.reset()
     # print(env.run([RLAgent(), 'random']))
     # print(f"\np1 v random\n{env.render(mode='ansi')}")
