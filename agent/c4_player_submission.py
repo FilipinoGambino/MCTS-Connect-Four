@@ -6,6 +6,7 @@ from logging import getLogger
 import numpy as np
 from threading import Lock
 import torch
+from torch.nn.functional import softmax
 
 from c4_gym.c4_env import C4Env
 from utility_constants import BOARD_SIZE
@@ -53,11 +54,11 @@ class ActionStats:
         self.p = 0
 
 class C4Player:
-    def __init__(self, flags, pipes=None):
+    def __init__(self, flags, model):
         self.tree = defaultdict(VisitStats)
         self.flags = flags
         self.moves = []
-        self.pipe_pool = pipes
+        self.model = model
         self.node_lock = defaultdict(Lock)
 
     def reset(self):
@@ -178,11 +179,15 @@ class C4Player:
         :return (float,float): policy (prior probability of taking the action leading to this state)
             and value network (value of the state) prediction for this state.
         """
-        pipe = self.pipe_pool.pop()
-        pipe.send(state_planes)
-        ret = pipe.recv()
-        self.pipe_pool.append(pipe)
-        return ret
+        output = self.model.model.sample_actions(state_planes)
+
+        policy_ary = softmax(output['policy_logits'][0], dim=0).to(dtype=torch.double)
+        action_mask = output['aam'].squeeze(dim=0)
+
+        masked_policy_ary = torch.where(action_mask, float("-inf"), policy_ary).tolist()
+        value_ary = output['baseline'].item()
+
+        return masked_policy_ary, value_ary
 
     def select_action_q_and_u(self, env, mask) -> int:
         """
@@ -209,7 +214,6 @@ class C4Player:
 
         for action, a_s in my_visitstats.a.items():
             if mask[action]:
-                logger.debug(f"Invalid action somehow got into tree {mask} {action}")
                 continue
             p_ = a_s.p
             b = a_s.q + c_puct * p_ * xx_ / (1 + a_s.n)

@@ -53,7 +53,6 @@ class C4Model:
         else:
             model.eval()
         model = model.share_memory()
-
         if fpath:
             checkpoint_state = torch.load(
                 fpath,

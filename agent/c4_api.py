@@ -4,7 +4,7 @@ an observation of the game state and return a prediction from the policy and
 value network.
 """
 from multiprocessing import connection, Pipe, Process
-from threading import Thread
+import time
 import torch
 from logging import getLogger
 from torch.nn.functional import softmax
@@ -58,6 +58,7 @@ class C4API:
         while self.pipes:
             for pipe in connection.wait(self.pipes, timeout=0.1): # Returns pipes that are ready OR when the other side closes
                 try:
+                    start = time.time()
                     obs = pipe.recv()
 
                     output = self.agent_model.model.sample_actions(obs)
@@ -68,5 +69,6 @@ class C4API:
                     value_ary = output['baseline'].item()
 
                     pipe.send((policy_ary, value_ary))
-                except Exception as e: # Triggers when the other side of the pipe is closed
-                    pass
+                    logger.info(f"Inference took {time.time() - start} seconds")
+                except EOFError: # Triggers when the other side of the pipe is closed
+                    self.pipes.remove(pipe)
