@@ -17,7 +17,7 @@ MODEL_PATH = Path("/kaggle_simulations/agent/mcts_phase4.pt")
 # CONFIG_PATH = Path("C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four/config.yaml")
 # MODEL_PATH = Path("C:/Users/nick.gorichs/PycharmProjects/MCTS-Connect-Four/models/mcts_phase4.pt")
 
-logger = getLogger(__name__)
+# logger = getLogger(__name__)
 os.environ["OMP_NUM_THREADS"] = "1"
 AGENT = None
 mp.set_start_method("spawn")
@@ -60,14 +60,20 @@ class RLAgent:
         timing_msg = f"{str(self.stopwatch)}"
         overage_time_msg = f"Remaining overage time: {obs['remainingOverageTime']:.2f}"
 
-        logger.info(" - ".join([value_msg, timing_msg, overage_time_msg]))
+        print(" - ".join([value_msg, timing_msg, overage_time_msg]))
 
         return action
 
     def preprocess(self, obs):
         if obs['step'] == 0:
+            print(self.player.tree)
+            print("Resetting")
+            self.player.reset()
             return self.env.reset()
         if obs['step'] == 1:
+            print(self.player.tree)
+            print("Resetting")
+            self.player.reset()
             self.env.reset()
         old_board = self.env.board
         new_board = np.array(obs['board']).reshape(old_board.shape)
@@ -87,11 +93,10 @@ def agent(obs, conf):
 #     from kaggle_environments import evaluate, make
 #     import time
 #
-#     mp.set_start_method("spawn")
 #     env = make('connectx', debug=False)
 #
 #     env.reset()
-#     env.run([agent, 'negamax'])
+#     env.run([agent, agent])
 #     print(f"\nagent v agent\n{env.render(mode='ansi')}")
 #     env.reset()
 #     env.run([agent, 'negamax'])
@@ -115,7 +120,6 @@ def agent(obs, conf):
     #     losses = sum([1 for r in rewards if r[idx] == -1])
     #     ties = sum([1 for r in rewards if r[idx] == 0])
     #     return f"Wins: {wins:>3} | Losses: {losses:>3} | Ties: {ties:>3} | Win %: {100 * wins / len(rewards):>5.2f} %"
-
 
     # # Run multiple episodes to estimate its performance.
     # overall_start = time.time()

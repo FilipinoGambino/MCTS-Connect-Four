@@ -77,7 +77,7 @@ class C4Player:
         :return: None if no action should be taken (indicating a resign). Otherwise, returns a string
             indicating the action to take in uci format
         """
-        self.reset()
+        # self.reset()
 
         self.search_moves(env, env_output)
         policy = self.calc_policy(env)

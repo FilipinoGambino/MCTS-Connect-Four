@@ -24,7 +24,7 @@ obs_space: HistoricalObs
 reward_space: GameResultReward
 search_threads: 1
 max_processes: 1
-simulation_num_per_move: 75
+simulation_num_per_move: 125
 model_dir: models
 best_model_weight_fname: mcts_phase4.pt
 use_mixed_precision: true
